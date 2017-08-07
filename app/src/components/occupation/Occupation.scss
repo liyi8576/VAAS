@@ -1,0 +1,175 @@
+.steps-content {
+  padding-bottom: 10px;
+}
+
+.detail {
+  width: 600px;
+  border: 1px solid #e9e9ea;
+  border-radius: 2px 2px 0 0;
+  padding: 15px;
+  margin: 0 auto;
+  :global(.ant-card-head) {
+    padding: 0;
+  }
+  :global(.ant-card-body) {
+    padding: 5px;
+  }
+  :global(.ant-card-head-title) {
+    font-size: 12px;
+  }
+  :global(.ant-table-thead th) {
+    padding: 8px;
+  }
+  .desc {
+    text-indent: 2em;
+    padding: 15px 5px;
+  }
+  .necessary {
+    color: #ff4e37;
+  }
+  .secondary {
+    color: #108ee9;
+  }
+}
+
+.form {
+  :global(.ant-form-item) {
+    margin-bottom: 15px;
+  }
+  :global(.ant-card) {
+    margin-bottom: 15px;
+  }
+  :global(.ant-card-head) {
+    height: 35px;
+    line-height: 35px;
+  }
+  :global(.ant-card-head-title) {
+    font-size: 12px;
+  }
+  :global(.ant-card-extra) {
+    top: 5px;
+  }
+  :global(.ant-card-body) {
+    padding: 10px;
+  }
+  :global(.ant-table-thead th) {
+    padding: 8px;
+  }
+
+  :global(.ant-table-row  td) {
+    padding: 8px;
+  }
+  .necessary {
+    color: #ff4e37;
+  }
+  .secondary {
+    color: #108ee9;
+  }
+}
+
+.ability-sel {
+  padding-top: 10px;
+  :global(.ant-checkbox-group) {
+    margin-bottom: 15px;
+  }
+  .options-items{
+	li{
+	  float:left;
+	  padding:5px 5px 5px 10px;
+	  width:100px;
+	  margin:0 5px 5px 0;
+	  &:hover{
+		background-color:#108ee9;
+		color:#fff;
+		cursor: pointer;
+	  }
+	  white-space: nowrap;
+	  overflow: hidden;
+	  text-overflow: ellipsis;
+	}
+	li.selected{
+	  background-color:#108ee9;
+	  color:#fff;
+	  padding: 5px 0;
+	  &:before{
+		content:"\E632";
+		font-family: "anticon" !important;
+		padding:5px;
+		color:#fff;
+	  }
+	}
+  }
+  .necessary {
+    color: #ff4e37;
+  }
+  .secondary {
+    color: #108ee9;
+  }
+  .selected {
+    padding: 0 10px;
+    position: relative;
+    :global(.ant-card-head) {
+      height: 30px;
+      font-size: 12px;
+      line-height: 30px;
+      padding: 0 10px;
+    }
+    :global(.ant-card-head-title) {
+      font-size: 12px;
+    }
+    :global(.ant-card-body) {
+      padding: 10px;
+    }
+    .selected-items {
+      min-height: 50px;
+      cursor: text;
+      padding-bottom: 3px;
+      zoom: 1;
+      li {
+        user-select: none;
+        background-color: #f3f3f3;
+        border-radius: 4px;
+        cursor: default;
+        float: left;
+        line-height: 20px;
+        height: 20px;
+        margin-top: 5px;
+        margin-right: 4px;
+        max-width: 99%;
+        position: relative;
+        overflow: hidden;
+        padding: 0 20px 0 10px;
+        div {
+          display: inline-block;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          max-width: 100%;
+        }
+        span {
+          font-size: 8px;
+          color: rgba(0, 0, 0, 0.43);
+          display: inline-block;
+          font-style: normal;
+          vertical-align: baseline;
+          text-align: center;
+          zoom: 1;
+          cursor: pointer;
+          line-height: 1;
+          position: absolute;
+          right: 4px;
+          padding: 0 0 0 8px;
+          transform: scale(0.66666667) rotate(0deg);
+          &:before {
+            content: "\E633";
+            display: block;
+            font-family: "anticon" !important;
+          }
+          &:hover {
+            color: #404040;
+          }
+        }
+      }
+    }
+  }
+}

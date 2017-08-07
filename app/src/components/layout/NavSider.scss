@@ -1,0 +1,30 @@
+:global(.ant-layout-sider-collapsed){
+  overflow-y: initial !important;
+}
+.sider {
+  overflow-y: auto;
+  .logo {
+	text-align: center;
+	height: 50px;
+	line-height: 50px;
+	cursor: pointer;
+	margin: 20px 0;
+	transition: all 0.3s ease-out;
+	overflow: hidden;
+	img {
+	  width: 45px;
+	  transition: all 0.3s ease-out;
+	}
+  }
+  .logo span {
+	vertical-align: text-bottom;
+	font-size: 14px;
+	padding: 0 5px;
+	text-transform: uppercase;
+	color: #fff;
+	display: inline-block;
+  }
+  .menu {
+	border-right: none;
+  }
+}

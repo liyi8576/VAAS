@@ -1,0 +1,19 @@
+{
+  "extends": "react-app",
+  "globals": {
+    "__IS_DEV__": true,
+    "location":true
+  },
+  "rules": {
+    "no-multi-spaces": 1,
+    "react/jsx-tag-spacing": 0,
+    "jsx-quotes": 1,
+    "react/jsx-closing-bracket-location": 0,
+    "react/jsx-boolean-value": 1,
+    "react/no-string-refs": 1,
+    "react/self-closing-comp": 0,
+    "react/sort-comp": 1,
+    "react/jsx-pascal-case": 1,
+    "jsx-a11y/href-no-hash": "off"
+  }
+}
