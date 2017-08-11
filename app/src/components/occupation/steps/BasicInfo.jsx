@@ -7,7 +7,11 @@ import styles from '../Occupation.scss';
 const FormItem = Form.Item;
 const TextArea = Input.TextArea;
 
-const BasicInfo = ({ form: { getFieldDecorator } }) => {
+const BasicInfo = ({
+  occupation,
+  onChange,
+  form: { getFieldDecorator, validateFields, getFieldsValue },
+}) => {
   return (
     <Form layout="horizontal" styleName="form">
       <FormItem
@@ -17,6 +21,7 @@ const BasicInfo = ({ form: { getFieldDecorator } }) => {
         wrapperCol={{ span: 10 }}
       >
         {getFieldDecorator('name', {
+          initialValue: occupation.name,
           rules: [
             {
               required: true,
@@ -26,10 +31,12 @@ const BasicInfo = ({ form: { getFieldDecorator } }) => {
         })(<Input />)}
       </FormItem>
       <FormItem label="职业描述" labelCol={{ span: 6 }} wrapperCol={{ span: 16 }}>
-        {getFieldDecorator('description', {})(
+        {getFieldDecorator('description', {
+          initialValue: occupation.description,
+        })(
           <TextArea
             placeholder="请填写职业描述"
-            autosize={{ minRows: 3, maxRows: 4 }}
+            autosize={{ minRows: 5, maxRows: 5 }}
           />,
         )}
       </FormItem>
@@ -39,6 +46,10 @@ const BasicInfo = ({ form: { getFieldDecorator } }) => {
 
 BasicInfo.PropTypes = {
   isCreate: PropTypes.func,
+  onChange: PropTypes.func,
+  occupation: PropTypes.object,
 };
 
-export default Form.create()(CSSModules(BasicInfo, styles));
+export default Form.create({
+  onFieldsChange: (comp, formItem) => comp.onChange(formItem),
+})(CSSModules(BasicInfo, styles));

@@ -11,7 +11,7 @@ import styles from '../Trainee.scss'
 const Step = Steps.Step;
 
 class CreateTraineeSteps extends Component {
-  constructor(props) {
+  constructor() {
     super();
     this.state = {
       curStep: 0,

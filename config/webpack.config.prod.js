@@ -17,6 +17,9 @@ module.exports = {
     chunkFilename: 'js/[name].[chunkhash:8].chunk.js',
     publicPath: PATHS.servedPath,
   },
+  resolve: {
+    extensions: ['.js', '.jsx', '.css', '.scss'],
+  },
   module: {
     rules: [
       loaders.jsx,

@@ -1,0 +1,17 @@
+[
+  {
+    "name": "需自行处理交通",
+    "id": "traffic",
+    "necessaryAbility":["C22"]
+  },
+  {
+    "name": "需自行处理吃饭",
+    "id": "eat",
+    "necessaryAbility":["C1","C16","C17","C18"]
+  },
+  {
+    "name": "需自行处理住宿",
+    "id": "lodge",
+    "necessaryAbility":["C2","C3","C11","C16","C17","C18","C29"]
+  }
+]

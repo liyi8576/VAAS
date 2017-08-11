@@ -31,7 +31,7 @@ const OccupationInfo = ({}) => {
         <Card
           title={
             <span>
-              职业能力要求 (<span styleName="necessary">必要技能</span>):
+              职业能力要求 (<span styleName="necessary">必要能力</span>):
             </span>
           }
           bordered={false}
@@ -50,7 +50,7 @@ const OccupationInfo = ({}) => {
         <Card
           title={
             <span>
-              职业能力要求 (<span styleName="secondary">次要技能</span>):
+              职业能力要求 (<span styleName="secondary">次要能力</span>):
             </span>
           }
           bordered={false}

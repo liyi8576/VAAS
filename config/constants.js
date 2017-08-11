@@ -46,7 +46,7 @@ export const FILES = {
   vendorManifest: resolvePath('app/public/dll/vendor_manifest.json'),
   appIndexTpl: resolvePath('app/src/index.html'),
   appHtml: resolvePath('app/public/index.html'),
-  appIndexJs: resolvePath('app/src/AssessResult.jsx'),
+  appIndexJs: resolvePath('app/src/index.js'),
   favicon:resolvePath('app/src/style/images/favicon.ico'),
   yarnLockFile: resolvePath('yarn.lock'),
 };
