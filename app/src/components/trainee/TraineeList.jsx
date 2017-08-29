@@ -1,30 +1,103 @@
+/**
+ * @Author:      liyi
+ * @DateTime:    2017-08-10
+ * @description: 学生管理 / 学生列表组件
+ */
+
 import React from 'react';
 import PropTypes from 'prop-types';
+import SearchBar from './SearchBar';
 import DropOption from '../common/DropOption';
-import { Table, Modal } from 'antd';
+import { Row, Col, Table, Button } from 'antd';
 
-const TraineeList = ({ showDetailModal, showModifyModal, ...tableProps }) => {
-  const handleAction = (record, e) => {
-    if (e.key === 'modify') {
-      showModifyModal(record);
-    } else if (e.key === 'delete') {
-      Modal.confirm({
-        title: '您确定要学生 [ ' + record.name + ' ] 么？',
-        onOk() {},
-      });
-    } else if (e.key === 'recommend') {
-    }
+const TraineeList = ({
+  searchCond = {}, // 查询条件
+  traineeList = [], // 查询返回结果列表
+  pagination = { pageSize: 10 },
+  loading,
+  onSearch, // 查询触发回调函数
+  onChangeSearchTxt,
+  onChangeTable, // 表格分页、排序触发回调函数
+  onActionTrigger, // 功能操作触发回调函数
+}) => {
+  const tiggerCreateAction = val => {
+    onActionTrigger('CREATE');
   };
-  const columns = [
+  return (
+    <div className="content-inner">
+      <Row type="flex" justify="space-between" style={{ marginBottom: '10px' }}>
+        <Col>
+          <SearchBar
+            {...searchCond}
+            onSearch={onSearch}
+            onChangeSearchTxt={onChangeSearchTxt}
+          />
+        </Col>
+        <Col>
+          <Button type="primary" icon="plus" onClick={tiggerCreateAction}>
+            新增学生
+          </Button>
+        </Col>
+      </Row>
+      <Table
+        bordered
+        simple
+        size="middle"
+        loading={loading}
+        pagination={configPagination(pagination)}
+        rowKey={record => record.id}
+        columns={configColumns(onActionTrigger)}
+        dataSource={traineeList}
+        onChange={onChangeTable}
+      />
+    </div>
+  );
+};
+
+TraineeList.propTypes = {
+  searchCond: PropTypes.object,
+  traineeList: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+      sex: PropTypes.string,
+      age: PropTypes.integer,
+      guardian: PropTypes.string,
+      phone: PropTypes.string,
+      address: PropTypes.string,
+    }),
+  ),
+  pagination: PropTypes.shape({
+    current: PropTypes.integer,
+    total: PropTypes.integer,
+    pageSize: PropTypes.integer,
+  }),
+  loading: PropTypes.bool,
+  onSearch: PropTypes.func,
+  onChangeSearchTxt: PropTypes.func,
+  onChangeTable: PropTypes.func,
+  onActionTrigger: PropTypes.func,
+};
+export default TraineeList;
+
+const configColumns = onActionTrigger => {
+  const handleAction = (record, e) => {
+    onActionTrigger(e.key, record);
+  };
+  return [
+    {
+      title: '编号',
+      key: 'num',
+      render: (text, record, index) => index + 1,
+    },
     {
       title: '姓名',
       dataIndex: 'name',
       key: 'name',
-      //render: (text, record) => <Link to={`/trainees/${record.id}`}>{text}</Link>,
       render: (text, record) =>
         <span>
-          <a href="#" onClick={() => showDetailModal(record)}>
-            text
+          <a href="#" onClick={() => onActionTrigger('VIEW', record)}>
+            {text}
           </a>
         </span>,
     },
@@ -32,6 +105,7 @@ const TraineeList = ({ showDetailModal, showModifyModal, ...tableProps }) => {
       title: '性别',
       dataIndex: 'sex',
       key: 'sex',
+      render: (text, record) => (record.sex === 'M' ? '男' : '女'),
     },
     {
       title: '年龄',
@@ -61,30 +135,23 @@ const TraineeList = ({ showDetailModal, showModifyModal, ...tableProps }) => {
         <DropOption
           onMenuClick={e => handleAction(record, e)}
           menuOptions={[
-            { key: 'modify', name: '修改' },
-            { key: 'delete', name: '删除' },
-            {
-              key: 'recommend',
-              name: '推荐列表',
-            },
+            { key: 'VIEW', name: '查看' },
+            { key: 'MODIFY', name: '修改' },
+            { key: 'DELETE', name: '删除' },
+            { key: 'SHOW_RECOMMEND', name: '推荐列表' },
           ]}
         />,
     },
   ];
-  return (
-    <Table
-      bordered
-      simple
-      rowKey={record => record.id}
-      columns={columns}
-      {...tableProps}
-    />
-  );
 };
 
-TraineeList.propTypes = {
-  showDetailModal: PropTypes.func,
-  showModifyModal: PropTypes.func,
+const configPagination = pagination => {
+  return {
+    current: pagination.current || 1,
+    total: pagination.total || 0,
+    pageSize: pagination.pageSize || 10,
+    showTotal() {
+      return `共 ${pagination.total} 条记录`;
+    },
+  };
 };
-
-export default TraineeList;

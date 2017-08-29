@@ -5,8 +5,10 @@ import { AppContainer } from 'react-hot-loader';
 import registerServiceWorker from './registerServiceWorker';
 
 import createHistory from 'history/createBrowserHistory';
-import configureStore from './store/configureStore'
-import Root from './containers/Root'
+import configureStore from './store/configureStore';
+import Root from './containers/Root';
+
+import 'api/mock';
 
 const store = configureStore();
 const history = createHistory();
@@ -14,6 +16,7 @@ const history = createHistory();
 if (process.env.NODE_ENV !== 'production') {
   window.React = React; // enable debugger
 }
+
 const containerDiv = document.getElementById('root');
 ReactDOM.render(
   <AppContainer>

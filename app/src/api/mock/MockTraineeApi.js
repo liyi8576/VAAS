@@ -1,0 +1,57 @@
+import Mock from 'mockjs';
+
+//获取学员信息
+Mock.mock(/\/api\/trainees\/\w+/, {
+  success: true,
+  data: {
+    id: '@guid',
+    name: '@cname',
+    'sex|1': ['M', 'F'],
+    birthday: '@date',
+    idCard: '@id',
+    guardian: '@name',
+    'relationship|1': ['1', '2', '3'],
+    address: '@county',
+    'phone|1': ['13531544954', '13632250649', '15820292420', '15999905612'],
+    'disabledType|1': ['1', '2', '3'],
+    'disabledLevel|1': ['1', '2', '3'],
+    disabledReason: '@cparagraph',
+    otherDisabled: '@cparagraph',
+    'degree|1': ['1', '2', '3'],
+    'educationLevel|1': ['1', '2', '3'],
+    'haveTrained|1': ['-1', '1'],
+    'trainedIntro|1': '',
+    'isWorked|1': ['-1', '1'],
+    workedIntro: '@cparagraph',
+    expectWork: '@cparagraph',
+    father: '@name',
+    'fatherDegree|1': ['1', '2', '3'],
+    'fatherJob|1': ['1', '2', '3'],
+    mother: '@name',
+    'motherDegree|1': ['1', '2', '3'],
+    'motherJob|1': ['1', '2', '3'],
+    parentExpect: '@cparagraph',
+    creator:'@cname',
+    createTime:'@datetime',
+    modifier:'@cname',
+    modifyTime:'@datetime'
+  },
+});
+//获取学员列表
+Mock.mock(/\/api\/trainees/, {
+  success: true,
+  data: {
+    'list|10': [
+      {
+        id: '@guid',
+        name: '@cname',
+        'sex|1': ['M', 'F'],
+        age: '@integer(22, 60)',
+        guardian: '@name',
+        'phone|1': ['13531544954', '13632250649', '15820292420', '15999905612'],
+        address: '@city',
+      },
+    ],
+    total: 135,
+  },
+});

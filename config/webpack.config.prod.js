@@ -19,6 +19,12 @@ module.exports = {
   },
   resolve: {
     extensions: ['.js', '.jsx', '.css', '.scss'],
+    alias: {
+      components: `${PATHS.appSrc}/components`,
+      containers: `${PATHS.appSrc}/containers`,
+      reducers: `${PATHS.appSrc}/reducers`,
+      actions: `${PATHS.appSrc}/actions`,
+    }
   },
   module: {
     rules: [

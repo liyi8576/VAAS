@@ -1,4 +1,4 @@
-const {SETTINGS, PATHS, FILES} = require('./constants');
+const { SETTINGS, PATHS, FILES } = require('./constants');
 
 const webpack = require('webpack');
 // 自动生成html 文件，并且引用相关的assets文件
@@ -26,11 +26,12 @@ exports.commonPlugins = [
     'process.env': {
       'process.env.NODE_ENV': JSON.stringify(
         process.env.NODE_ENV || 'development',
-      )
+      ),
     },
-    'SETTINGS':  JSON.stringify(SETTINGS),
+    SETTINGS: JSON.stringify(SETTINGS),
     //判断当前是否处于开发状态
     __IS_DEV__: process.env.NODE_ENV === 'development',
+    __IS_MOCK__: true,
   }),
 ];
 
@@ -92,10 +93,10 @@ exports.prodPlugins = [
   new webpack.optimize.CommonsChunkPlugin({
     name: 'vendor',
     filename: 'js/vendor.bundle.js',
-    minChunks: ({resource}) =>
-    resource &&
-    resource.indexOf('node_modules') >= 0 &&
-    resource.match(/\.(js|less|scss)$/),
+    minChunks: ({ resource }) =>
+      resource &&
+      resource.indexOf('node_modules') >= 0 &&
+      resource.match(/\.(js|less|scss)$/),
   }),
   //提取Loader定义到同一地方
   new webpack.LoaderOptionsPlugin({

@@ -9,11 +9,17 @@
     "react": {
       "pragma": "React",
       "version": "15.0"
+    },
+    "import/resolver": {
+      "webpack": {
+        "config": "./config/webpack.config.dev.js"
+      }
     }
   },
   "extends": "react-app",
   "globals": {
     "__IS_DEV__": true,
+    "__IS_MOCK__":true,
     "location": true
   },
   "rules": {

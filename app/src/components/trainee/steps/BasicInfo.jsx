@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 import { Form, Input, DatePicker, Radio, Col, Row, Select } from 'antd';
 import CSSModules from 'react-css-modules';
 import styles from '../Trainee.scss';
@@ -9,8 +10,24 @@ const TextArea = Input.TextArea;
 const Option = Select.Option;
 
 const BasicInfo = ({
-  form: { getFieldDecorator, validateFields, getFieldsValue },
+  trainee = {},
+  setValidateFunc,
+  setGetFieldValuesFunc,
+  relationshipDic = [],
+  form: { getFieldDecorator, validateFields,getFieldsValue },
 }) => {
+  setValidateFunc(() => {
+    let vals = null;
+    validateFields(null, { first: true, force: true }, (errors, values) => {
+      if (errors === null) {
+        vals = values;
+      }
+    });
+    return vals;
+  });
+  setGetFieldValuesFunc(()=>{
+    return getFieldsValue();
+  });
   return (
     <Form layout="horizontal" styleName="form-card">
       <FormItem
@@ -20,17 +37,14 @@ const BasicInfo = ({
         wrapperCol={{ span: 4 }}
       >
         {getFieldDecorator('name', {
-          rules: [
-            {
-              required: true,
-              message: '请输入学生姓名',
-            },
-          ],
+          initialValue: trainee.name,
+          rules: [{ required: true, message: '请输入学生姓名' }],
         })(<Input />)}
       </FormItem>
       <FormItem label="性  别" labelCol={{ span: 6 }} wrapperCol={{ span: 6 }}>
         {getFieldDecorator('sex', {
-          initialValue: 'M',
+          initialValue: trainee.sex,
+          rules: [{ required: true, message: '请选择性别' }],
         })(
           <Radio.Group>
             <Radio value="M">男</Radio>
@@ -44,10 +58,12 @@ const BasicInfo = ({
         wrapperCol={{ span: 9 }}
         hasFeedback
       >
-        {getFieldDecorator('id_card', {
+        {getFieldDecorator('idCard', {
+          initialValue: trainee.idCard,
           rules: [
             {
               required: true,
+              //pattern: /(^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$)|(^[1-9]\d{5}\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{2}$)/,
               message: '请输入身份证号码',
             },
           ],
@@ -55,6 +71,7 @@ const BasicInfo = ({
       </FormItem>
       <FormItem label="出生日期" labelCol={{ span: 6 }} wrapperCol={{ span: 6 }}>
         {getFieldDecorator('birthday', {
+          initialValue: trainee.birthday && moment(trainee.birthday),
           rules: [
             {
               required: true,
@@ -72,21 +89,23 @@ const BasicInfo = ({
             wrapperCol={{ span: 16 }}
           >
             {getFieldDecorator('guardian', {
-              rules: [
-                {
-                  required: true,
-                  message: '请输入监护人',
-                },
-              ],
+              initialValue: trainee.guardian,
+              rules: [{ required: true, message: '请输入监护人' }],
             })(<Input />)}
           </FormItem>
         </Col>
         <Col span={8}>
           <FormItem wrapperCol={{ span: 12 }}>
-            {getFieldDecorator('relationship', {})(
-              <Select placeholder="请选择与本人关系" style={{marginLeft:'5px'}}>
-                <Option value="male">父子</Option>
-                <Option value="female">母子</Option>
+            {getFieldDecorator('relationship', {
+              initialValue: trainee.relationship,
+              rules: [{ required: true, message: '请选择与本人关系' }],
+            })(
+              <Select placeholder="请选择与本人关系" style={{ marginLeft: '5px' }}>
+                {relationshipDic.map(dic =>
+                  <Option value={dic.value} key={`rsd-${dic.value}`}>
+                    {dic.name}
+                  </Option>,
+                )}
               </Select>,
             )}
           </FormItem>
@@ -99,12 +118,8 @@ const BasicInfo = ({
         wrapperCol={{ span: 9 }}
       >
         {getFieldDecorator('phone', {
-          rules: [
-            {
-              required: true,
-              message: '请输入联系方式',
-            },
-          ],
+          initialValue: trainee.phone,
+          rules: [{ required: true, message: '请输入联系方式' }],
         })(<Input placeholder="请选择联系电话" />)}
       </FormItem>
       <FormItem
@@ -113,7 +128,10 @@ const BasicInfo = ({
         labelCol={{ span: 6 }}
         wrapperCol={{ span: 12 }}
       >
-        {getFieldDecorator('address', {})(
+        {getFieldDecorator('address', {
+          initialValue: trainee.address,
+          rules: [{ required: true, message: '请输入家庭地址' }],
+        })(
           <TextArea
             autosize={{ minRows: 2, maxRows: 2 }}
             placeholder="请填写家庭地址"
@@ -124,6 +142,16 @@ const BasicInfo = ({
   );
 };
 
-BasicInfo.propTypes = {};
+BasicInfo.propTypes = {
+  trainee: PropTypes.object,
+  setValidateFunc: PropTypes.func,
+  setGetFieldValuesFunc:PropTypes.func,
+  relationshipDic: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string,
+      code: PropTypes.string,
+    }),
+  ),
+};
 
 export default Form.create()(CSSModules(BasicInfo, styles));

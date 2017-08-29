@@ -1,0 +1,19 @@
+:global(#root) {
+  height: 100%;
+}
+:global(.ant-layout) {
+  height: 100%;
+}
+:global(.vas-loading-box) {
+  text-align: center;
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 4px;
+  padding: 30px 50px;
+  margin: 20px 0;
+}
+
+:global(.vas-steps-box) {
+  background-color: #f7f7f7;
+  padding: 10px;
+  margin-bottom: 15px;
+}
