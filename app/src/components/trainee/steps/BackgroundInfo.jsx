@@ -58,6 +58,7 @@ class BackgroundInfo extends Component {
   };
 
   render_edu_his(getFieldDecorator) {
+    const { getDicsByGroup } = this.props.dicHelper;
     return (
       <Card title="教育经历" bordered={false} noHovering="false">
         <FormItem
@@ -71,7 +72,7 @@ class BackgroundInfo extends Component {
             rules: [{ required: true, message: '请选择教育程度' }],
           })(
             <Select placeholder="请选择教育程度">
-              {this.props.degreeTypeDic.map(dic =>
+              {getDicsByGroup('DEGREE_TYPE').map(dic =>
                 <Option value={dic.value} key={`detd-${dic.value}`}>
                   {dic.name}
                 </Option>,
@@ -90,7 +91,7 @@ class BackgroundInfo extends Component {
             rules: [{ required: true, message: '请选择教育水平' }],
           })(
             <Select placeholder="请选择教育水平">
-              {this.props.educationLevelDic.map(dic =>
+              {getDicsByGroup('EDUCATION_LEVEL').map(dic =>
                 <Option value={dic.value} key={`eld-${dic.value}`}>
                   {dic.name}
                 </Option>,
@@ -123,6 +124,7 @@ class BackgroundInfo extends Component {
     );
   }
   render_job_his(getFieldDecorator) {
+    const { getDicsByGroup } = this.props.dicHelper;
     return (
       <Card title="工作经历" bordered={false} noHovering="false">
         <FormItem label="是否有工作经验" labelCol={{ span: 6 }}>
@@ -164,6 +166,7 @@ class BackgroundInfo extends Component {
     );
   }
   render_home_env(getFieldDecorator) {
+    const { getDicsByGroup } = this.props.dicHelper;
     return (
       <Card title="家庭背景" bordered={false} noHovering="false">
         <Row>
@@ -190,7 +193,7 @@ class BackgroundInfo extends Component {
                 initialValue: this.props.trainee.fatherDegree,
               })(
                 <Select placeholder="请选择教育程度">
-                  {this.props.degreeTypeDic.map(dic =>
+                  {getDicsByGroup('DEGREE_TYPE').map(dic =>
                     <Option value={dic.value} key={`fdetd-${dic.value}`}>
                       {dic.name}
                     </Option>,
@@ -210,7 +213,7 @@ class BackgroundInfo extends Component {
                 initialValue: this.props.trainee.fatherJob,
               })(
                 <Select placeholder="请选择父亲职业">
-                  {this.props.jobTypeDic.map(dic =>
+                  {getDicsByGroup('JOB_TYPE').map(dic =>
                     <Option value={dic.value} key={`fjtd-${dic.value}`}>
                       {dic.name}
                     </Option>,
@@ -244,7 +247,7 @@ class BackgroundInfo extends Component {
                 initialValue: this.props.trainee.motherDegree,
               })(
                 <Select placeholder="请选择教育程度">
-                  {this.props.degreeTypeDic.map(dic =>
+                  {getDicsByGroup('DEGREE_TYPE').map(dic =>
                     <Option value={dic.value} key={`mdetd-${dic.value}`}>
                       {dic.name}
                     </Option>,
@@ -264,7 +267,7 @@ class BackgroundInfo extends Component {
                 initialValue: this.props.trainee.motherJob,
               })(
                 <Select placeholder="请选择母亲职业">
-                  {this.props.jobTypeDic.map(dic =>
+                  {getDicsByGroup('JOB_TYPE').map(dic =>
                     <Option value={dic.value} key={`fjtd-${dic.value}`}>
                       {dic.name}
                     </Option>,
@@ -311,6 +314,10 @@ BackgroundInfo.propTypes = {
   trainee: PropTypes.object,
   setValidateFunc: PropTypes.func,
   setGetFieldValuesFunc: PropTypes.func,
+  dicHelper: PropTypes.shape({
+    getDicName: PropTypes.func,
+    getDicsByGroup: PropTypes.func,
+  }),
   degreeTypeDic: PropTypes.arrayOf(
     PropTypes.shape({
       name: PropTypes.string,

@@ -5,7 +5,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import { Route, Switch } from 'react-router-dom';
 import App from '../App';
 import TraineeInfo from '../components/trainee/TraineeInfo';
-import TraineesCreate from '../components/trainee/TraineeCreateStep';
+import TraineesCreate from '../components/trainee/TraineeEditStep';
 import Occupation from '../components/occupation';
 import OccupationInfo from '../components/occupation/OccupationInfo';
 import OccupationCreate from '../components/occupation/steps';

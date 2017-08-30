@@ -14,7 +14,8 @@ const BasicInfo = ({
   setValidateFunc,
   setGetFieldValuesFunc,
   relationshipDic = [],
-  form: { getFieldDecorator, validateFields,getFieldsValue },
+  form: { getFieldDecorator, validateFields, getFieldsValue },
+  dicHelper: { getDicName, getDicsByGroup },
 }) => {
   setValidateFunc(() => {
     let vals = null;
@@ -25,7 +26,7 @@ const BasicInfo = ({
     });
     return vals;
   });
-  setGetFieldValuesFunc(()=>{
+  setGetFieldValuesFunc(() => {
     return getFieldsValue();
   });
   return (
@@ -101,7 +102,7 @@ const BasicInfo = ({
               rules: [{ required: true, message: '请选择与本人关系' }],
             })(
               <Select placeholder="请选择与本人关系" style={{ marginLeft: '5px' }}>
-                {relationshipDic.map(dic =>
+                {getDicsByGroup('RELATION_SHIP').map(dic =>
                   <Option value={dic.value} key={`rsd-${dic.value}`}>
                     {dic.name}
                   </Option>,
@@ -144,8 +145,9 @@ const BasicInfo = ({
 
 BasicInfo.propTypes = {
   trainee: PropTypes.object,
+  enumDics: PropTypes.object,
   setValidateFunc: PropTypes.func,
-  setGetFieldValuesFunc:PropTypes.func,
+  setGetFieldValuesFunc: PropTypes.func,
   relationshipDic: PropTypes.arrayOf(
     PropTypes.shape({
       name: PropTypes.string,

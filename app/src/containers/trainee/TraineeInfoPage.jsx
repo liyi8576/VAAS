@@ -11,6 +11,7 @@ import { bindActionCreators } from 'redux';
 import { Spin } from 'antd';
 import TraineeInfo from 'components/trainee/TraineeInfo';
 import { loadTrainee } from 'reducers/trainee/TraineeInfo';
+import { getDicHelper } from 'reducers/EnumDic';
 import '../../App.scss';
 
 class TraineeInfoPage extends Component {
@@ -18,16 +19,23 @@ class TraineeInfoPage extends Component {
     this.props.loadTrainee(this.props.traineeId);
   }
   componentWillUnmount() {}
+  render_loading() {
+    return (
+      <div className="vas-loading-box">
+        <Spin tip="学生信息加载中..." />
+      </div>
+    );
+  }
+  render_content() {
+    return (
+      <TraineeInfo
+        trainee={this.props.trainee}
+        dicHelper={getDicHelper(this.props.enumDics)}
+      />
+    );
+  }
   render() {
-    if (this.props.loading) {
-      return (
-        <div className="vas-loading-box">
-          <Spin tip="学生信息加载中..." />
-        </div>
-      );
-    } else {
-      return <TraineeInfo trainee={this.props.trainee} />;
-    }
+    return this.props.loading ? this.render_loading() : this.render_content();
   }
 }
 
@@ -36,6 +44,7 @@ TraineeInfoPage.PropTypes = {
 };
 TraineeInfoPage.defaultProps = {};
 const mapStateToProps = state => ({
+  enumDics: state.enumDic.enumDics,
   trainee: state.trainee.traineeInfo.traineeInfo,
   loading: state.trainee.traineeInfo.isLoading,
 });

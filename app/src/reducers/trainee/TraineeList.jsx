@@ -13,6 +13,7 @@ export const initialState = {
   isLoading: false,
   traineeList: [],
   traineeCount: 0,
+  error: null,
 };
 
 export default handleActions(

@@ -8,12 +8,14 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Modal } from 'antd';
+import { Modal, message } from 'antd';
 import TraineeList from 'components/trainee/TraineeList';
 import TraineeInfoPage from './TraineeInfoPage';
-import TraineeCreatePage from './TraineeCreatePage';
+import TraineeEditPage from './TraineeEditPage';
 
 import { traineeListActions, loadTrainees } from 'reducers/trainee/TraineeList';
+import { traineeActions, deleteTrainee } from 'reducers/trainee/TraineeInfo';
+import { loadEnumDic } from 'reducers/EnumDic';
 
 class TraineeListPage extends Component {
   constructor(props) {
@@ -24,11 +26,25 @@ class TraineeListPage extends Component {
       selectItem: null,
       triggerAction: null,
     };
-    this.closeModal=this.closeModal.bind(this);
+    this.closeModal = this.closeModal.bind(this);
   }
   // 初始化加载表格数据
   componentDidMount() {
     this.fetchTraineeList();
+    this.props.loadEnumDic();
+  }
+  componentWillReceiveProps(nextProps) {
+    const { type, success, resName, error } = nextProps.operate || {};
+    if (type === 'DELETE') {
+      if (success) {
+        this.fetchTraineeList();
+        message.success(`成功删除学生[${resName}]!`);
+      } else {
+        message.error(`$删除学生[${resName}]失败! 错误信息：${error}`);
+      }
+      this.props.resetHandleStatus();
+      this.props.resetTraineeState();
+    }
   }
   componentWillUnmount() {
     this.props.resetTraineeList();
@@ -71,22 +87,26 @@ class TraineeListPage extends Component {
     if (actionType === 'DELETE') {
       Modal.confirm({
         title: '您确定要删除学生 [ ' + record.name + ' ] 么？',
-        onOk() {},
+        confirmLoading: true,
+        onOk: () => {
+          this.props.deleteTrainee(record.id, record.name);
+        },
+      });
+    } else {
+      this.setState({
+        triggerAction: actionType,
+        selectItem: record && record.id,
       });
     }
-    this.setState({
-      triggerAction: actionType,
-      selectItem: record && record.id,
-    });
   };
   closeModal = () => {
     this.setState({
       triggerAction: null,
     });
   };
-  buildModal = (width, modalTitle, contentComp) =>
+  buildModal = (modalTitle, contentComp) =>
     <Modal
-      width={width}
+      width={800}
       visible
       onCancel={this.closeModal}
       maskClosable={false}
@@ -99,21 +119,26 @@ class TraineeListPage extends Component {
   renderModal() {
     switch (this.state.triggerAction) {
       case 'CREATE':
-        return this.buildModal(800, '新增学生信息', <TraineeCreatePage onCancel={this.closeModal}/>);
+        return this.buildModal(
+          '新增学生信息',
+          <TraineeEditPage editType="CREATE" onCancel={this.closeModal} />,
+        );
       case 'MODIFY':
         return this.buildModal(
-          800,
           '修改学生信息',
-          <TraineeCreatePage traineeId={this.state.selectItem} onCancel={this.closeModal}/>,
+          <TraineeEditPage
+            editType="MODIFY"
+            traineeId={this.state.selectItem}
+            onCancel={this.closeModal}
+          />,
         );
       case 'VIEW':
         return this.buildModal(
-          800,
           '查看学生信息',
           <TraineeInfoPage traineeId={this.state.selectItem} />,
         );
       case 'SHOW_RECOMMEND':
-        return this.buildModal(800, '查看学生职业推荐列表', this.state.selectItem, null);
+        return this.buildModal('查看学生职业推荐列表', null);
       default:
         return null;
     }
@@ -148,13 +173,27 @@ TraineeListPage.PropTypes = {
   }).isRequired,
 };
 TraineeListPage.defaultProps = {};
-const mapStateToProps = state => ({
-  traineeList: state.trainee.traineeList,
-});
+const mapStateToProps = state => {
+  return {
+    traineeList: state.trainee.traineeList,
+    operate: state.trainee.traineeInfo.operate,
+    enumDics: state.enumDic.enumDics,
+  };
+};
 const mapDispatchToProps = dispatch => ({
+  loadEnumDic: bindActionCreators(loadEnumDic, dispatch),
   loadTrainees: bindActionCreators(loadTrainees, dispatch),
+  deleteTrainee: bindActionCreators(deleteTrainee, dispatch),
   resetTraineeList: bindActionCreators(
     traineeListActions.resetTraineeList,
+    dispatch,
+  ),
+  resetHandleStatus: bindActionCreators(
+    traineeActions.resetHandleStatus,
+    dispatch,
+  ),
+  resetTraineeState: bindActionCreators(
+    traineeActions.resetTraineeState,
     dispatch,
   ),
 });

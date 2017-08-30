@@ -21,11 +21,11 @@ class CreateOccupationSteps extends React.Component {
     };
     this.nextStep = this.nextStep.bind(this);
     this.prevStep = this.prevStep.bind(this);
-    this.handelBasicInfo = this.handelBasicInfo.bind(this);
+    this.handleBasicInfo = this.handleBasicInfo.bind(this);
     this.occupation = {};
   }
 
-  handelBasicInfo(form) {
+  handleBasicInfo(form) {
     const { name, value } = Object.values(form)[0];
     this.occupation[name] = value;
   }
@@ -61,7 +61,7 @@ class CreateOccupationSteps extends React.Component {
           {this.state.curStep === 0 &&
             <BasicInfo
               isCreate={this.props.isCreate}
-              onChange={this.handelBasicInfo}
+              onChange={this.handleBasicInfo}
               occupation={this.state.occupation}
             />}
           {this.state.curStep === 1 &&

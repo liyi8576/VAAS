@@ -4,7 +4,7 @@ import { Card, Row, Col, Icon } from 'antd';
 import styles from './Trainee.scss';
 import CSSModules from 'react-css-modules';
 
-const TraineeInfo = ({ trainee }) => {
+const TraineeInfo = ({ trainee, dicHelper: { getDicName } }) => {
   return (
     <div className="content-inner" styleName="detail">
       <Card bordered={false} noHovering="false">
@@ -24,7 +24,7 @@ const TraineeInfo = ({ trainee }) => {
               {trainee.sex ? '男' : '女'}
             </li>
             <li>
-              {trainee.age}({trainee.birthday})
+              {trainee.age}岁 ({trainee.birthday})
             </li>
             <li>
               监护人：{trainee.guardian}({trainee.relationship})
@@ -33,18 +33,12 @@ const TraineeInfo = ({ trainee }) => {
           <ul>
             <li>
               <span>
-                <Icon type="mobile" />
-                <span>
-                  {trainee.phone}
-                </span>
+                <Icon type="mobile" /> {trainee.phone}
               </span>
             </li>
             <li>
               <span>
-                <Icon type="mail" />
-                <span>
-                  {trainee.mail}
-                </span>
+                <Icon type="mail" /> {trainee.mail}
               </span>
             </li>
           </ul>
@@ -52,12 +46,14 @@ const TraineeInfo = ({ trainee }) => {
       </Card>
       <Card title="基础信息" bordered={false} noHovering="false">
         <Row>
-          <Col span="3">身份证号:</Col>
-          <Col span="9">
+          <Col span="5">身份证号:</Col>
+          <Col>
             {trainee.idCard}
           </Col>
-          <Col span="3">家庭地址:</Col>
-          <Col span="9">
+        </Row>
+        <Row>
+          <Col span="5">家庭地址:</Col>
+          <Col>
             {trainee.address}
           </Col>
         </Row>
@@ -66,11 +62,11 @@ const TraineeInfo = ({ trainee }) => {
         <Row>
           <Col span="5">主要障碍类型:</Col>
           <Col span="7">
-            {trainee.disabledType}
+            {getDicName('DISABLED_TYPE',trainee.disabledType)}
           </Col>
           <Col span="5">障碍等级:</Col>
           <Col span="7">
-            {trainee.disabledLevel}
+            {getDicName('DISABLED_LEVEL',trainee.disabledLevel)}
           </Col>
         </Row>
         <Row>
@@ -90,11 +86,11 @@ const TraineeInfo = ({ trainee }) => {
         <Row>
           <Col span="5">教育程度:</Col>
           <Col span="7">
-            {trainee.degree}
+            {getDicName('DEGREE_TYPE',trainee.degree)}
           </Col>
           <Col span="5">教育水平:</Col>
           <Col span="7">
-            {trainee.educationLevel}
+            {getDicName('EDUCATION_LEVEL',trainee.educationLevel)}
           </Col>
         </Row>
         <Row>
@@ -138,11 +134,11 @@ const TraineeInfo = ({ trainee }) => {
           </Col>
           <Col span="3">教育程度:</Col>
           <Col span="5">
-            {trainee.fatherDegree}
+            {getDicName('DEGREE_TYPE',trainee.fatherDegree)}
           </Col>
           <Col span="3">父亲职业:</Col>
           <Col span="5">
-            {trainee.fatherJob}
+            {getDicName('JOB_TYPE',trainee.fatherJob)}
           </Col>
         </Row>
         <Row>
@@ -152,11 +148,11 @@ const TraineeInfo = ({ trainee }) => {
           </Col>
           <Col span="3">教育程度:</Col>
           <Col span="5">
-            {trainee.motherDegree}
+            {getDicName('DEGREE_TYPE',trainee.motherDegree)}
           </Col>
           <Col span="3">母亲职业:</Col>
           <Col span="5">
-            {trainee.motherJob}
+            {getDicName('JOB_TYPE',trainee.motherJob)}
           </Col>
         </Row>
       </Card>

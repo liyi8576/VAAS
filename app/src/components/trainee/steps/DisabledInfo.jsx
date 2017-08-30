@@ -15,6 +15,7 @@ const DisabledInfo = ({
   setValidateFunc,
   setGetFieldValuesFunc,
   form: { getFieldDecorator, validateFields, getFieldsValue },
+  dicHelper: { getDicName, getDicsByGroup },
 }) => {
   setValidateFunc(() => {
     let vals = null;
@@ -25,7 +26,7 @@ const DisabledInfo = ({
     });
     return vals;
   });
-  setGetFieldValuesFunc(()=>{
+  setGetFieldValuesFunc(() => {
     return getFieldsValue();
   });
   return (
@@ -41,7 +42,7 @@ const DisabledInfo = ({
           rules: [{ required: true, message: '请选择障碍类型' }],
         })(
           <Select style={{ marginLeft: '5px' }} placeholder="请选择障碍类型">
-            {disabledTypeDic.map(dic =>
+            {getDicsByGroup('DISABLED_TYPE').map(dic =>
               <Option value={dic.value} key={`dtd-${dic.value}`}>
                 {dic.name}
               </Option>,
@@ -60,7 +61,7 @@ const DisabledInfo = ({
           rules: [{ required: true, message: '请选择障碍等级' }],
         })(
           <Select style={{ marginLeft: '5px' }} placeholder="请选择障碍等级">
-            {disabledLevelDic.map(dic =>
+            {getDicsByGroup('DISABLED_LEVEL').map(dic =>
               <Option value={dic.value} key={`dld-${dic.value}`}>
                 {dic.name}
               </Option>,
@@ -98,7 +99,7 @@ const DisabledInfo = ({
 DisabledInfo.propTypes = {
   trainee: PropTypes.object,
   setValidateFunc: PropTypes.func,
-  setGetFieldValuesFunc:PropTypes.func,
+  setGetFieldValuesFunc: PropTypes.func,
   disabledTypeDic: PropTypes.arrayOf(
     PropTypes.shape({
       name: PropTypes.string,

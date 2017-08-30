@@ -3,32 +3,34 @@ import PropTypes from 'prop-types';
 import { Steps, Button, Modal } from 'antd';
 import moment from 'moment';
 import CSSModules from 'react-css-modules';
-import styles from './Trainee.scss';
 import { BasicInfo, BackgroundInfo, DisabledInfo } from './steps';
 import TraineeInfo from './TraineeInfo';
+import styles from './Trainee.scss';
 
 const Step = Steps.Step;
 
-class TraineeCreateStep extends Component {
+class TraineeEditStep extends Component {
   constructor() {
     super();
     this.state = {
       curStep: 0,
+      saveLoading: false,
       trainee: {},
     };
     this.validateStep = () => {};
     this.getFieldValues = () => {};
   }
-  componentWillReceiveProps() {
+  componentWillMount() {
     this.setState({
       trainee: this.props.trainee,
+      saveLoading: this.props.saveLoading,
     });
   }
+
   componentWillUnmount() {
     this.validateStep = null;
     this.getFieldValues = null;
   }
-
   changeStep(isNext) {
     const fieldValue = isNext ? this.validateStep() : this.getFieldValues();
     if (fieldValue) {
@@ -56,8 +58,9 @@ class TraineeCreateStep extends Component {
   onSave = () => {
     Modal.confirm({
       title: '您确定要保存该学生信息么？',
-      onOk() {
-        this.props.saveTrainee(this.state.trainee.id, this.state.trainee);
+      onOk: () => {
+        this.setState({ saveLoading: true });
+        this.props.onSaveTrainee(this.state.trainee);
       },
     });
   };
@@ -75,89 +78,15 @@ class TraineeCreateStep extends Component {
 
   renderStepContent(step) {
     const stepComps = [BasicInfo, DisabledInfo, BackgroundInfo, TraineeInfo];
-    const relationshipDic = [
-      {
-        name: '父子',
-        value: '1',
-      },
-      {
-        name: '母子',
-        value: '2',
-      },
-    ];
-    const disabledTypeDic = [
-      {
-        name: '听力残疾',
-        value: '1',
-      },
-      {
-        name: '肢体残疾',
-        value: '2',
-      },
-      {
-        name: '智力残疾',
-        value: '3',
-      },
-    ];
-    const disabledLevelDic = [
-      {
-        name: '一级',
-        value: '1',
-      },
-      {
-        name: '二级',
-        value: '2',
-      },
-      {
-        name: '三级',
-        value: '3',
-      },
-    ];
-    const degreeTypeDic = [
-      {
-        name: '学士',
-        value: '1',
-      },
-      {
-        name: '硕士',
-        value: '2',
-      },
-    ];
-    const educationLevelDic = [
-      {
-        name: '初中',
-        value: '1',
-      },
-      {
-        name: '高中',
-        value: '2',
-      },
-    ];
-    const jobTypeDic = [
-      {
-        name: '公务员',
-        value: '1',
-      },
-      {
-        name: '教师',
-        value: '2',
-      },
-    ];
-    const stepDics = [
-      { relationshipDic },
-      { disabledTypeDic, disabledLevelDic },
-      { degreeTypeDic, educationLevelDic, jobTypeDic },
-    ];
     const Comp = stepComps[step];
-    const dics = stepDics[step];
     return (
       <div styleName="steps-content">
         <Comp
           trainee={this.state.trainee}
+          dicHelper={this.props.dicHelper}
           setValidateFunc={validateFunc => (this.validateStep = validateFunc)}
           setGetFieldValuesFunc={getFieldValuesFunc =>
             (this.getFieldValues = getFieldValuesFunc)}
-          {...dics}
         />
       </div>
     );
@@ -178,7 +107,12 @@ class TraineeCreateStep extends Component {
             下一步
           </Button>}
         {this.state.curStep === 3 &&
-          <Button key="confirm" type="primary" onClick={this.onSave}>
+          <Button
+            key="confirm"
+            type="primary"
+            onClick={this.onSave}
+            loading={this.state.saveLoading}
+          >
             确认保存
           </Button>}
       </div>
@@ -196,9 +130,13 @@ class TraineeCreateStep extends Component {
   }
 }
 
-TraineeCreateStep.propTypes = {
+TraineeEditStep.propTypes = {
   trainee: PropTypes.object,
-  saveTrainee: PropTypes.func,
+  dicHelper: PropTypes.shape({
+    getDicName: PropTypes.func,
+    getDicsByGroup: PropTypes.func,
+  }),
+  onSaveTrainee: PropTypes.func,
 };
 
-export default CSSModules(TraineeCreateStep, styles);
+export default CSSModules(TraineeEditStep, styles);
