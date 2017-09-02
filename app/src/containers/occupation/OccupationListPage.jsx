@@ -1,23 +1,23 @@
-/**
- * @Author:      liyi
- * @DateTime:    2017-08-10
- * @description: 学生管理 / 学生列表页面
- */
-
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Modal, message } from 'antd';
-import TraineeList from 'components/trainee/TraineeList';
-import TraineeInfoPage from './TraineeInfoPage';
-import TraineeEditPage from './TraineeEditPage';
+import OccupationList from 'components/occupation/OccupationList';
+import { OccupationInfoPage, OccupationEditPage } from './index';
 
-import { traineeListActions, loadTrainees } from 'reducers/trainee/TraineeList';
-import { traineeActions, deleteTrainee } from 'reducers/trainee/TraineeInfo';
+import {
+  occupationListActions,
+  loadOccupations,
+} from 'reducers/occupation/OccupationList';
+import {
+  occupationActions,
+  deleteOccupation,
+} from 'reducers/occupation/OccupationInfo';
 import { loadEnumDic } from 'reducers/EnumDic';
+import { loadAbilities } from 'reducers/ability/Ability';
 
-class TraineeListPage extends Component {
+class OccupationListPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -29,28 +29,29 @@ class TraineeListPage extends Component {
   }
   // 初始化加载表格数据
   componentDidMount() {
-    this.fetchTraineeList();
     this.props.loadEnumDic();
+    this.props.loadAbilities();
+    this.fetchOccupationList();
   }
   componentWillReceiveProps(nextProps) {
     const { type, success, resName, error } = nextProps.operate || {};
     if (type === 'DELETE') {
       if (success) {
-        this.fetchTraineeList();
-        message.success(`成功删除学生[${resName}]!`);
+        this.fetchOccupationList();
+        message.success(`成功删除职业[${resName}]!`);
       } else {
-        message.error(`$删除学生[${resName}]失败! 错误信息：${error}`);
+        message.error(`$删除职业[${resName}]失败! 错误信息：${error}`);
       }
       this.props.resetHandleStatus();
-      this.props.resetTraineeState();
+      this.props.resetOccupationState();
     }
   }
   componentWillUnmount() {
-    this.props.resetTraineeList();
+    this.props.resetOccupationList();
   }
   // 加载表格数据
-  fetchTraineeList() {
-    this.props.loadTrainees({
+  fetchOccupationList() {
+    this.props.loadOccupations({
       ...this.state.searchCond,
       offset: this.state.pagination.current,
       pageSize: this.state.pagination.pageSize,
@@ -62,7 +63,7 @@ class TraineeListPage extends Component {
       {
         searchCond: { ...this.state.searchCond, [field]: val },
       },
-      () => this.fetchTraineeList(),
+      () => this.fetchOccupationList(),
     );
   };
   onChangeSearchTxt = (field, val) => {
@@ -79,16 +80,16 @@ class TraineeListPage extends Component {
           current: pagination.current,
         },
       },
-      () => this.fetchTraineeList(),
+      () => this.fetchOccupationList(),
     );
   };
   onActionTrigger = (actionType, record) => {
     if (actionType === 'DELETE') {
       Modal.confirm({
-        title: '您确定要删除学生 [ ' + record.name + ' ] 么？',
+        title: '您确定要删除职业 [ ' + record.name + ' ] 么？',
         confirmLoading: true,
         onOk: () => {
-          this.props.deleteTrainee(record.id, record.name);
+          this.props.deleteOccupation(record.id, record.name);
         },
       });
     } else {
@@ -103,58 +104,68 @@ class TraineeListPage extends Component {
       triggerAction: null,
     });
   };
-  buildModal = (modalTitle, contentComp, maskClosable = false) =>
+  buildModal = (modalTitle, contentComp) =>
     <Modal
       width={800}
       visible
       onCancel={this.closeModal}
-      maskClosable={maskClosable}
+      maskClosable={false}
       footer={null}
       title={modalTitle}
     >
       {contentComp}
     </Modal>;
-
   renderModal() {
     switch (this.state.triggerAction) {
       case 'CREATE':
         return this.buildModal(
-          '新增学生信息',
-          <TraineeEditPage editType="CREATE" onCancel={this.closeModal} />,
+          '新增职业信息',
+          <OccupationEditPage
+            editType="CREATE"
+            onCancel={this.closeModal}
+            ability={this.props.ability}
+          />,
         );
       case 'MODIFY':
         return this.buildModal(
-          '修改学生信息',
-          <TraineeEditPage
+          '修改职业信息',
+          <OccupationEditPage
             editType="MODIFY"
-            traineeId={this.state.selectItem}
+            occupationId={this.state.selectItem}
             onCancel={this.closeModal}
+            ability={this.props.ability}
           />,
         );
       case 'VIEW':
         return this.buildModal(
-          '查看学生信息',
-          <TraineeInfoPage traineeId={this.state.selectItem} />,
-          true,
+          '查看职业信息',
+          <OccupationInfoPage
+            occupationId={this.state.selectItem}
+            ability={this.props.ability}
+          />,
         );
       case 'SHOW_RECOMMEND':
-        return this.buildModal('查看学生职业推荐列表', null);
+        return this.buildModal('查看学生推荐列表', null);
       default:
         return null;
     }
   }
-
   render() {
-    const { traineeList, traineeCount, isLoading } = this.props.traineeList;
+    const {
+      occupationList,
+      occupationCount,
+      isLoading,
+    } = this.props.occupationList;
     return (
       <div>
-        <TraineeList
+        <OccupationList
           searchCond={this.state.searchCond}
-          traineeList={traineeList}
+          occupationList={occupationList}
           pagination={{
             current: this.state.pagination.current,
-            total: traineeCount,
+            total: occupationCount,
           }}
+          ability={this.props.ability}
           loading={isLoading}
           onSearch={this.onSearch}
           onChangeSearchTxt={this.onChangeSearchTxt}
@@ -167,36 +178,35 @@ class TraineeListPage extends Component {
   }
 }
 
-TraineeListPage.PropTypes = {
-  traineeList: PropTypes.shape({
-    traineeList: PropTypes.array,
-  }).isRequired,
+OccupationListPage.PropTypes = {
+  occupationId: PropTypes.string,
 };
-TraineeListPage.defaultProps = {};
+OccupationListPage.defaultProps = {};
 const mapStateToProps = state => {
-  const { traineeList, traineeInfo } = state.trainee;
+  const { occupationList, occupationInfo } = state.occupation;
   return {
-    traineeList: traineeList || [],
-    operate: !traineeInfo ? {} : traineeInfo.operate,
+    occupationList: occupationList || [],
+    operate: occupationInfo && occupationInfo.operate,
     enumDics: state.enumDic.enumDics,
+    ability: state.ability,
   };
 };
 const mapDispatchToProps = dispatch => ({
   loadEnumDic: bindActionCreators(loadEnumDic, dispatch),
-  loadTrainees: bindActionCreators(loadTrainees, dispatch),
-  deleteTrainee: bindActionCreators(deleteTrainee, dispatch),
-  resetTraineeList: bindActionCreators(
-    traineeListActions.resetTraineeList,
+  loadOccupations: bindActionCreators(loadOccupations, dispatch),
+  loadAbilities: bindActionCreators(loadAbilities, dispatch),
+  deleteOccupation: bindActionCreators(deleteOccupation, dispatch),
+  resetOccupationList: bindActionCreators(
+    occupationListActions.resetOccupationList,
     dispatch,
   ),
   resetHandleStatus: bindActionCreators(
-    traineeActions.resetHandleStatus,
+    occupationActions.resetHandleStatus,
     dispatch,
   ),
-  resetTraineeState: bindActionCreators(
-    traineeActions.resetTraineeState,
+  resetOccupationState: bindActionCreators(
+    occupationActions.resetOccupationState,
     dispatch,
   ),
 });
-
-export default connect(mapStateToProps, mapDispatchToProps)(TraineeListPage);
+export default connect(mapStateToProps, mapDispatchToProps)(OccupationListPage);

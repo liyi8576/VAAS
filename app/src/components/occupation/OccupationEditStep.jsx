@@ -1,28 +1,27 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Steps, Button, Modal } from 'antd';
-import moment from 'moment';
+import { BasicInfo, AbilitySelect, AssessScoreSet } from './steps';
+import OccupationInfo from './OccupationInfo';
 import CSSModules from 'react-css-modules';
-import { BasicInfo, BackgroundInfo, DisabledInfo } from './steps';
-import TraineeInfo from './TraineeInfo';
-import styles from 'style/Trainee.scss';
+import styles from 'style/Occupation.scss';
 
 const Step = Steps.Step;
 
-class TraineeEditStep extends Component {
+class OccupationEditStep extends Component {
   constructor() {
     super();
     this.state = {
       curStep: 0,
       saveLoading: false,
-      trainee: {},
+      occupation: {},
     };
     this.validateStep = () => {};
     this.getFieldValues = () => {};
   }
   componentWillMount() {
     this.setState({
-      trainee: this.props.trainee,
+      occupation: this.props.occupation,
       saveLoading: this.props.saveLoading,
     });
   }
@@ -34,14 +33,11 @@ class TraineeEditStep extends Component {
   changeStep(isNext) {
     const fieldValue = isNext ? this.validateStep() : this.getFieldValues();
     if (fieldValue) {
-      for (let field of Object.keys(fieldValue)) {
-        let v = fieldValue[field];
-        if (v instanceof moment) {
-          fieldValue[field] = v.format('YYYY-MM-DD');
-        }
-      }
       this.setState({
-        trainee: { ...this.state.trainee, ...fieldValue },
+        occupation: {
+          ...this.state.occupation,
+          ...fieldValue,
+        },
         curStep: isNext ? this.state.curStep + 1 : this.state.curStep - 1,
       });
     }
@@ -57,10 +53,10 @@ class TraineeEditStep extends Component {
 
   onSave = () => {
     Modal.confirm({
-      title: '您确定要保存该学生信息么？',
+      title: '您确定要保存该职业信息么？',
       onOk: () => {
         this.setState({ saveLoading: true });
-        this.props.onSaveTrainee(this.state.trainee);
+        this.props.onSaveOccupation(this.state.occupation);
       },
     });
   };
@@ -68,22 +64,27 @@ class TraineeEditStep extends Component {
   renderSteps() {
     return (
       <Steps current={this.state.curStep} className="vas-steps-box">
-        <Step key="basicInfo" title="基本资料" />
-        <Step key="disabledInfo" title="障碍状况" />
-        <Step key="backgroundInfo" title="背景资料" />
+        <Step key="basicInfo" title="职业信息" />
+        <Step key="abilitySelect" title="所需能力设定" />
+        <Step key="assessScoreSet" title="检核标准设定" />
         <Step key="finish" title="完成" />
       </Steps>
     );
   }
 
   renderStepContent(step) {
-    const stepComps = [BasicInfo, DisabledInfo, BackgroundInfo, TraineeInfo];
+    const stepComps = [
+      BasicInfo,
+      AbilitySelect,
+      AssessScoreSet,
+      OccupationInfo,
+    ];
     const Comp = stepComps[step];
     return (
       <div styleName="steps-content">
         <Comp
-          trainee={this.state.trainee}
-          dicHelper={this.props.dicHelper}
+          occupation={this.state.occupation}
+          ability={this.props.ability}
           setValidateFunc={validateFunc => (this.validateStep = validateFunc)}
           setGetFieldValuesFunc={getFieldValuesFunc =>
             (this.getFieldValues = getFieldValuesFunc)}
@@ -130,13 +131,10 @@ class TraineeEditStep extends Component {
   }
 }
 
-TraineeEditStep.propTypes = {
-  trainee: PropTypes.object,
-  dicHelper: PropTypes.shape({
-    getDicName: PropTypes.func,
-    getDicsByGroup: PropTypes.func,
-  }),
-  onSaveTrainee: PropTypes.func,
+OccupationEditStep.propTypes = {
+  occupation: PropTypes.object,
+  ability: PropTypes.object,
+  onSaveOccupation: PropTypes.func,
 };
 
-export default CSSModules(TraineeEditStep, styles);
+export default CSSModules(OccupationEditStep, styles);

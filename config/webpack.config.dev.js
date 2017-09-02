@@ -27,6 +27,7 @@ module.exports = {
       containers: `${PATHS.appSrc}/containers`,
       reducers: `${PATHS.appSrc}/reducers`,
       actions: `${PATHS.appSrc}/actions`,
+      style:`${PATHS.appSrc}/style`,
       api:`${PATHS.appSrc}/api`
     }
   },

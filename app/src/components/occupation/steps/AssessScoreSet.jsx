@@ -8,7 +8,7 @@ import {
   Card,
   Table,
 } from 'antd';
-import styles from '../Occupation.scss';
+import styles from 'style/Occupation.scss';
 
 const FormItem = Form.Item;
 const Option = Select.Option;

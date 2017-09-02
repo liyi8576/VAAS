@@ -87,12 +87,15 @@ TraineeEditPage.defaultProps = {
   editType: 'CREATE',
   onCancel: () => {},
 };
-const mapStateToProps = state => ({
-  trainee: state.trainee.traineeInfo.traineeInfo || {},
-  enumDics: state.enumDic.enumDics,
-  loading: state.trainee.traineeInfo.isLoading,
-  operate: state.trainee.traineeInfo.operate,
-});
+const mapStateToProps = state => {
+  const { traineeInfo, isLoading, operate } = state.trainee.traineeInfo || {};
+  return {
+    trainee: traineeInfo || {},
+    enumDics: state.enumDic.enumDics,
+    loading: isLoading === true,
+    operate: operate || {},
+  };
+};
 const mapDispatchToProps = dispatch => ({
   loadTrainee: bindActionCreators(loadTrainee, dispatch),
   createTrainee: bindActionCreators(createTrainee, dispatch),

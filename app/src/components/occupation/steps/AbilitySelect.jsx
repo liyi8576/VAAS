@@ -1,211 +1,217 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import _ from 'lodash';
 import CSSModules from 'react-css-modules';
-import styles from '../Occupation.scss';
+import styles from '../../../style/Occupation.scss';
 import { Card, Checkbox, Tooltip, Row, Col, Tabs, Icon } from 'antd';
 
 const CheckboxGroup = Checkbox.Group;
 const TabPane = Tabs.TabPane;
 
-const defaultProps = {
-  dicAbility: [],
-  occupationRequire: [],
-};
-const propTypes = {
-  dicAbility: PropTypes.array,
-  occupationRequire: PropTypes.array,
-};
 class AbilitySelect extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedAbility: [],
+      selected: [],
+      necessary: [],
+      validateWarn: false,
     };
+  }
+  componentWillMount() {
+    if (this.props.occupation) {
+      const { necessaryAbility, secondaryAbility } = this.props.occupation;
+      const necessaryIds = _.map(necessaryAbility, 'abilityId');
+      const secondaryIds = _.map(secondaryAbility, 'abilityId');
+      this.setState({
+        selected: _.uniq([...necessaryIds, ...secondaryIds]),
+        necessary: [...necessaryIds],
+      });
+    }
+  }
+  componentDidMount() {
+    this.props.setValidateFunc(() => {
+      if (this.state.selected.length === 0) {
+        this.setState({ validateWarn: true });
+        return null;
+      }
+      return this.getSelectResult();
+    });
+    this.props.setGetFieldValuesFunc(() => this.getSelectResult());
   }
 
   componentDidUpdate() {
     this.selectedBox.scrollTop =
       this.selectedBox.scrollHeight - this.selectedBox.clientHeight;
   }
-
+  getSelectResult() {
+    return {
+      necessaryAbility: this.state.necessary.map(id => ({
+        abilityId: id,
+        criterionScore: '',
+      })),
+      secondaryAbility: _.without(
+        this.state.selected,
+        ...this.state.necessary,
+      ).map(id => ({
+        abilityId: id,
+        criterionScore: '',
+      })),
+    };
+  }
   selectAbility(id) {
     this.setState({
-      selectedAbility: this.state.selectedAbility.concat([id]),
+      validateWarn: false,
+      selected: this.state.selected.concat([id]),
     });
   }
 
   unselectAbility(id) {
-    const ids = this.state.selectedAbility.concat([]);
-    const idx = ids.findIndex(_id => _id === id || _id === '!' + id);
-    idx !== -1 && ids.splice(idx, 1);
     this.setState({
-      selectedAbility: ids,
+      selected: _.without(this.state.selected, id),
+      necessary: _.without(this.state.necessary, id),
     });
   }
 
   toggleNecessary(id, isNecessary) {
-    const ids = this.state.selectedAbility.concat([]);
-    const idx = ids.indexOf(isNecessary ? id : '!' + id);
-    idx !== -1 && (ids[idx] = isNecessary ? '!' + id : id);
     this.setState({
-      selectedAbility: ids,
+      necessary: isNecessary
+        ? [...this.state.necessary, id]
+        : _.without(this.state.necessary, id),
     });
   }
 
-  filterAbility(abilityItems) {
-    const ids = this.state.selectedAbility.map(id => id.replace('!', ''));
-    return abilityItems.filter(ability => ids.indexOf(ability.id) === -1);
-  }
-
-  getDomainMap() {
-    const map = new Map();
-    this.props.dicAbility.forEach(domain =>
-      map.set(domain.prefix, {
-        icon: domain.icon,
-      }),
-    );
-    return map;
-  }
-
-  getDomainByAbilityId(domainMap, abilityId) {
-    return domainMap.get(abilityId.charAt(0));
-  }
-
-  getAbilityMap() {
-    const map = new Map();
-    this.props.dicAbility.forEach(domain =>
-      domain.abilityItems.forEach(ability => map.set(ability.id, ability.name)),
-    );
-    return map;
-  }
-
-  getAbilityByIds(map, ...ids) {
-    const result = [];
-    ids.forEach(id => {
-      let necessary = false;
-      if (id.startsWith('!')) {
-        id = id.slice(1);
-        necessary = true;
-      }
-      let name = map.get(id);
-      name && result.push({ id: id, name: name, necessary: necessary });
-    });
-    return result;
-  }
-
-  render() {
-    const domainMap = this.getDomainMap();
-    const abilityMap = this.getAbilityMap();
+  render_require() {
+    const { abilities, config } = this.props.ability;
     return (
-      <Row styleName="ability-sel">
-        <Col span={14}>
-          <CheckboxGroup style={{ float: 'left' }}>
-            {this.props.occupationRequire.map(require =>
-              <Tooltip
-                placement="bottom"
-                key={'tp-' + require.id}
-                title={
-                  <ul styleName="checkbox-tips">
-                    <li>选择此项时，以下为必要能力:</li>
-                    {this.getAbilityByIds(
-                      abilityMap,
-                      ...require.necessaryAbility,
-                    ).map(it =>
-                      <li key={'tips.' + it.id}>
-                        {it.name}
-                      </li>,
-                    )}
-                  </ul>
-                }
-              >
-                <Checkbox value={require.id} key={require.id}>
-                  {require.name}
-                </Checkbox>
-              </Tooltip>,
-            )}
-          </CheckboxGroup>
-          <Tabs size="small">
-            {this.props.dicAbility.map(domain =>
-              <TabPane
-                tab={
-                  <span>
-                    {domain.name}
-                    <Icon type={domain.icon} />
-                  </span>
-                }
-                key={'domain.' + domain.name}
-              >
-                <ul styleName="options-items">
-                  {this.filterAbility(domain.abilityItems).map(ability =>
-                    <li
-                      key={'option.' + ability.id}
-                      title={ability.name}
-                      onClick={this.selectAbility.bind(this, ability.id)}
-                    >
-                      {ability.name}
-                    </li>,
-                  )}
-                </ul>
-              </TabPane>,
-            )}
-          </Tabs>
-        </Col>
-        <Col span={10} styleName="selected">
-          <Card
+      <CheckboxGroup style={{ float: 'left' }}>
+        {config.map(require =>
+          <Tooltip
+            placement="bottom"
+            key={`tips-${require.id}`}
             title={
+              <ul styleName="checkbox-tips">
+                <li>选择此项时，以下为必要能力:</li>
+                {require.necessaryAbility.map(id =>
+                  <li key={`tipli-${id}`}>
+                    {abilities[id] ? abilities[id].name : id}
+                  </li>,
+                )}
+              </ul>
+            }
+          >
+            <Checkbox value={require.id} key={require.id}>
+              {require.name}
+            </Checkbox>
+          </Tooltip>,
+        )}
+      </CheckboxGroup>
+    );
+  }
+  render_ability_tab() {
+    const { domain, abilities } = this.props.ability;
+    return (
+      <Tabs size="small">
+        {Object.values(domain).map(domain =>
+          <TabPane
+            tab={
               <span>
-                已选能力<Tooltip placement="bottom" title="点击选择项,可切换必要/次要能力">
-                  <Icon type="question-circle-o" />
-                </Tooltip>
+                {domain.name}
+                <Icon type={domain.icon} />
               </span>
             }
-            bordered={false}
-            noHovering="false"
+            key={`domain.${domain.id}`}
           >
-            <ul
-              styleName="selected-items"
-              ref={ref => (this.selectedBox = ref)}
-            >
-              {this.getAbilityByIds(
-                abilityMap,
-                ...this.state.selectedAbility,
-              ).map(ability =>
+            <ul styleName="options-items">
+              {domain.abilities.map(id =>
                 <li
-                  title={ability.name}
-                  key={'sel.' + ability.id}
-                  styleName={ability.necessary ? 'necessary' : 'secondary'}
+                  key={'option.' + id}
+                  title={abilities[id].name}
+                  onClick={this.selectAbility.bind(this, id)}
                 >
-                  <div
-                    onClick={this.toggleNecessary.bind(
-                      this,
-                      ability.id,
-                      !ability.necessary,
-                    )}
-                  >
-                    <span>
-                      {ability.necessary ? '必要' : '次要'}
-                    </span>
-                    {ability.name}
-                    <Icon
-                      type={
-                        this.getDomainByAbilityId(domainMap, ability.id).icon
-                      }
-                    />
-                  </div>
-                  <Icon
-                    type="close"
-                    onClick={this.unselectAbility.bind(this, ability.id)}
-                  />
+                  {abilities[id].name}
                 </li>,
               )}
             </ul>
-          </Card>
+          </TabPane>,
+        )}
+      </Tabs>
+    );
+  }
+
+  render_selected() {
+    const { domain, abilities } = this.props.ability;
+    return (
+      <Card
+        title={
+          <span>
+            已选能力<Tooltip placement="bottom" title="点击选择项,可切换必要/次要能力">
+              <Icon type="question-circle-o" />
+            </Tooltip>
+          </span>
+        }
+        bordered={false}
+        noHovering="false"
+      >
+        {this.state.validateWarn
+          ? <p style={{ color: 'red' }}>请选择职业能力!</p>
+          : <ul
+              styleName="selected-items"
+              ref={ref => (this.selectedBox = ref)}
+            >
+              {this.state.selected.map(id => {
+                const ability = abilities[id];
+                const isNessary = _.indexOf(this.state.necessary, id) !== -1;
+                const itDomain = domain[ability && ability.domain] || {};
+                return (
+                  ability &&
+                  <li
+                    title={ability.name}
+                    key={`sel.${ability.id}`}
+                    styleName={isNessary ? 'necessary' : 'secondary'}
+                  >
+                    <div
+                      onClick={this.toggleNecessary.bind(
+                        this,
+                        ability.id,
+                        !isNessary,
+                      )}
+                    >
+                      <span>
+                        {isNessary ? '必要' : '次要'}
+                      </span>
+                      {ability.name}
+                      <Icon type={itDomain.icon} />
+                    </div>
+                    <Icon
+                      type="close"
+                      onClick={this.unselectAbility.bind(this, ability.id)}
+                    />
+                  </li>
+                );
+              })}
+            </ul>}
+      </Card>
+    );
+  }
+  render() {
+    return (
+      <Row styleName="ability-sel">
+        <Col span={14}>
+          {this.render_require()}
+          {this.render_ability_tab()}
+        </Col>
+        <Col span={10} styleName="selected">
+          {this.render_selected()}
         </Col>
       </Row>
     );
   }
 }
 
-AbilitySelect.PropTypes = defaultProps;
-AbilitySelect.defaultProps = propTypes;
+AbilitySelect.PropTypes = {
+  occupation: PropTypes.object,
+  ability: PropTypes.object,
+  setValidateFunc: PropTypes.func,
+  setGetFieldValuesFunc: PropTypes.func,
+};
 export default CSSModules(AbilitySelect, styles);

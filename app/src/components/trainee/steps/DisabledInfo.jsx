@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Form, Input, Select } from 'antd';
 import CSSModules from 'react-css-modules';
-import styles from '../Trainee.scss';
+import styles from 'style/Trainee.scss';
 
 const FormItem = Form.Item;
 const TextArea = Input.TextArea;
@@ -100,18 +100,6 @@ DisabledInfo.propTypes = {
   trainee: PropTypes.object,
   setValidateFunc: PropTypes.func,
   setGetFieldValuesFunc: PropTypes.func,
-  disabledTypeDic: PropTypes.arrayOf(
-    PropTypes.shape({
-      name: PropTypes.string,
-      code: PropTypes.string,
-    }),
-  ),
-  disabledLevelDic: PropTypes.arrayOf(
-    PropTypes.shape({
-      name: PropTypes.string,
-      code: PropTypes.string,
-    }),
-  ),
 };
 
 export default Form.create()(CSSModules(DisabledInfo, styles));

@@ -3,7 +3,7 @@ import CSSModules from 'react-css-modules';
 import PropTypes from 'prop-types';
 import {Layout, Menu, Icon} from 'antd';
 import {Link} from 'react-router-dom';
-import styles from './NavSider.scss';
+import styles from 'style/NavSider.scss';
 
 const {Sider} = Layout;
 const SubMenu = Menu.SubMenu;
@@ -69,15 +69,9 @@ class NavSider extends Component {
           <Menu.Item key="menu.occupations">
             <Link to={'/occupations'}><Icon type="bank"/><span>职业能力管理</span></Link>
           </Menu.Item>
-          <SubMenu
-            title={
-              <span><Icon type="scan"/><span>适应能力检核</span></span>
-            }
-            key="menu.assessment">
-            <Menu.Item key="setting:1"><Link to={'/resultQuery'}>工作人格</Link></Menu.Item>
-            <Menu.Item key="setting:2"><Link to={'/resultQuery'}>职业能力</Link></Menu.Item>
-            <Menu.Item key="setting:3"><Link to={'/resultQuery'}>社区独立生活能力</Link></Menu.Item>
-          </SubMenu>
+          <Menu.Item key="menu.assessment">
+            <Link to={'/assessment'}><Icon type="scan"/><span>适应能力检核</span></Link>
+          </Menu.Item>
           <Menu.Item key="menu.resultQuery">
             <Link to={'/resultQuery'}><Icon type="search"/><span>检核结果查询</span></Link>
           </Menu.Item>

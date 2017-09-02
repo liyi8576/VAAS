@@ -1,30 +1,42 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Card, Row, Table } from 'antd';
-import styles from './Occupation.scss';
 import CSSModules from 'react-css-modules';
+import styles from 'style/Occupation.scss';
 
-const OccupationInfo = ({}) => {
+const OccupationInfo = ({ occupation, ability: { domain, abilities } }) => {
   const columns = [
     {
       title: '能力编号',
-      dataIndex: 'id',
-      key: 'id',
+      dataIndex: 'abilityId',
+      key: 'abilityId',
       width: '25%',
     },
-    { title: '能力', dataIndex: 'ability', key: 'ability', width: '45%' },
+    {
+      title: '能力',
+      dataIndex: 'ability',
+      key: 'ability',
+      width: '45%',
+      render: (text, record) => {
+        const _ability = abilities[record && record.abilityId];
+        return (_ability && _ability.name) || record.abilityId;
+      },
+    },
     {
       title: '检核标准',
-      dataIndex: 'criterion_score',
-      key: 'criterion_score',
+      dataIndex: 'criterionScore',
+      key: 'criterionScore',
       width: '30%',
     },
   ];
   return (
-    <div className="content-inner" styleName="detail" >
+    <div className="content-inner" styleName="detail">
       <Row>
-        <h2>职业名称：程序员</h2>
+        <h2>
+          职业名称：{occupation.name}
+        </h2>
         <p styleName="desc">
-          简称码农，是从事程序开发、维护的专业人员。一般将程序员分为程序设计人员和程序编码人员
+          {occupation.desc}
         </p>
       </Row>
       <Row>
@@ -38,10 +50,12 @@ const OccupationInfo = ({}) => {
           noHovering="false"
         >
           <Table
-            bordered={false}
+            bordered
             simple
+            size="small"
             pagination={false}
-            rowKey={record => record.id}
+            dataSource={occupation.necessaryAbility || []}
+            rowKey={(record, idx) => `n-${record.abilityId}_${idx}`}
             columns={columns}
           />
         </Card>
@@ -57,15 +71,24 @@ const OccupationInfo = ({}) => {
           noHovering="false"
         >
           <Table
-            bordered={false}
+            bordered
             simple
+            size="small"
             pagination={false}
-            rowKey={record => record.id}
+            rowKey={(record, idx) => `s-${record.abilityId}_${idx}`}
+            dataSource={occupation.secondaryAbility || []}
             columns={columns}
           />
         </Card>
       </Row>
     </div>
   );
+};
+OccupationInfo.propTypes = {
+  occupation: PropTypes.object.isRequired,
+  ability: PropTypes.shape({
+    domain: PropTypes.object,
+    abilities: PropTypes.object,
+  }),
 };
 export default CSSModules(OccupationInfo, styles);

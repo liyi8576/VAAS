@@ -4,12 +4,18 @@ import { Provider } from 'react-redux';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { Route, Switch } from 'react-router-dom';
 import App from '../App';
-import TraineeInfo from '../components/trainee/TraineeInfo';
-import TraineesCreate from '../components/trainee/TraineeEditStep';
-import Occupation from '../components/occupation';
-import OccupationInfo from '../components/occupation/OccupationInfo';
-import OccupationCreate from '../components/occupation/steps';
-import TraineeListPage from 'containers/trainee/TraineeListPage';
+import {
+  TraineeListPage,
+  TraineeInfoPage,
+  TraineeEditPage,
+} from 'containers/trainee';
+import {
+  OccupationListPage,
+  OccupationInfoPage,
+  OccupationEditPage,
+} from 'containers/occupation';
+import Assessment from 'components/assessment/Assessment'
+
 const Root = ({ store, history }) =>
   <Provider store={store}>
     <Router history={history}>
@@ -19,15 +25,28 @@ const Root = ({ store, history }) =>
           <App>
             <Switch>
               <Route exact path="/trainees" component={TraineeListPage} />
-              <Route exact path="/trainees/create" component={TraineesCreate} />
-              <Route path="/trainees/:id" component={TraineeInfo} />
-              <Route exact path="/occupations" component={Occupation} />
+              <Route
+                exact
+                path="/trainees/create"
+                component={TraineeEditPage}
+              />
+              <Route path="/trainees/:id" component={TraineeInfoPage} />
+              <Route exact path="/occupations" component={OccupationListPage} />
               <Route
                 exact
                 path="/occupations/create"
-                component={OccupationCreate}
+                component={OccupationEditPage}
               />
-              <Route exact path="/occupations/:id" component={OccupationInfo} />
+              <Route
+                exact
+                path="/occupations/:id"
+                component={OccupationInfoPage}
+              />
+              <Route
+                exact
+                path="/assessment"
+                component={Assessment}
+              />
             </Switch>
           </App>}
       />

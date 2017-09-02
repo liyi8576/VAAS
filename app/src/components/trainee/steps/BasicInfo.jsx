@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import { Form, Input, DatePicker, Radio, Col, Row, Select } from 'antd';
 import CSSModules from 'react-css-modules';
-import styles from '../Trainee.scss';
+import styles from 'style/Trainee.scss';
 
 const FormItem = Form.Item;
 const TextArea = Input.TextArea;
@@ -13,7 +13,6 @@ const BasicInfo = ({
   trainee = {},
   setValidateFunc,
   setGetFieldValuesFunc,
-  relationshipDic = [],
   form: { getFieldDecorator, validateFields, getFieldsValue },
   dicHelper: { getDicName, getDicsByGroup },
 }) => {
@@ -148,12 +147,6 @@ BasicInfo.propTypes = {
   enumDics: PropTypes.object,
   setValidateFunc: PropTypes.func,
   setGetFieldValuesFunc: PropTypes.func,
-  relationshipDic: PropTypes.arrayOf(
-    PropTypes.shape({
-      name: PropTypes.string,
-      code: PropTypes.string,
-    }),
-  ),
 };
 
 export default Form.create()(CSSModules(BasicInfo, styles));

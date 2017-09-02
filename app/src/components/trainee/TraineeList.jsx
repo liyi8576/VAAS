@@ -53,20 +53,9 @@ const TraineeList = ({
     </div>
   );
 };
-
 TraineeList.propTypes = {
   searchCond: PropTypes.object,
-  traineeList: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-      sex: PropTypes.string,
-      age: PropTypes.integer,
-      guardian: PropTypes.string,
-      phone: PropTypes.string,
-      address: PropTypes.string,
-    }),
-  ),
+  traineeList: PropTypes.arrayOf(PropTypes.object),
   pagination: PropTypes.shape({
     current: PropTypes.integer,
     total: PropTypes.integer,
@@ -88,6 +77,7 @@ const configColumns = onActionTrigger => {
     {
       title: '编号',
       key: 'num',
+      width: 80,
       render: (text, record, index) => index + 1,
     },
     {

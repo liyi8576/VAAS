@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Form, Input, Col, Row, Select, Switch, Card } from 'antd';
 import CSSModules from 'react-css-modules';
-import styles from '../Trainee.scss';
+import styles from 'style/Trainee.scss';
 
 const FormItem = Form.Item;
 const TextArea = Input.TextArea;
@@ -18,8 +18,10 @@ class BackgroundInfo extends Component {
   }
   componentWillMount() {
     if (this.props.trainee) {
-      this.setState({ haveTrained: this.props.trainee.haveTrained === 1 });
-      this.setState({ isWorked: this.props.trainee.isWorked === 1 });
+      this.setState({
+        haveTrained: this.props.trainee.haveTrained === 1,
+        isWorked: this.props.trainee.isWorked === 1,
+      });
     }
   }
 
@@ -124,7 +126,6 @@ class BackgroundInfo extends Component {
     );
   }
   render_job_his(getFieldDecorator) {
-    const { getDicsByGroup } = this.props.dicHelper;
     return (
       <Card title="工作经历" bordered={false} noHovering="false">
         <FormItem label="是否有工作经验" labelCol={{ span: 6 }}>
@@ -318,24 +319,6 @@ BackgroundInfo.propTypes = {
     getDicName: PropTypes.func,
     getDicsByGroup: PropTypes.func,
   }),
-  degreeTypeDic: PropTypes.arrayOf(
-    PropTypes.shape({
-      name: PropTypes.string,
-      code: PropTypes.string,
-    }),
-  ),
-  educationLevelDic: PropTypes.arrayOf(
-    PropTypes.shape({
-      name: PropTypes.string,
-      code: PropTypes.string,
-    }),
-  ),
-  jobTypeDic: PropTypes.arrayOf(
-    PropTypes.shape({
-      name: PropTypes.string,
-      code: PropTypes.string,
-    }),
-  ),
 };
 
 export default Form.create()(CSSModules(BackgroundInfo, styles));

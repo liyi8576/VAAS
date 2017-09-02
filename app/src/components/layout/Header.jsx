@@ -3,7 +3,7 @@ import CSSModules from 'react-css-modules';
 import PropTypes from 'prop-types';
 import { Menu, Icon, Layout } from 'antd';
 import screenfull from 'screenfull';
-import styles from './Header.scss';
+import styles from 'style/Header.scss';
 
 const SubMenu = Menu.SubMenu;
 class Header extends Component {

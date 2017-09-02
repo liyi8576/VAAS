@@ -12,7 +12,7 @@ import { Spin } from 'antd';
 import TraineeInfo from 'components/trainee/TraineeInfo';
 import { loadTrainee } from 'reducers/trainee/TraineeInfo';
 import { getDicHelper } from 'reducers/EnumDic';
-import '../../App.scss';
+import 'style/App.scss';
 
 class TraineeInfoPage extends Component {
   componentDidMount() {
@@ -43,11 +43,14 @@ TraineeInfoPage.PropTypes = {
   traineeId: PropTypes.string,
 };
 TraineeInfoPage.defaultProps = {};
-const mapStateToProps = state => ({
-  enumDics: state.enumDic.enumDics,
-  trainee: state.trainee.traineeInfo.traineeInfo,
-  loading: state.trainee.traineeInfo.isLoading,
-});
+const mapStateToProps = state => {
+  const { traineeInfo, isLoading } = state.trainee.traineeInfo || {};
+  return {
+    enumDics: state.enumDic.enumDics,
+    trainee: traineeInfo || {},
+    loading: isLoading === true,
+  };
+};
 const mapDispatchToProps = dispatch => ({
   loadTrainee: bindActionCreators(loadTrainee, dispatch),
 });

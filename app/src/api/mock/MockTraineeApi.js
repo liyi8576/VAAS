@@ -11,7 +11,7 @@ Mock.mock(/\/api\/trainees\/\w+/, {
     birthday: '@date',
     idCard: '@id',
     guardian: '@name',
-    'relationship|1': ['1', '2', '3'],
+    'relationship|1': ['1', '2'],
     address: '@county',
     'phone|1': ['13531544954', '13632250649', '15820292420', '15999905612'],
     'mail':'@email',

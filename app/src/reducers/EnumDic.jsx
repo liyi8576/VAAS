@@ -45,7 +45,6 @@ export const loadEnumDic = () => dispatch => {
         },
         {},
       );
-      console.log(dicData);
       dispatch(enumDicActions.fetchDicListSuccess(dicData));
     })
     .catch(function(err) {

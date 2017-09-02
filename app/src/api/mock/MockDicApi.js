@@ -19,5 +19,9 @@ Mock.mock(/\/api\/dics/, {
     { group: 'JOB_TYPE', name: '公务员', value: '1' },
     { group: 'JOB_TYPE', name: '教师', value: '2' },
     { group: 'JOB_TYPE', name: '医生', value: '3' },
+    { group: 'ABILITY_DOMAIN', name: '工作人格', value: '101' },
+    { group: 'ABILITY_DOMAIN', name: '职业能力', value: '102' },
+    { group: 'ABILITY_DOMAIN', name: '社区独立能力', value: '103' },
+
   ],
 });

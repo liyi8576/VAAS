@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Card, Row, Col, Icon } from 'antd';
-import styles from './Trainee.scss';
+import styles from 'style/Trainee.scss';
 import CSSModules from 'react-css-modules';
 
 const TraineeInfo = ({ trainee, dicHelper: { getDicName } }) => {

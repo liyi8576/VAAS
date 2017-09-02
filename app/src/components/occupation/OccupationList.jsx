@@ -1,90 +1,151 @@
 import React from 'react';
-import { Table, Modal } from 'antd';
-import DropOption from '../common/DropOption';
-import CSSModules from 'react-css-modules';
 import PropTypes from 'prop-types';
-import styles from './Occupation.scss';
+import { Row, Col, Table, Button } from 'antd';
+import DropOption from '../common/DropOption';
+import SearchBar from './SearchBar';
+import CSSModules from 'react-css-modules';
+import styles from 'style/Occupation.scss';
 
 const OccupationList = ({
-  showDetailModal,
-  showModifyModal,
-  ...tableProps
+  searchCond = {}, // 查询条件
+  occupationList = [], // 查询返回结果列表
+  pagination = { pageSize: 10 },
+  loading,
+  onSearch, // 查询触发回调函数
+  onChangeSearchTxt,
+  onChangeTable, // 表格分页、排序触发回调函数
+  onActionTrigger, // 功能操作触发回调函数
+  ability: { domain, abilities },
 }) => {
-  const handleAction = (record, e) => {
-    if (e.key === 'modify') {
-      showModifyModal(record);
-    } else if (e.key === 'delete') {
-      Modal.confirm({
-        title: '您确定要删除职业 [ ' + record.name + ' ] 么？',
-        onOk() {},
-      });
-    } else if (e.key === 'recommend') {
-    }
+  const tiggerCreateAction = val => {
+    onActionTrigger('CREATE');
   };
-  const columns = [
+
+  return (
+    <div className="content-inner">
+      <Row type="flex" justify="space-between" style={{ marginBottom: '10px' }}>
+        <Col>
+          <SearchBar
+            {...searchCond}
+            onSearch={onSearch}
+            onChangeSearchTxt={onChangeSearchTxt}
+          />
+        </Col>
+        <Col>
+          <Button type="primary" icon="plus" onClick={tiggerCreateAction}>
+            新增职业
+          </Button>
+        </Col>
+      </Row>
+      <Table
+        bordered
+        simple
+        size="middle"
+        loading={loading}
+        pagination={configPagination(pagination)}
+        rowKey={record => record.id}
+        columns={configColumns(domain, abilities, onActionTrigger)}
+        dataSource={occupationList}
+        onChange={onChangeTable}
+      />
+    </div>
+  );
+};
+OccupationList.propTypes = {
+  searchCond: PropTypes.object,
+  occupationList: PropTypes.arrayOf(PropTypes.object),
+  pagination: PropTypes.shape({
+    current: PropTypes.integer,
+    total: PropTypes.integer,
+    pageSize: PropTypes.integer,
+  }),
+  loading: PropTypes.bool,
+  onSearch: PropTypes.func,
+  onChangeSearchTxt: PropTypes.func,
+  onChangeTable: PropTypes.func,
+  onActionTrigger: PropTypes.func,
+  ability: PropTypes.shape({
+    domain: PropTypes.object,
+    abilities: PropTypes.object,
+  }),
+};
+
+export default CSSModules(OccupationList, styles);
+
+const configColumns = (domain = {}, abilities = {}, onActionTrigger) => {
+  const handleAction = (record, e) => {
+    onActionTrigger(e.key, record);
+  };
+  return [
+    {
+      title: '编号',
+      width: 50,
+      key: 'num',
+      render: (text, record, index) => index + 1,
+    },
     {
       title: '职业名称',
       dataIndex: 'name',
-      key: 'occupation.name',
+      key: 'occupationName',
       width: 120,
       render: (text, record) =>
         <span>
-          <a href="#" onClick={() => showDetailModal(record)}>
+          <a href="#" onClick={() => onActionTrigger('VIEW', record)}>
             {text}
           </a>
         </span>,
     },
     {
       title: '职业描述',
+      width: 350,
       dataIndex: 'desc',
-      key: 'occupation.desc',
+      key: 'occupationDesc',
     },
     {
       title: '必要能力',
-      dataIndex: 'necessary_ability',
-      key: 'necessary_ability',
-      width: 250,
-      render: (text, record) => '能力1,能力2，能力3，能力4，能力5',
+      dataIndex: 'necessaryAbility',
+      key: 'necessaryAbility',
+      render: (text, record) => {
+        return (record.necessaryAbility || [])
+          .map(abilityId => ((abilities[abilityId]&&abilities[abilityId].name)||abilityId))
+          .join(' , ');
+      },
     },
     {
       title: '次要能力',
-      dataIndex: 'secondary_ability',
-      key: 'secondary_ability',
-      width: 250,
-      render: (text, record) => '能力1,能力2，能力3，能力4，能力5',
+      dataIndex: 'secondaryAbility',
+      key: 'secondaryAbility',
+      render: (text, record) => {
+        return (record.necessaryAbility || [])
+          .map(abilityId => ((abilities[abilityId]&&abilities[abilityId].name)||abilityId))
+          .join(' , ');
+      },
     },
     {
       title: '操作',
       key: 'action',
-      width: 100,
+      width: 80,
       render: (text, record) =>
         <DropOption
           onMenuClick={e => handleAction(record, e)}
           menuOptions={[
-            { key: 'modify', name: '修改' },
-            { key: 'delete', name: '删除' },
-            {
-              key: 'recommend',
-              name: '推荐列表',
-            },
+            { key: 'VIEW', name: '查看' },
+            { key: 'MODIFY', name: '修改' },
+            { key: 'DELETE', name: '删除' },
+            { key: 'SHOW_RECOMMEND', name: '推荐列表' },
           ]}
         />,
     },
   ];
-  return (
-    <div className="content-inner">
-      <Table
-        bordered
-        simple
-        rowKey={record => record.id}
-        columns={columns}
-        {...tableProps}
-      />
-    </div>
-  );
 };
-OccupationList.propTypes = {
-  showDetailModal: PropTypes.func,
-  showModifyModal: PropTypes.func,
+
+const configPagination = pagination => {
+  return {
+    current: pagination.current || 1,
+    total: pagination.total || 0,
+    pageSize: pagination.pageSize || 5,
+    showTotal() {
+      return `共 ${pagination.total} 条记录`;
+    },
+  };
 };
-export default CSSModules(OccupationList, styles);
