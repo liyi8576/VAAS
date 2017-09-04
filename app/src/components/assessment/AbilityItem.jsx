@@ -15,9 +15,10 @@ const AbilityItem = ({ name, option }) => {
       <span>
         {name}
       </span>
-      <sup styleName={supClass[option]}>
-        {option}
-      </sup>
+      {option &&
+        <sup styleName={supClass[option]}>
+          {option}
+        </sup>}
     </div>
   );
 };

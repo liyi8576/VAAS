@@ -1,5 +1,6 @@
 import Mock from 'mockjs';
 import { AbilityList } from './AbilityData';
+import _ from 'lodash';
 Mock.mock(/\/api\/abilities/, {
   success: true,
   data: [
@@ -136,4 +137,13 @@ Mock.mock(/\/api\/abilities/, {
     { id: 'C29', name: '社区安全能力-社区安全', domain: '103' },
     { id: 'C30', name: '社区安全能力-天然灾害', domain: '103' },
   ],
+});
+
+Mock.mock(/\/api\/ability\/options/, {
+  success: true,
+  data: function() {
+    return _.sampleSize(
+      AbilityList, 10
+    );
+  },
 });

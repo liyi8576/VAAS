@@ -22,6 +22,5 @@ Mock.mock(/\/api\/dics/, {
     { group: 'ABILITY_DOMAIN', name: '工作人格', value: '101' },
     { group: 'ABILITY_DOMAIN', name: '职业能力', value: '102' },
     { group: 'ABILITY_DOMAIN', name: '社区独立能力', value: '103' },
-
   ],
 });

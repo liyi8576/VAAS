@@ -111,18 +111,18 @@ class AbilitySelect extends Component {
     const { domain, abilities } = this.props.ability;
     return (
       <Tabs size="small">
-        {Object.values(domain).map(domain =>
+        {Object.values(domain).map(_domain =>
           <TabPane
             tab={
               <span>
-                {domain.name}
-                <Icon type={domain.icon} />
+                {_domain.name}
+                <Icon type={_domain.icon} />
               </span>
             }
-            key={`domain.${domain.id}`}
+            key={`domain.${_domain.id}`}
           >
             <ul styleName="options-items">
-              {domain.abilities.map(id =>
+              {_domain.abilities.map(id =>
                 <li
                   key={'option.' + id}
                   title={abilities[id].name}

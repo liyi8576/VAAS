@@ -1,14 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Card, Icon, Alert } from 'antd';
-import AssessmentItem from './AssessmentItem';
+import { Button, Icon } from 'antd';
 import AbilitySelect from './AbilitySelect';
+import AssessmentItemPage from 'containers/assessment/AssessmentItemPage';
 import CSSModules from 'react-css-modules';
 import styles from 'style/Assessment.scss';
 
 const ButtonGroup = Button.Group;
 
-const Assessment = () => {
+const Assessment = ({ ability = {} }) => {
   const render_head = () => {
     return (
       <div styleName={'asm-head'}>
@@ -44,35 +44,14 @@ const Assessment = () => {
     <div styleName={'assessment'}>
       {render_head()}
       <div styleName={'asm-content'}>
-        <div styleName={'asm-title'}>
-          <div styleName={'title'}>
-            <Icon type="menu-unfold" /> 工作人格 / 出行
-          </div>
-        </div>
-        <AbilitySelect/>
-        <Card
-          title={null}
-          bordered={false}
-          noHovering="false"
-          loading={false}
-          bodyStyle={{ padding: '0' }}
-        >
-          <Alert
-            message="在工作过程中，能够机智地表现出创造性的能力，促使工作的品质、速度、产品获得若干程度的改善，并为工作单位所认同与乐见"
-            type="warning"
-          />
-          <h4>检核方式: 从日常生活中观察评量之</h4>
-          <div styleName={'asm-options-box'}>
-            <AssessmentItem />
-            <AssessmentItem />
-            <AssessmentItem />
-            <AssessmentItem />
-          </div>
-        </Card>
+        <AbilitySelect ability={ability} />
+        <AssessmentItemPage/>
       </div>
       {render_footer()}
     </div>
   );
 };
-Assessment.propTypes = {};
-export default CSSModules(Assessment, styles, { allowMultiple: true });
+Assessment.propTypes = {
+  ability: PropTypes.object,
+};
+export default CSSModules(Assessment, styles);

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Collapse, Icon } from 'antd';
+import Animate from 'rc-animate';
 import AbilityItem from './AbilityItem';
 import CSSModules from 'react-css-modules';
 import styles from 'style/Assessment.scss';
@@ -11,36 +12,76 @@ class AbilitySelect extends Component {
   constructor(props) {
     super();
     this.state = {
-      expand: false,
+      visible: false,
     };
   }
   expandSelector = () => {
     this.setState({
-      expand: !this.state.expand,
+      visible: !this.state.visible,
     });
   };
+  render_items() {
+    const customPanelStyle = {
+      background: '#f9fafc',
+      border: 0,
+    };
+    const { domain, abilities } = this.props.ability;
+    const temp = {
+      A1: 'A',
+      A2: 'B',
+      A3: 'C',
+      A4: 'D',
+    };
+    return (
+      <div styleName={'ability-items'}>
+        <Collapse
+          bordered={false}
+          defaultActiveKey={Object.keys(domain).map(val => '.$' + val)}
+        >
+          {Object.values(domain).map(_domain =>
+            <Panel
+              header={_domain.name}
+              key={_domain.id}
+              style={customPanelStyle}
+            >
+              {_domain.abilities.map(abilityId => {
+                const ability = abilities[abilityId];
+                return (
+                  ability &&
+                  <AbilityItem
+                    name={ability.name}
+                    option={temp[abilityId]}
+                    key={`ab.${ability.id}`}
+                  />
+                );
+              })}
+            </Panel>,
+          )}
+        </Collapse>
+      </div>
+    );
+  }
   render() {
     return (
       <div>
         <div
-          styleName={'ability-items'}
-          style={{ display: this.state.expand ? 'block' : 'none' }}
+          styleName={'asm-title'}
+          title="点击展开/搜索能力选择层"
+          onClick={this.expandSelector}
         >
-          <Collapse bordered={false} defaultActiveKey={['1']}>
-            <Panel header="工作人格" key="1">
-              {AbilityItem({ name: '出行', option: 'A' })}
-              {AbilityItem({ name: '个人卫生与保健-涣洗与整饰', option: 'B' })}
-              {AbilityItem({ name: '工作姿势-跨（跳）', option: 'A' })}
-              {AbilityItem({ name: '购物与消费-购物物品', option: 'D' })}
-              {AbilityItem({ name: '家庭维持-烹饪的能力', option: 'C' })}
-            </Panel>
-            <Panel header="职业能力" key="2" />
-            <Panel header="社区独立能力" key="3" />
-          </Collapse>
+          <div styleName={'title'}>
+            <Icon type="menu-unfold" /> 工作人格 / 出行
+          </div>
         </div>
+        <Animate
+          exclusive
+          transitionName={this.state.visible ? 'slide-down' : 'slide-up'}
+        >
+          {this.state.visible ? this.render_items() : null}
+        </Animate>
         <div styleName={'asm-expand'} onClick={this.expandSelector}>
           <div styleName={'expand-button'}>
-            <Icon type={this.state.expand?'caret-up':"caret-down"} />
+            <Icon type={this.state.visible ? 'caret-up' : 'caret-down'} />
           </div>
         </div>
       </div>
@@ -49,6 +90,6 @@ class AbilitySelect extends Component {
 }
 
 AbilitySelect.propTypes = {
-  expand: PropTypes.bool,
+  ability: PropTypes.object,
 };
 export default CSSModules(AbilitySelect, styles);

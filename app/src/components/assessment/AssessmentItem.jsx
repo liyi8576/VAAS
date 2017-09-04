@@ -1,28 +1,46 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Checkbox } from 'antd';
+import { Card, Alert } from 'antd';
+import AssessmentOption from './AssessmentOption';
 import CSSModules from 'react-css-modules';
 import styles from 'style/Assessment.scss';
 
-const AssessmentItem = ({ title, body }) => {
+const AssessmentItem = ({ abilityOption = {} }) => {
+  console.log(abilityOption);
   return (
-    <div styleName={'asm-item'}>
-      <div styleName={'asm-item-head'}>
-        <Checkbox />
-        <span>选项 A: 具有下列行为之一者属之</span>
+    <Card
+      title={null}
+      bordered={false}
+      noHovering="false"
+      loading={false}
+      bodyStyle={{ padding: '0' }}
+    >
+      <Alert message={abilityOption.description} type="warning" />
+      <h4>
+        检核方式: {abilityOption.assessMethod}
+      </h4>
+      <div styleName={'asm-options-box'}>
+        {abilityOption.optionA &&
+          <AssessmentOption title="A" body={abilityOption.optionA} />}
+        {abilityOption.optionB &&
+          <AssessmentOption title="B" body={abilityOption.optionB} />}
+        {abilityOption.optionC &&
+          <AssessmentOption title="C" body={abilityOption.optionC} />}
+        {abilityOption.optionD &&
+          <AssessmentOption title="D" body={abilityOption.optionD} />}
       </div>
-      <div styleName={'asm-item-body'}>
-        1.经常未请假无故缺席<br />
-        2.经常请假（非必要的<br />
-        3.在加班的非常情况下，缺席率增高<br />
-        4.需要一再地提醒才能正常出席<br />
-      </div>
-    </div>
+    </Card>
   );
 };
 
 AssessmentItem.propTypes = {
-  title: PropTypes.string,
-  body: PropTypes.string,
+  abilityOption: PropTypes.shape({
+    description: PropTypes.string,
+    assessMethod: PropTypes.string,
+    optionA: PropTypes.string,
+    optionB: PropTypes.string,
+    optionC: PropTypes.string,
+    optionD: PropTypes.string,
+  }),
 };
 export default CSSModules(AssessmentItem, styles);

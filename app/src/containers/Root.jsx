@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Provider } from 'react-redux';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { Router } from 'react-router-dom';
 import { Route, Switch } from 'react-router-dom';
 import App from '../App';
 import {
@@ -14,7 +14,7 @@ import {
   OccupationInfoPage,
   OccupationEditPage,
 } from 'containers/occupation';
-import Assessment from 'components/assessment/Assessment'
+import AssessmentPage from 'containers/assessment/AssessmentPage';
 
 const Root = ({ store, history }) =>
   <Provider store={store}>
@@ -42,11 +42,7 @@ const Root = ({ store, history }) =>
                 path="/occupations/:id"
                 component={OccupationInfoPage}
               />
-              <Route
-                exact
-                path="/assessment"
-                component={Assessment}
-              />
+              <Route exact path="/assessment" component={AssessmentPage} />
             </Switch>
           </App>}
       />

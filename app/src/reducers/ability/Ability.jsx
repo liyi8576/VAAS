@@ -6,7 +6,8 @@ import { createActions, handleActions } from 'redux-actions';
 export const types = {
   FETCH_ABILITIES_SUCCESS: 'ABILITY/FETCH_ABILITIES_SUCCESS',
   FETCH_ABILITIES_FAILURE: 'ABILITY/FETCH_ABILITIES_FAILURE',
-
+  FETCH_ABILITIES_OPTIONS_SUCCESS: 'ABILITY/FETCH_ABILITIES_OPTIONS_SUCCESS',
+  FETCH_ABILITIES_OPTIONS_FAILURE: 'ABILITY/FETCH_ABILITIES_OPTIONS_FAILURE',
   GET_ABILITIES_CONFIG: 'ABILITY/GET_ABILITIES_CONFIG',
 };
 export const initialState = {
@@ -14,6 +15,7 @@ export const initialState = {
   abilities: {},
   config: {},
   error: '',
+  options: {},
 };
 export default handleActions(
   {
@@ -23,6 +25,14 @@ export default handleActions(
       abilities: action.payload.abilities,
     }),
     [types.FETCH_ABILITIES_FAILURE]: (state, action) => ({
+      ...state,
+      error: action.payload,
+    }),
+    [types.FETCH_ABILITIES_OPTIONS_SUCCESS]: (state, action) => ({
+      ...state,
+      options: action.payload,
+    }),
+    [types.FETCH_ABILITIES_OPTIONS_FAILURE]: (state, action) => ({
       ...state,
       error: action.payload,
     }),
@@ -39,6 +49,8 @@ export const { ability: abilityActions } = createActions({
     abilities,
   }),
   [types.FETCH_ABILITIES_FAILURE]: error => error,
+  [types.FETCH_ABILITIES_OPTIONS_SUCCESS]: options => options,
+  [types.FETCH_ABILITIES_OPTIONS_FAILURE]: error => error,
   [types.GET_ABILITIES_CONFIG]: config => getAbilitiesConfig(),
 });
 
@@ -90,5 +102,29 @@ export const loadAbilities = () => (dispatch, getState) => {
     })
     .catch(function(err) {
       dispatch(abilityActions.fetchAbilitiesFailure(err.message));
+    });
+};
+
+export const loadAbilityOptions = (abilityId, offset, limit) => (
+  dispatch,
+  getState,
+) => {
+  axios
+    .get(getApiUrl(`ability/options`))
+    .then(response => {
+      const result = response.data;
+      const g = _.groupBy(result.data || [], 'id');
+      const abilityOption = _.reduce(
+        g,
+        (obj, option, key) => {
+          obj[key] = option[0];
+          return obj;
+        },
+        {},
+      );
+      dispatch(abilityActions.fetchAbilitiesOptionsSuccess(abilityOption));
+    })
+    .catch(function(err) {
+      dispatch(abilityActions.fetchAbilitiesOptionsFailure(err.message));
     });
 };
