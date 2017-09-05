@@ -18,7 +18,10 @@ class AssessmentItemPage extends Component {
     this.props.loadAbilityOptions();
   }
   render() {
-    return <AssessmentItem abilityOption={this.props.abilityOptions[Object.keys(this.props.abilityOptions)[0]]} />;
+    const abilityOption = this.props.abilityOptions[
+      Object.keys(this.props.abilityOptions)[0]
+    ];
+    return <AssessmentItem abilityOption={abilityOption || {}} />;
   }
 }
 

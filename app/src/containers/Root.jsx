@@ -14,7 +14,7 @@ import {
   OccupationInfoPage,
   OccupationEditPage,
 } from 'containers/occupation';
-import AssessmentPage from 'containers/assessment/AssessmentPage';
+import { AssessmentListPage, TraineeAssessPage } from 'containers/assessment';
 
 const Root = ({ store, history }) =>
   <Provider store={store}>
@@ -42,7 +42,8 @@ const Root = ({ store, history }) =>
                 path="/occupations/:id"
                 component={OccupationInfoPage}
               />
-              <Route exact path="/assessment" component={AssessmentPage} />
+              <Route exact path="/assessment" component={AssessmentListPage} />
+              <Route exact path="/assessment/:traineeId" component={TraineeAssessPage} />
             </Switch>
           </App>}
       />

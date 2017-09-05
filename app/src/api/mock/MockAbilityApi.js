@@ -1,6 +1,26 @@
 import Mock from 'mockjs';
 import { AbilityList } from './AbilityData';
 import _ from 'lodash';
+
+/**
+ * 获取能力项选项（能力项详细信息），分页获取
+ * URL: /api/abilities/options
+ * METHOD:GET
+ */
+Mock.mock(/\/api\/abilities\/options/, {
+  success: true,
+  data: function() {
+    return _.sampleSize(
+      AbilityList, 10
+    );
+  },
+});
+
+/**
+ * 获取全部能力项列表（简要信息）
+ * URL: /api/abilities
+ * METHOD:GET
+ */
 Mock.mock(/\/api\/abilities/, {
   success: true,
   data: [
@@ -139,11 +159,3 @@ Mock.mock(/\/api\/abilities/, {
   ],
 });
 
-Mock.mock(/\/api\/ability\/options/, {
-  success: true,
-  data: function() {
-    return _.sampleSize(
-      AbilityList, 10
-    );
-  },
-});

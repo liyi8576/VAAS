@@ -1,6 +1,10 @@
 import Mock from 'mockjs';
 
-//获取学员信息
+/**
+ * 获取学员详细信息
+ * URL: /api/trainees/{traineeId}
+ * METHOD:GET
+ */
 Mock.mock(/\/api\/trainees\/\w+/, {
   success: true,
   data: {
@@ -39,7 +43,12 @@ Mock.mock(/\/api\/trainees\/\w+/, {
     modifyTime: '@datetime',
   },
 });
-//获取学员列表
+
+/**
+ * 获取学员列表
+ * URL: /api/trainees
+ * METHOD:GET
+ */
 Mock.mock(/\/api\/trainees/, {
   success: true,
   data: {

@@ -110,7 +110,7 @@ export const loadAbilityOptions = (abilityId, offset, limit) => (
   getState,
 ) => {
   axios
-    .get(getApiUrl(`ability/options`))
+    .get(getApiUrl(`abilities/options`))
     .then(response => {
       const result = response.data;
       const g = _.groupBy(result.data || [], 'id');

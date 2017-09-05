@@ -8,16 +8,16 @@ import styles from 'style/Assessment.scss';
 
 const ButtonGroup = Button.Group;
 
-const Assessment = ({ ability = {} }) => {
+const Assessment = ({ ability = {}, traineeAssess = {} }) => {
   const render_head = () => {
     return (
       <div styleName={'asm-head'}>
         <ul>
-          <li>张三</li>
-          <li>检核人: 李四</li>
-          <li>开始时间: 2017年08月01日</li>
+          <li>{traineeAssess.traineeName}</li>
+          <li>检核人: {traineeAssess.assessor}</li>
+          <li>开始日期: {traineeAssess.assessDate}</li>
           <li>
-            检核进度:<span styleName={'percent'}>50%</span>
+            检核进度:<span styleName={'percent'}>{traineeAssess.assessCount}%</span>
           </li>
         </ul>
       </div>
@@ -45,7 +45,7 @@ const Assessment = ({ ability = {} }) => {
       {render_head()}
       <div styleName={'asm-content'}>
         <AbilitySelect ability={ability} />
-        <AssessmentItemPage/>
+        <AssessmentItemPage />
       </div>
       {render_footer()}
     </div>
@@ -53,5 +53,6 @@ const Assessment = ({ ability = {} }) => {
 };
 Assessment.propTypes = {
   ability: PropTypes.object,
+  traineeAssess: PropTypes.object,
 };
 export default CSSModules(Assessment, styles);

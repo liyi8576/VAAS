@@ -4,8 +4,9 @@ import { connect } from 'react-redux';
 import Assessment from 'components/assessment/Assessment';
 import { bindActionCreators } from 'redux';
 import { loadAbilities } from 'reducers/ability/Ability';
+import { loadTraineeAssess } from 'reducers/assessment/TraineeAssess';
 
-class AssessmentPage extends Component {
+class TraineeAssessPage extends Component {
   constructor(props) {
     super();
     this.state = {
@@ -15,21 +16,31 @@ class AssessmentPage extends Component {
     };
   }
   componentDidMount() {
+    this.props.loadTraineeAssess();
     this.props.loadAbilities();
   }
   render() {
-    return <Assessment ability={this.props.ability} options={this.props.options}/>;
+    return (
+      <Assessment
+        ability={this.props.ability}
+        options={this.props.options}
+        traineeAssess={this.props.traineeAssess}
+      />
+    );
   }
 }
 
-AssessmentPage.PropTypes = {};
-AssessmentPage.defaultProps = {};
+TraineeAssessPage.PropTypes = {};
+TraineeAssessPage.defaultProps = {};
 const mapStateToProps = state => {
+  const { traineeAssess } = state.assessment || {};
   return {
     ability: state.ability || {},
-  }
+    traineeAssess: traineeAssess && (traineeAssess.traineeAssess||{}),
+  };
 };
 const mapDispatchToProps = dispatch => ({
   loadAbilities: bindActionCreators(loadAbilities, dispatch),
+  loadTraineeAssess: bindActionCreators(loadTraineeAssess, dispatch),
 });
-export default connect(mapStateToProps, mapDispatchToProps)(AssessmentPage);
+export default connect(mapStateToProps, mapDispatchToProps)(TraineeAssessPage);

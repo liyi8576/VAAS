@@ -1,4 +1,10 @@
 import Mock from 'mockjs';
+
+/**
+ * 获取全量枚举字典数据
+ * URL: /api/dics
+ * METHOD:GET
+ */
 Mock.mock(/\/api\/dics/, {
   success: true,
   data: [
