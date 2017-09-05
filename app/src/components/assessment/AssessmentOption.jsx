@@ -6,7 +6,10 @@ import styles from 'style/Assessment.scss';
 
 const AssessmentOption = ({ option, body, checked = true, onclick }) => {
   return (
-    <div styleName={'asm-item'} onClick={() => onclick(option)}>
+    <div
+      styleName={'asm-item' + (checked ? ' checked' : '')}
+      onClick={() => onclick(option)}
+    >
       <div styleName={'asm-item-head'}>
         {checked && <Icon type={'check'} styleName={'checked-ico'} />}
         <span>
@@ -29,4 +32,4 @@ AssessmentOption.propTypes = {
   body: PropTypes.string,
   onclick: PropTypes.func,
 };
-export default CSSModules(AssessmentOption, styles);
+export default CSSModules(AssessmentOption, styles, { allowMultiple: true });

@@ -12,9 +12,9 @@ class AssessmentItem extends Component {
       selectOption: null,
     };
   }
-  checkedOption = (option) => {
+  checkedOption = option => {
     this.setState({
-      selectOption:option
+      selectOption: option,
     });
   };
   render() {
@@ -35,28 +35,28 @@ class AssessmentItem extends Component {
           {abilityOption.optionA &&
             <AssessmentOption
               option="A"
-              checked={this.state.selectOption==="A"}
+              checked={this.state.selectOption === 'A'}
               body={abilityOption.optionA}
               onclick={this.checkedOption}
             />}
           {abilityOption.optionB &&
             <AssessmentOption
               option="B"
-              checked={this.state.selectOption==="B"}
+              checked={this.state.selectOption === 'B'}
               body={abilityOption.optionB}
               onclick={this.checkedOption}
             />}
           {abilityOption.optionC &&
             <AssessmentOption
               option="C"
-              checked={this.state.selectOption==="C"}
+              checked={this.state.selectOption === 'C'}
               body={abilityOption.optionC}
               onclick={this.checkedOption}
             />}
           {abilityOption.optionD &&
             <AssessmentOption
               option="D"
-              checked={this.state.selectOption==="D"}
+              checked={this.state.selectOption === 'D'}
               body={abilityOption.optionD}
               onclick={this.checkedOption}
             />}
