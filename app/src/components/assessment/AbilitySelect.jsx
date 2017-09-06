@@ -26,12 +26,6 @@ class AbilitySelect extends Component {
       border: 0,
     };
     const { domain, abilities } = this.props.ability;
-    const temp = {
-      A1: 'A',
-      A2: 'B',
-      A3: 'C',
-      A4: 'D',
-    };
     return (
       <div styleName={'ability-items'}>
         <Collapse
@@ -50,7 +44,7 @@ class AbilitySelect extends Component {
                   ability &&
                   <AbilityItem
                     name={ability.name}
-                    option={temp[abilityId]}
+                    option={this.props.assessResult[abilityId]}
                     key={`ab.${ability.id}`}
                   />
                 );
@@ -91,5 +85,6 @@ class AbilitySelect extends Component {
 
 AbilitySelect.propTypes = {
   ability: PropTypes.object,
+  assessResult: PropTypes.object,
 };
 export default CSSModules(AbilitySelect, styles);

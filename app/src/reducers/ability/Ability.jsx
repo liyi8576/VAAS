@@ -6,6 +6,7 @@ import { createActions, handleActions } from 'redux-actions';
 export const types = {
   FETCH_ABILITIES_SUCCESS: 'ABILITY/FETCH_ABILITIES_SUCCESS',
   FETCH_ABILITIES_FAILURE: 'ABILITY/FETCH_ABILITIES_FAILURE',
+  FETCH_ABILITIES_OPTIONS_REQUEST: 'ABILITY/FETCH_ABILITIES_OPTIONS_REQUEST',
   FETCH_ABILITIES_OPTIONS_SUCCESS: 'ABILITY/FETCH_ABILITIES_OPTIONS_SUCCESS',
   FETCH_ABILITIES_OPTIONS_FAILURE: 'ABILITY/FETCH_ABILITIES_OPTIONS_FAILURE',
   GET_ABILITIES_CONFIG: 'ABILITY/GET_ABILITIES_CONFIG',
@@ -30,11 +31,17 @@ export default handleActions(
     }),
     [types.FETCH_ABILITIES_OPTIONS_SUCCESS]: (state, action) => ({
       ...state,
+      fetch_options_loading: true,
+    }),
+    [types.FETCH_ABILITIES_OPTIONS_SUCCESS]: (state, action) => ({
+      ...state,
       options: action.payload,
+      fetch_options_loading: false,
     }),
     [types.FETCH_ABILITIES_OPTIONS_FAILURE]: (state, action) => ({
       ...state,
       error: action.payload,
+      fetch_options_loading: false,
     }),
     [types.GET_ABILITIES_CONFIG]: (state, action) => ({
       ...state,
@@ -49,6 +56,7 @@ export const { ability: abilityActions } = createActions({
     abilities,
   }),
   [types.FETCH_ABILITIES_FAILURE]: error => error,
+  [types.FETCH_ABILITIES_OPTIONS_REQUEST]: undefined,
   [types.FETCH_ABILITIES_OPTIONS_SUCCESS]: options => options,
   [types.FETCH_ABILITIES_OPTIONS_FAILURE]: error => error,
   [types.GET_ABILITIES_CONFIG]: config => getAbilitiesConfig(),
@@ -109,6 +117,7 @@ export const loadAbilityOptions = (abilityId, offset, limit) => (
   dispatch,
   getState,
 ) => {
+  dispatch(abilityActions.fetchAbilitiesOptionsRequest());
   axios
     .get(getApiUrl(`abilities/options`))
     .then(response => {

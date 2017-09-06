@@ -11,6 +11,7 @@ const AssessmentOption = ({ option, body, checked = true, onclick }) => {
       onClick={() => onclick(option)}
     >
       <div styleName={'asm-item-head'}>
+        {checked && <div styleName="asm-checked-div"/>}
         {checked && <Icon type={'check'} styleName={'checked-ico'} />}
         <span>
           选项 {option}

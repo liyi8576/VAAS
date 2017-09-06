@@ -1,6 +1,5 @@
 import Mock from 'mockjs';
 
-
 /**
  * 查询用户检核统计结果
  * URL：/api/assessments/{userId}
@@ -14,7 +13,8 @@ Mock.mock(/\/api\/assessments\/\w+/, {
     assessor: '@cname',
     assessDate: '@date', //开始检核日期
     'assessCount|1-200': 1, //已检核数量
-    abilityItems: [
+    currentAbility: 'A1', //当前已检核能力项
+    assessResult: [
       //已检核项列表
       { abilityId: 'A1', 'assessOption|1': ['A', 'B', 'C', 'D'] },
       { abilityId: 'A2', 'assessOption|1': ['A', 'B', 'C', 'D'] },

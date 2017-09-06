@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import _ from 'lodash';
 import AssessmentItem from 'components/assessment/AssessmentItem';
-import { bindActionCreators } from 'redux';
-import { loadAbilityOptions } from 'reducers/ability/Ability';
 
 class AssessmentItemPage extends Component {
   constructor(props) {
@@ -14,14 +13,17 @@ class AssessmentItemPage extends Component {
       assessOffset: 0,
     };
   }
-  componentDidMount() {
-    this.props.loadAbilityOptions();
-  }
+  componentDidMount() {}
   render() {
     const abilityOption = this.props.abilityOptions[
       Object.keys(this.props.abilityOptions)[0]
     ];
-    return <AssessmentItem abilityOption={abilityOption || {}} />;
+    return (
+      <AssessmentItem
+        abilityOption={abilityOption || {}}
+        loading={this.props.loading}
+      />
+    );
   }
 }
 
@@ -30,11 +32,12 @@ AssessmentItemPage.PropTypes = {
 };
 AssessmentItemPage.defaultProps = {};
 const mapStateToProps = state => {
+  const { ability } = state || {};
+  const loading = ability.fetch_options_loading;
   return {
-    abilityOptions: (state.ability || {}).options || {},
+    loading: _.isUndefined(loading) ? true : loading,
+    abilityOptions: ability.options || {},
   };
 };
-const mapDispatchToProps = dispatch => ({
-  loadAbilityOptions: bindActionCreators(loadAbilityOptions, dispatch),
-});
+const mapDispatchToProps = dispatch => ({});
 export default connect(mapStateToProps, mapDispatchToProps)(AssessmentItemPage);

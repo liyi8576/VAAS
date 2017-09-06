@@ -10,14 +10,25 @@ const ButtonGroup = Button.Group;
 
 const Assessment = ({ ability = {}, traineeAssess = {} }) => {
   const render_head = () => {
+    const abilityCount = Object.keys(ability.abilities).length;
+    const percent =
+      abilityCount === 0
+        ? 'N/A'
+        : (traineeAssess.assessCount / abilityCount).toFixed(0);
     return (
       <div styleName={'asm-head'}>
         <ul>
-          <li>{traineeAssess.traineeName}</li>
-          <li>检核人: {traineeAssess.assessor}</li>
-          <li>开始日期: {traineeAssess.assessDate}</li>
           <li>
-            检核进度:<span styleName={'percent'}>{traineeAssess.assessCount}%</span>
+            {traineeAssess.traineeName}
+          </li>
+          <li>
+            检核人: {traineeAssess.assessor}
+          </li>
+          <li>
+            开始日期: {traineeAssess.assessDate}
+          </li>
+          <li>
+            检核进度:<span styleName={'percent'}>{percent}%</span>
           </li>
         </ul>
       </div>
@@ -44,7 +55,10 @@ const Assessment = ({ ability = {}, traineeAssess = {} }) => {
     <div styleName={'assessment'}>
       {render_head()}
       <div styleName={'asm-content'}>
-        <AbilitySelect ability={ability} />
+        <AbilitySelect
+          ability={ability}
+          assessResult={traineeAssess.assessResult || {}}
+        />
         <AssessmentItemPage />
       </div>
       {render_footer()}

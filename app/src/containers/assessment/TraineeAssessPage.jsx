@@ -35,8 +35,9 @@ TraineeAssessPage.defaultProps = {};
 const mapStateToProps = state => {
   const { traineeAssess } = state.assessment || {};
   return {
+    loading: traineeAssess && traineeAssess.isLoading === true,
     ability: state.ability || {},
-    traineeAssess: traineeAssess && (traineeAssess.traineeAssess||{}),
+    traineeAssess: (traineeAssess && traineeAssess.traineeAssess) || {},
   };
 };
 const mapDispatchToProps = dispatch => ({

@@ -2,6 +2,7 @@ import axios from 'axios';
 import { getApiUrl } from 'api';
 import _ from 'lodash';
 import { createActions, handleActions } from 'redux-actions';
+import { loadAbilityOptions } from 'reducers/ability/Ability';
 
 export const types = {
   FETCH_TRAINEE_ASSESS_REQUEST: 'ASSESSMENT/FETCH_TRAINEE_ASSESS_REQUEST',
@@ -30,11 +31,11 @@ export default handleActions(
 );
 export const { assessment: traineeAssessAction } = createActions({
   [types.FETCH_TRAINEE_ASSESS_REQUEST]: undefined,
-  [types.FETCH_TRAINEE_ASSESS_SUCCESS]: (data) => ({
+  [types.FETCH_TRAINEE_ASSESS_SUCCESS]: data => ({
     data,
   }),
-  [types.FETCH_TRAINEE_ASSESS_FAILURE]: message => ({
-    message,
+  [types.FETCH_TRAINEE_ASSESS_FAILURE]: error => ({
+    error,
   }),
 });
 
@@ -46,13 +47,28 @@ export const loadTraineeAssess = traineeId => (dispatch, getState) => {
     })
     .then(response => {
       const result = response.data;
-      dispatch(
-        traineeAssessAction.fetchTraineeAssessSuccess(
-          result.data,
-        ),
+      const data = result.data || {};
+      data.assessResult = _.reduce(
+        data.assessResult || [],
+        (result, item) => {
+          result[item.abilityId] = item.assessOption;
+          return result;
+        },
+        {},
       );
+      dispatch(traineeAssessAction.fetchTraineeAssessSuccess(data));
+      dispatch(loadAbilityOptions());
     })
     .catch(function(err) {
       dispatch(traineeAssessAction.fetchTraineeAssessFailure(err.message));
     });
+};
+
+export const assessAbility = (traineeId, abilityId, option) => (
+  dispatch,
+  getState,
+) => {
+  axios.put(getApiUrl(`assessments/${traineeId}/${abilityId}`), {
+    params: { traineeId: traineeId },
+  });
 };

@@ -18,14 +18,14 @@ class AssessmentItem extends Component {
     });
   };
   render() {
-    const { abilityOption } = this.props;
+    const { abilityOption, loading } = this.props;
     return (
       <Card
         title={null}
         bordered={false}
         noHovering="false"
-        loading={false}
-        bodyStyle={{ padding: '0' }}
+        loading={loading}
+        bodyStyle={{ padding: '0',minHeight:'300px'}}
       >
         <Alert message={abilityOption.description} type="warning" />
         <h4>
@@ -67,6 +67,7 @@ class AssessmentItem extends Component {
 }
 
 AssessmentItem.propTypes = {
+  loading: PropTypes.bool,
   abilityOption: PropTypes.shape({
     description: PropTypes.string,
     assessMethod: PropTypes.string,
