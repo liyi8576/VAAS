@@ -15,6 +15,7 @@ import {
   OccupationEditPage,
 } from 'containers/occupation';
 import { AssessmentListPage, TraineeAssessPage } from 'containers/assessment';
+import AssessResult from 'components/assessResult/AssessResult';
 
 const Root = ({ store, history }) =>
   <Provider store={store}>
@@ -44,6 +45,7 @@ const Root = ({ store, history }) =>
               />
               <Route exact path="/assessment" component={AssessmentListPage} />
               <Route exact path="/assessment/:traineeId" component={TraineeAssessPage} />
+              <Route exact path="/occupation/analyze" component={AssessResult}/>
             </Switch>
           </App>}
       />

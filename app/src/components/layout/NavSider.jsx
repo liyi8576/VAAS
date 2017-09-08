@@ -75,6 +75,9 @@ class NavSider extends Component {
           <Menu.Item key="menu.resultQuery">
             <Link to={'/resultQuery'}><Icon type="search"/><span>检核结果查询</span></Link>
           </Menu.Item>
+          <Menu.Item key="menu.occupationAnalyze">
+            <Link to={'/occupation/analyze'}><Icon type="solution"/><span>职业能力分析</span></Link>
+          </Menu.Item>
           <Menu.Item key="menu.constrastQuery">
             <Link to={'/constrastQuery'}><Icon type="schedule"/><span>对照记录查询</span></Link>
           </Menu.Item>
