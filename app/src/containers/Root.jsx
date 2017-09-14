@@ -15,7 +15,8 @@ import {
   OccupationEditPage,
 } from 'containers/occupation';
 import { AssessmentListPage, TraineeAssessPage } from 'containers/assessment';
-import AssessResult from 'components/assessResult/AssessResult';
+import AssessResultPage from 'containers/assessResult/AssessResultPage';
+import AssessConstrastPage from 'containers/assessResult/AssessConstrastPage';
 
 const Root = ({ store, history }) =>
   <Provider store={store}>
@@ -25,27 +26,72 @@ const Root = ({ store, history }) =>
         component={props =>
           <App>
             <Switch>
+              {/**学员列表**/}
               <Route exact path="/trainees" component={TraineeListPage} />
+              {/**学员管理（新建、修改）**/}
               <Route
                 exact
                 path="/trainees/create"
                 component={TraineeEditPage}
               />
-              <Route path="/trainees/:id" component={TraineeInfoPage} />
+              {/**学员详细信息查看**/}
+              <Route
+                path="/trainees/:traineeId/detail"
+                component={TraineeInfoPage}
+              />
+              {/**检核学员列表**/}
+              <Route exact path="/assessment" component={AssessmentListPage} />
+              {/**学员检核**/}
+              <Route
+                exact
+                path="/trainees/:traineeId/assess"
+                component={TraineeAssessPage}
+              />
+              {/**学员检核结果**/}
+              <Route exact path="/assessResult" component={AssessResultPage} />
+              <Route
+                exact
+                path="/trainees/:traineeId/assessResult"
+                component={AssessResultPage}
+              />
+              {/**学员检核评估报告**/}
+              <Route exact path="/assessReport" component={AssessResultPage} />
+              {/**学员职业检核对照记录**/}
+              <Route
+                exact
+                path="/assessConstrast"
+                component={AssessConstrastPage}
+              />
+              <Route
+                exact
+                path="/trainees/:traineeId/occupations/:occupationId/constrast"
+                component={AssessConstrastPage}
+              />
+              {/**职业列表**/}
               <Route exact path="/occupations" component={OccupationListPage} />
+              {/**职业管理（新建、修改）**/}
               <Route
                 exact
                 path="/occupations/create"
                 component={OccupationEditPage}
               />
+              {/**职业详细信息查看**/}
               <Route
                 exact
-                path="/occupations/:id"
+                path="/occupations/:id/detail"
                 component={OccupationInfoPage}
               />
-              <Route exact path="/assessment" component={AssessmentListPage} />
-              <Route exact path="/assessment/:traineeId" component={TraineeAssessPage} />
-              <Route exact path="/occupation/analyze" component={AssessResult}/>
+              {/**职业分析**/}
+              <Route
+                exact
+                path="/occupationAnalyze"
+                component={OccupationInfoPage}
+              />
+              <Route
+                exact
+                path="/occupations/:id/analyze"
+                component={OccupationInfoPage}
+              />
             </Switch>
           </App>}
       />

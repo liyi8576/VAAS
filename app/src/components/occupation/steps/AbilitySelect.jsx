@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
+import Constants from 'Constants';
 import CSSModules from 'react-css-modules';
 import styles from '../../../style/Occupation.scss';
 import { Card, Checkbox, Tooltip, Row, Col, Tabs, Icon } from 'antd';
@@ -81,10 +82,10 @@ class AbilitySelect extends Component {
   }
 
   render_require() {
-    const { abilities, config } = this.props.ability;
+    const { abilities } = this.props.ability;
     return (
       <CheckboxGroup style={{ float: 'left' }}>
-        {config.map(require =>
+        {Constants.OCCUPATION_ABILITY_REQUIRE.map(require =>
           <Tooltip
             placement="bottom"
             key={`tips-${require.id}`}

@@ -49,7 +49,7 @@ export const { assessment: assessmentListAction } = createActions({
 export const loadAssessments = queryParam => (dispatch, getState) => {
   dispatch(assessmentListAction.fetchAssessmentsRequest());
   axios
-    .get(getApiUrl('assessments'), {
+    .get(getApiUrl('trainees/assessResult'), {
       params: queryParam,
     })
     .then(response => {

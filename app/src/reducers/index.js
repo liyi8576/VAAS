@@ -4,6 +4,7 @@ import trainee from './trainee';
 import occupation from './occupation';
 import ability from './ability/Ability';
 import assessment from './assessment';
+import assessResult from './AssessResult';
 import enumDic from './EnumDic';
 
 export default combineReducers({
@@ -13,4 +14,5 @@ export default combineReducers({
   occupation,
   ability,
   assessment,
+  assessResult,
 });

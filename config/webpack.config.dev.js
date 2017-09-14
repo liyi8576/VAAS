@@ -28,7 +28,8 @@ module.exports = {
       reducers: `${PATHS.appSrc}/reducers`,
       actions: `${PATHS.appSrc}/actions`,
       style:`${PATHS.appSrc}/style`,
-      api:`${PATHS.appSrc}/api`
+      api:`${PATHS.appSrc}/api`,
+      Constants:`${PATHS.appSrc}/Constants`,
     }
   },
   module: {

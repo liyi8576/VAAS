@@ -5,7 +5,7 @@ import Mock from 'mockjs';
  * URL：/api/assessments/{userId}
  * METHOD： GET
  */
-Mock.mock(/\/api\/assessments\/\w+/, {
+Mock.mock(/\/api\/trainees\/\w+\/assess$/, {
   success: true,
   data: {
     traineeId: '@guid',
@@ -35,7 +35,7 @@ Mock.mock(/\/api\/assessments\/\w+/, {
  * URL：/api/assessments/
  * METHOD: GET
  */
-Mock.mock(/\/api\/assessments/, {
+Mock.mock(/\/api\/trainees\/assessResult(\?\S*)*/, {
   success: true,
   data: {
     'list|10': [

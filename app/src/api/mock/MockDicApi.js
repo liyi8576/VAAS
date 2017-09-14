@@ -5,7 +5,7 @@ import Mock from 'mockjs';
  * URL: /api/dics
  * METHOD:GET
  */
-Mock.mock(/\/api\/dics/, {
+Mock.mock(/\/api\/dics$/, {
   success: true,
   data: [
     { group: 'RELATION_SHIP', name: '父子', value: '1' },

@@ -60,9 +60,6 @@ class NavSider extends Component {
         <Menu styleName="menu" theme={'dark'} mode={this.state.mode}
               onClick={this.menuClick}
               selectedKeys={[this.state.selectedKey]}>
-          <Menu.Item key={'menu.index'}>
-            <Icon type="home"/><span>首页</span>
-          </Menu.Item>
           <Menu.Item key={'menu.trainees'}>
             <Link to={'/trainees'}><Icon type="user"/><span>学生管理</span></Link>
           </Menu.Item>
@@ -72,17 +69,17 @@ class NavSider extends Component {
           <Menu.Item key="menu.assessment">
             <Link to={'/assessment'}><Icon type="scan"/><span>适应能力检核</span></Link>
           </Menu.Item>
-          <Menu.Item key="menu.resultQuery">
-            <Link to={'/resultQuery'}><Icon type="search"/><span>检核结果查询</span></Link>
+          <Menu.Item key="menu.assessResult">
+            <Link to={'/assessResult'}><Icon type="search"/><span>检核结果查询</span></Link>
           </Menu.Item>
           <Menu.Item key="menu.occupationAnalyze">
-            <Link to={'/occupation/analyze'}><Icon type="solution"/><span>职业能力分析</span></Link>
+            <Link to={'/occupationAnalyze'}><Icon type="solution"/><span>职业能力分析</span></Link>
           </Menu.Item>
-          <Menu.Item key="menu.constrastQuery">
-            <Link to={'/constrastQuery'}><Icon type="schedule"/><span>对照记录查询</span></Link>
+          <Menu.Item key="menu.assessConstrast">
+            <Link to={'/assessConstrast'}><Icon type="schedule"/><span>对照记录查询</span></Link>
           </Menu.Item>
-          <Menu.Item key="menu.assessmentReport">
-            <Link to={'/assessmentReport'}><Icon type="solution"/><span>评估报告</span></Link>
+          <Menu.Item key="menu.assessReport">
+            <Link to={'/assessReport'}><Icon type="solution"/><span>评估报告</span></Link>
           </Menu.Item>
         </Menu>
       </Sider>

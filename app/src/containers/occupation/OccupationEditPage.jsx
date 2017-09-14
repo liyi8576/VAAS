@@ -22,7 +22,6 @@ class OccupationEditPage extends Component {
   }
   componentDidMount() {
     this.props.loadAbilities();
-    this.props.getAbilitiesConfig();
     if (this.props.editType === 'MODIFY') {
       this.props.loadOccupation(this.props.occupationId);
     }
@@ -107,10 +106,6 @@ const mapDispatchToProps = dispatch => ({
   ),
   resetOccupationState: bindActionCreators(
     occupationActions.resetOccupationState,
-    dispatch,
-  ),
-  getAbilitiesConfig: bindActionCreators(
-    abilityActions.getAbilitiesConfig,
     dispatch,
   ),
 });

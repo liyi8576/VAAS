@@ -7,7 +7,7 @@ const abilityIds=['A1','A2','A3','A4','A5','B1','B2','B3','B4','B5','B6','C1','C
  * URL: /api/occupations/{occupationId}
  * METHOD:GET
  */
-Mock.mock(/\/api\/occupations\/\w+/, {
+Mock.mock(/\/api\/occupations\/\w+$/, {
   success: true,
   data: {
     id: '@id',
@@ -23,7 +23,7 @@ Mock.mock(/\/api\/occupations\/\w+/, {
  * URL: /api/occupations/
  * METHOD:GET
  */
-Mock.mock(/\/api\/occupations/, {
+Mock.mock(/\/api\/occupations(\?\S*)*$/, {
   success: true,
   data: {
     'list|10': [

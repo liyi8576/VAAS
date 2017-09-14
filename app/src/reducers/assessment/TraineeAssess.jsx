@@ -42,7 +42,7 @@ export const { assessment: traineeAssessAction } = createActions({
 export const loadTraineeAssess = traineeId => (dispatch, getState) => {
   dispatch(traineeAssessAction.fetchTraineeAssessRequest());
   axios
-    .get(getApiUrl(`assessments/${traineeId}`), {
+    .get(getApiUrl(`trainees/${traineeId}/assess`), {
       params: { traineeId: traineeId },
     })
     .then(response => {
@@ -62,13 +62,4 @@ export const loadTraineeAssess = traineeId => (dispatch, getState) => {
     .catch(function(err) {
       dispatch(traineeAssessAction.fetchTraineeAssessFailure(err.message));
     });
-};
-
-export const assessAbility = (traineeId, abilityId, option) => (
-  dispatch,
-  getState,
-) => {
-  axios.put(getApiUrl(`assessments/${traineeId}/${abilityId}`), {
-    params: { traineeId: traineeId },
-  });
 };

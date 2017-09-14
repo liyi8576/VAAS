@@ -7,7 +7,7 @@ import _ from 'lodash';
  * URL: /api/abilities/options
  * METHOD:GET
  */
-Mock.mock(/\/api\/abilities\/options/, {
+Mock.mock(/\/api\/abilities\/options$/, {
   success: true,
   data: function() {
     return _.sampleSize(
@@ -21,7 +21,7 @@ Mock.mock(/\/api\/abilities\/options/, {
  * URL: /api/abilities
  * METHOD:GET
  */
-Mock.mock(/\/api\/abilities/, {
+Mock.mock(/\/api\/abilities$/, {
   success: true,
   data: [
     { id: 'A1', name: '出席', domain: '101' },

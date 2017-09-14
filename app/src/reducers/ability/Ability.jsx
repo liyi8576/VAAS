@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { getApiUrl } from 'api';
 import _ from 'lodash';
+import Constants from 'Constants';
 import { createActions, handleActions } from 'redux-actions';
 
 export const types = {
@@ -9,12 +10,10 @@ export const types = {
   FETCH_ABILITIES_OPTIONS_REQUEST: 'ABILITY/FETCH_ABILITIES_OPTIONS_REQUEST',
   FETCH_ABILITIES_OPTIONS_SUCCESS: 'ABILITY/FETCH_ABILITIES_OPTIONS_SUCCESS',
   FETCH_ABILITIES_OPTIONS_FAILURE: 'ABILITY/FETCH_ABILITIES_OPTIONS_FAILURE',
-  GET_ABILITIES_CONFIG: 'ABILITY/GET_ABILITIES_CONFIG',
 };
 export const initialState = {
   domain: {},
   abilities: {},
-  config: {},
   error: '',
   options: {},
 };
@@ -43,10 +42,6 @@ export default handleActions(
       error: action.payload,
       fetch_options_loading: false,
     }),
-    [types.GET_ABILITIES_CONFIG]: (state, action) => ({
-      ...state,
-      config: action.payload,
-    }),
   },
   initialState,
 );
@@ -59,32 +54,14 @@ export const { ability: abilityActions } = createActions({
   [types.FETCH_ABILITIES_OPTIONS_REQUEST]: undefined,
   [types.FETCH_ABILITIES_OPTIONS_SUCCESS]: options => options,
   [types.FETCH_ABILITIES_OPTIONS_FAILURE]: error => error,
-  [types.GET_ABILITIES_CONFIG]: config => getAbilitiesConfig(),
 });
 
-const getAbilitiesConfig = () => [
-  {
-    name: '需自行处理交通',
-    id: 'traffic',
-    necessaryAbility: ['C22'],
-  },
-  {
-    name: '需自行处理吃饭',
-    id: 'eat',
-    necessaryAbility: ['C1', 'C16', 'C17', 'C18'],
-  },
-  {
-    name: '需自行处理住宿',
-    id: 'lodge',
-    necessaryAbility: ['C2', 'C3', 'C11', 'C16', 'C17', 'C18', 'C29'],
-  },
-];
-const domainConfig = {
-  '101': { name: '工作人格', icon: 'heart-o' },
-  '102': { name: '职业能力', icon: 'tool' },
-  '103': { name: '社区独立能力', icon: 'team' },
-};
 export const loadAbilities = () => (dispatch, getState) => {
+  const state = getState();
+  const { abilities } = state.ability || {};
+  if (abilities && Object.keys(abilities).length > 0) {
+    return;
+  }
   axios
     .get(getApiUrl(`abilities`))
     .then(response => {
@@ -95,7 +72,7 @@ export const loadAbilities = () => (dispatch, getState) => {
         (obj, abilities, key) => {
           obj[key] = {
             id: key,
-            ...domainConfig[key],
+            ...Constants.DOMAIN_CONFIG[key],
             abilities: _.map(abilities, 'id'),
           };
           return obj;

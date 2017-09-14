@@ -88,7 +88,7 @@ const configColumns = onActionTrigger => {
       width: 100,
       key: 'action',
       render: (text, record) =>
-        <Link to={`/assessment/${record.traineeId}`}>开始检核</Link>,
+        <Link to={`/trainees/${record.traineeId}/assess`}>开始检核</Link>,
     },
   ];
 };
