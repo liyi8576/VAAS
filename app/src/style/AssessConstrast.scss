@@ -13,11 +13,20 @@
   }
 }
 .constrastTable {
+  :global(.col-result){
+	text-align:center;
+  }
   :global(.th-necessary-col){
 	background-color: rgba(65, 146, 241, 0.1);
   }
   :global(.th-secondary-col){
 	background-color: rgba(255,152,0, 0.1);
+  }
+  :global(.ant-table-tbody > tr:hover > td.th-necessary-col) {
+	background-color: rgba(65, 146, 241, 0.2);
+  }
+  :global(.ant-table-tbody > tr:hover > td.th-secondary-col) {
+	background-color: rgba(255,152,0,0.2);
   }
   :global(.ant-table-thead > tr > th.thg-necessary) {
     //background-color: #e65100;

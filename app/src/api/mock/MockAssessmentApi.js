@@ -1,9 +1,10 @@
 import Mock from 'mockjs';
 
 /**
- * 查询用户检核统计结果
- * URL：/api/assessments/{userId}
+ * 查询学生检核统计结果
+ * URL：/api/trainees/{traineeId}/assessStat
  * METHOD： GET
+ * RETURN： {success:true, data:{traineeId,traineeName,assessor,assessDate,assessCount,currentAbility,assessResult:[]}}
  */
 Mock.mock(/\/api\/trainees\/\w+\/assess$/, {
   success: true,
@@ -31,9 +32,11 @@ Mock.mock(/\/api\/trainees\/\w+\/assess$/, {
 });
 
 /**
- * 查询用户检核结果列表
- * URL：/api/assessments/
+ * 查询学生检核结果列表
+ * URL：/api/trainees/assessResult
  * METHOD: GET
+ * PARAMS: offset,pageSize、traineeName
+ * RETURN ： {success:true, data:{list:[],total:10}}
  */
 Mock.mock(/\/api\/trainees\/assessResult(\?\S*)*/, {
   success: true,

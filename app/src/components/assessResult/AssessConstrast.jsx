@@ -45,9 +45,9 @@ const AssessConstrast = ({
     return (
       <ColumnGroup title={title} className={`thg-${type}-sub`}>
         <Column
-          className={`th-${type}-col`}
+          className={`th-${type}-col col-ability`}
           title="能力项"
-          width={120}
+          width={100}
           dataIndex={`${type}_${domainId}`}
           key={`cg-${type}-${domainId}-ability`}
           render={(text, record) => {
@@ -55,9 +55,9 @@ const AssessConstrast = ({
           }}
         />
         <Column
-          className={`th-${type}-col`}
+          className={`th-${type}-col col-result`}
           title="结果"
-          width={40}
+          width={60}
           dataIndex={`${type}_${domainId}`}
           key={`cg-${type}-${domainId}-result`}
           render={(text, record) => {
@@ -108,7 +108,7 @@ const AssessConstrast = ({
         message={render_info()}
         type="info"
         showIcon
-        style={{ marginTop: '10px' }}
+        style={{ marginTop: '15px' }}
       />
     </div>
   );

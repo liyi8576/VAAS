@@ -3,9 +3,10 @@ import { AbilityList } from './AbilityData';
 import _ from 'lodash';
 
 /**
- * 获取能力项选项（能力项详细信息），分页获取
- * URL: /api/abilities/options
- * METHOD:GET
+ * 获取能力项选项（能力项详细信息），分页获取(先全量获取）
+ * URL:  /api/abilities/options
+ * METHOD: GET
+ * RETURN: {success:true,data:[id:'',name:'',domain:'',description:'',assessMethod:'',optionA:'',optionB:'',optionC:'',optionD:'']}
  */
 Mock.mock(/\/api\/abilities\/options$/, {
   success: true,
@@ -20,6 +21,7 @@ Mock.mock(/\/api\/abilities\/options$/, {
  * 获取全部能力项列表（简要信息）
  * URL: /api/abilities
  * METHOD:GET
+ * RETURN: {success:true,data:[{id:'',name:'',domain:''}]}
  */
 Mock.mock(/\/api\/abilities$/, {
   success: true,

@@ -47,6 +47,7 @@ Mock.mock(/\/api\/trainees\/\S+$/, {
 /**
  * 获取学员列表
  * URL: /api/trainees
+ * PARAMS: offset,pageSize、traineeName
  * METHOD:GET
  */
 Mock.mock(/\/api\/trainees(\?\S*)*$/, {

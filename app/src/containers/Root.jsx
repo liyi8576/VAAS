@@ -13,10 +13,14 @@ import {
   OccupationListPage,
   OccupationInfoPage,
   OccupationEditPage,
+  OccupationAnalyzePage,
 } from 'containers/occupation';
 import { AssessmentListPage, TraineeAssessPage } from 'containers/assessment';
-import AssessResultPage from 'containers/assessResult/AssessResultPage';
-import AssessConstrastPage from 'containers/assessResult/AssessConstrastPage';
+import {
+  AssessResultPage,
+  AssessConstrastPage,
+  AssessReportPage,
+} from 'containers/assessResult';
 
 const Root = ({ store, history }) =>
   <Provider store={store}>
@@ -55,7 +59,7 @@ const Root = ({ store, history }) =>
                 component={AssessResultPage}
               />
               {/**学员检核评估报告**/}
-              <Route exact path="/assessReport" component={AssessResultPage} />
+              <Route exact path="/assessReport" component={AssessReportPage} />
               {/**学员职业检核对照记录**/}
               <Route
                 exact
@@ -85,12 +89,12 @@ const Root = ({ store, history }) =>
               <Route
                 exact
                 path="/occupationAnalyze"
-                component={OccupationInfoPage}
+                component={OccupationAnalyzePage}
               />
               <Route
                 exact
                 path="/occupations/:id/analyze"
-                component={OccupationInfoPage}
+                component={OccupationAnalyzePage}
               />
             </Switch>
           </App>}

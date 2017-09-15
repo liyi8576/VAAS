@@ -224,3 +224,9 @@
     float: left;
   }
 }
+:global(.table-col-center){
+  text-align:center;
+}
+:global(.ant-table-thead > tr > th.table-col-center){
+  text-align:center;
+}

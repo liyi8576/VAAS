@@ -6,6 +6,7 @@ const abilityIds=['A1','A2','A3','A4','A5','B1','B2','B3','B4','B5','B6','C1','C
  * 获取职业详细信息
  * URL: /api/occupations/{occupationId}
  * METHOD:GET
+ * RETURN: {success:true,data:{list:[id:'',name:'',desc:'',necessaryAbility:[{abilityId:'',criterionScore:''}],secondaryAbility:[]],total:10}
  */
 Mock.mock(/\/api\/occupations\/\w+$/, {
   success: true,
@@ -21,7 +22,9 @@ Mock.mock(/\/api\/occupations\/\w+$/, {
 /**
  * 获取职业列表
  * URL: /api/occupations/
+ * PARAMS: offset,pageSize、occupationName
  * METHOD:GET
+ * RETURN: {success:true,data:{list:[id:'',name:'',desc:'',necessaryAbility:'A1,A2',secondaryAbility:'C1,C3'],total:10}
  */
 Mock.mock(/\/api\/occupations(\?\S*)*$/, {
   success: true,
