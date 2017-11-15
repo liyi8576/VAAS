@@ -95,7 +95,7 @@ export const createTrainee = trainee => dispatch => {
 	console.log(trainee);
 	console.dir(trainee);
   axios
-    .post(getApiUrl(`trainees`), trainee )
+    .post(getApiUrl(`trainees`), { trainee })
     .then(response => {
       const result = response.data;
       dispatch(
@@ -119,7 +119,7 @@ export const createTrainee = trainee => dispatch => {
 
 export const modifyTrainee = (traineeId, trainee) => dispatch => {
   axios
-    .put(getApiUrl(`trainees/${traineeId}`),trainee)
+    .put(getApiUrl(`trainees/${traineeId}`), { trainee })
     .then(response => {
       const result = response.data;
       dispatch(

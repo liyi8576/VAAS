@@ -96,7 +96,7 @@ const TraineeInfo = ({ trainee, dicHelper: { getDicName } }) => {
         <Row>
           <Col span="5">是否接受过职业训练:</Col>
           <Col span="19">
-            {trainee.haveTrained === 1 ? '是' : '否'}
+            {trainee.haveTrained}
           </Col>
         </Row>
         <Row>
@@ -110,7 +110,7 @@ const TraineeInfo = ({ trainee, dicHelper: { getDicName } }) => {
         <Row>
           <Col span="5">是否有工作经验:</Col>
           <Col span="19">
-            {trainee.isWorked === 1 ? '是' : '否'}
+            {trainee.isWorked}
           </Col>
         </Row>
         <Row>
