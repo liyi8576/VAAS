@@ -34,9 +34,15 @@
     "react/jsx-pascal-case": 1,
     "jsx-a11y/href-no-hash": "off",
     "react/jsx-uses-react": "error",
-    "react/jsx-uses-vars": "error"
+    "react/jsx-uses-vars": "error",
+    "prettier/prettier": ["error", {
+      "printWidth": 100,
+      "singleQuote": true,
+      "trailingComma": "es5"
+    }]
   },
   "plugins": [
-    "react"
+    "react",
+    "prettier"
   ]
 }

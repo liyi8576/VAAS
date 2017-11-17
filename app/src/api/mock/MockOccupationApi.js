@@ -14,8 +14,8 @@ Mock.mock(/\/api\/occupations\/\w+$/, {
     id: '@id',
     'name|1': ['程序员', '快递员', '服务员', '厨师', '保洁', '保姆', '家教'],
     desc: '@cparagraph',
-    'necessaryAbility|5': [{'abilityId|1':abilityIds,'criterionScore|1':['A','B','C']}], //必要能力ID数组
-    'secondaryAbility|5': [{'abilityId|1':abilityIds,'criterionScore|1':['A','B','C']}], // 次要能力ID数组
+    'necessaryAbility': [{'abilityId':'A1','criterionScore|1':['A','B','C']},{'abilityId':'A2','criterionScore|1':['A','B','C']}], //必要能力ID数组
+    'secondaryAbility': [{'abilityId':'C1','criterionScore|1':['A','B','C']}], // 次要能力ID数组
   },
 });
 

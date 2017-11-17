@@ -13,7 +13,6 @@ const AssessmentList = ({
   onChangeTable = () => {},
 }) => {
   const TabPane = Tabs.TabPane;
-  console.log(assessmentList)
   return (
     <div className="content-inner">
       <Tabs defaultActiveKey="1" size="small">

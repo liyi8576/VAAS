@@ -45,17 +45,20 @@ class AbilitySelect extends Component {
       this.selectedBox.scrollHeight - this.selectedBox.clientHeight;
   }
   getSelectResult() {
+    const { necessaryAbility, secondaryAbility } = this.props.occupation;
     return {
       necessaryAbility: this.state.necessary.map(id => ({
         abilityId: id,
-        criterionScore: '',
+        criterionScore: _.find(necessaryAbility, { abilityId: id })
+          .criterionScore,
       })),
       secondaryAbility: _.without(
         this.state.selected,
         ...this.state.necessary,
       ).map(id => ({
         abilityId: id,
-        criterionScore: '',
+        criterionScore: _.find(secondaryAbility, { abilityId: id })
+          .criterionScore,
       })),
     };
   }

@@ -54,7 +54,7 @@ const OccupationInfo = ({ occupation, ability: { domain, abilities } }) => {
             simple
             size="small"
             pagination={false}
-            dataSource={occupation.necessaryList || []}
+            dataSource={occupation.necessaryAbility || []}
             rowKey={(record, idx) => `n-${record.abilityId}_${idx}`}
             columns={columns}
           />
@@ -76,7 +76,7 @@ const OccupationInfo = ({ occupation, ability: { domain, abilities } }) => {
             size="small"
             pagination={false}
             rowKey={(record, idx) => `s-${record.abilityId}_${idx}`}
-            dataSource={occupation.secondaryList || []}
+            dataSource={occupation.secondaryAbility || []}
             columns={columns}
           />
         </Card>

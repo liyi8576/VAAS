@@ -92,8 +92,6 @@ export const loadTrainee = traineeId => dispatch => {
 };
 
 export const createTrainee = trainee => dispatch => {
-	console.log(trainee);
-	console.dir(trainee);
   axios
     .post(getApiUrl(`trainees`), trainee )
     .then(response => {
