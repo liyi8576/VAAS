@@ -143,7 +143,7 @@ const configPagination = pagination => {
   return {
     current: pagination.current || 1,
     total: pagination.total || 0,
-    pageSize: pagination.pageSize || 5,
+    pageSize: pagination.pageSize || 10,
     showTotal() {
       return `共 ${pagination.total} 条记录`;
     },

@@ -37,15 +37,6 @@ const AssessScoreSet = ({}) => {
       )
     },
   ];
-  const dataSource = [{
-    id: '1001',
-    name: '礼貌',
-    criterion_score: 'A'
-  }, {
-    id: '1002',
-    name: '出席',
-    criterion_score: 'B'
-  }];
   return (
     <div styleName="form">
       <Card
@@ -58,7 +49,7 @@ const AssessScoreSet = ({}) => {
           simple
           pagination={false}
           rowKey={record => record.id}
-          dataSource={dataSource}
+          dataSource={this.dataSource_n}
           columns={columns}
         />
       </Card>
@@ -73,11 +64,15 @@ const AssessScoreSet = ({}) => {
           pagination={false}
           rowKey={record => record.id}
           columns={columns}
+          dataSource={this.dataSource_s}
         />
       </Card>
     </div>
   )
 };
 AssessScoreSet.PropTypes = {};
-AssessScoreSet.defaultProps = {};
+AssessScoreSet.defaultProps = {
+	dataSource_s:[],
+	dataSource_n:[]
+};
 export default CSSModules(AssessScoreSet, styles)
