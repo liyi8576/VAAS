@@ -6,7 +6,7 @@
   "scripts": {
     "clean": "rimraf ./app/build",
     "build:dll": "cross-env NODE_ENV=development BABEL_ENV=development node --trace-warnings -r babel-register ./node_modules/.bin/webpack  --config ./config/webpack.dll.config.js",
-    "build:dev": "cross-env NODE_ENV=development BABEL_ENV=development node --trace-warnings -r babel-register ./config/webpack.devServer.js",
+    "build:dev": "cross-env NODE_ENV=development BABEL_ENV=development node $NODE_DEBUG_OPTION --trace-warnings -r babel-register ./config/webpack.devServer.js",
     "build:prod": "cross-env NODE_ENV=production BABEL_ENV=production node --trace-warnings -r babel-register ./node_modules/.bin/webpack --config ./config/webpack.config.prod.js",
     "start": "npm run build:dll && npm run build:dev",
     "build": "npm run clean && npm run build:prod",

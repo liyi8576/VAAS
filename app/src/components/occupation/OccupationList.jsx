@@ -116,7 +116,7 @@ const configColumns = (domain = {}, abilities = {}, onActionTrigger) => {
       dataIndex: 'secondaryAbility',
       key: 'secondaryAbility',
       render: (text, record) => {
-        return (record.necessaryAbility || [])
+        return (record.secondaryAbility || [])
           .map(abilityId => ((abilities[abilityId]&&abilities[abilityId].name)||abilityId))
           .join(' , ');
       },

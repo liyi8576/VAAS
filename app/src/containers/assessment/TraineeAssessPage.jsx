@@ -16,6 +16,7 @@ class TraineeAssessPage extends Component {
     };
   }
   componentDidMount() {
+  	console.log(this.props.traineeId)
     this.props.loadTraineeAssess();
     this.props.loadAbilities();
   }

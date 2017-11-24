@@ -47,19 +47,21 @@ class AbilitySelect extends Component {
   getSelectResult() {
     const { necessaryAbility, secondaryAbility } = this.props.occupation;
     return {
-      necessaryAbility: this.state.necessary.map(id => ({
+      necessaryAbility: this.state.necessary.map(id => {
+       	const obj= _.find(necessaryAbility, { abilityId: id }) ; 
+			return{
         abilityId: id,
-        criterionScore: _.find(necessaryAbility, { abilityId: id })
-          .criterionScore,
-      })),
+        criterionScore:obj&&obj['criterionScore'],
+      }}),
       secondaryAbility: _.without(
         this.state.selected,
         ...this.state.necessary,
-      ).map(id => ({
+      ).map(id => {
+      const obj= _.find(necessaryAbility, { abilityId: id }) ;
+      return{
         abilityId: id,
-        criterionScore: _.find(secondaryAbility, { abilityId: id })
-          .criterionScore,
-      })),
+        criterionScore:obj&&obj['criterionScore'],
+      }}),
     };
   }
   selectAbility(id) {

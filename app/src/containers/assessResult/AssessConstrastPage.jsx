@@ -15,7 +15,7 @@ class AssessConstrastPage extends Component {
   }
   componentDidMount() {
     this.props.loadAbilities();
-    this.props.loadConstrastResult('1001', '2001');
+    this.props.loadConstrastResult('1', '6');
   }
   render() {
     return (

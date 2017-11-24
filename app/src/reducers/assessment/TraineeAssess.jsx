@@ -63,3 +63,4 @@ export const loadTraineeAssess = traineeId => (dispatch, getState) => {
       dispatch(traineeAssessAction.fetchTraineeAssessFailure(err.message));
     });
 };
+

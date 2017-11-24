@@ -93,7 +93,7 @@ export const loadOccupation = occupationId => dispatch => {
 
 export const createOccupation = occupation => dispatch => {
   axios
-    .post(getApiUrl(`occupations`), { occupation })
+    .post(getApiUrl(`occupations`), occupation)
     .then(response => {
       const result = response.data;
       dispatch(
@@ -117,7 +117,7 @@ export const createOccupation = occupation => dispatch => {
 
 export const modifyOccupation = (occupationId, occupation) => dispatch => {
   axios
-    .put(getApiUrl(`occupations/${occupationId}`), { occupation })
+    .put(getApiUrl(`occupations/${occupationId}`), occupation)
     .then(response => {
       const result = response.data;
       dispatch(
