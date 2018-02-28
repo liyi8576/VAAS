@@ -1,48 +1,74 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import Assessment from 'components/assessment/Assessment';
+import AssessHead from 'components/assessment/assess/AssessHead';
+import AssessBody from 'components/assessment/assess/AssessBody';
 import { bindActionCreators } from 'redux';
+import {
+  loadTraineeAssess,
+  handleAssessData,
+  saveAssessItem,
+} from 'reducers/assessment/TraineeAssess';
 import { loadAbilities } from 'reducers/ability/Ability';
-import { loadTraineeAssess } from 'reducers/assessment/TraineeAssess';
 
 class TraineeAssessPage extends Component {
   constructor(props) {
     super();
-    this.state = {
-      assessOptions: [],
-      assessProcess: 0,
-      assessOffset: 0,
-    };
   }
   componentDidMount() {
-  	console.log(this.props.traineeId)
-    this.props.loadTraineeAssess();
+    // 获取学员检核统计结果
+    this.props.loadTraineeAssess(this.props.traineeId);
+    //获取所有的能力项
     this.props.loadAbilities();
   }
+  saveAssessItem = (abilityId, assessOption, callback) => {
+    this.props.saveAssessItem(this.props.traineeId, abilityId, assessOption, callback);
+  };
   render() {
     return (
-      <Assessment
-        ability={this.props.ability}
-        options={this.props.options}
-        traineeAssess={this.props.traineeAssess}
-      />
+      <div className={'assessment'}>
+        <AssessHead assessData={this.props.assessData} traineeId={this.props.traineeId} />
+        {this.props.isLoading ? (
+          <AssessBody isLoading />
+        ) : (
+          <AssessBody
+            traineeId={this.props.traineeId}
+            abilities={this.props.abilities}
+            domain={this.props.domain}
+            assessResult={this.props.assessData.assessResult}
+            isLoading={false}
+            saving={this.props.saving}
+            onSaveAssess={this.saveAssessItem}
+          />
+        )}
+      </div>
     );
   }
 }
 
-TraineeAssessPage.PropTypes = {};
-TraineeAssessPage.defaultProps = {};
+TraineeAssessPage.PropTypes = {
+  traineeId: PropTypes.string,
+};
+TraineeAssessPage.defaultProps = {
+  loading_abilities: true,
+  loading_assessResult: true,
+  saving: false,
+};
 const mapStateToProps = state => {
   const { traineeAssess } = state.assessment || {};
+  const { assessData, loading_trainAssess, saving } = traineeAssess || {};
+  const { abilities, domain, loading_abilities } = state.ability || {};
   return {
-    loading: traineeAssess && traineeAssess.isLoading === true,
-    ability: state.ability || {},
-    traineeAssess: (traineeAssess && traineeAssess.traineeAssess) || {},
+    isLoading: loading_trainAssess || loading_abilities,
+    saving: saving,
+    assessData: handleAssessData(assessData, state),
+    abilities: abilities,
+    domain: domain,
   };
 };
 const mapDispatchToProps = dispatch => ({
-  loadAbilities: bindActionCreators(loadAbilities, dispatch),
   loadTraineeAssess: bindActionCreators(loadTraineeAssess, dispatch),
+  loadAbilities: bindActionCreators(loadAbilities, dispatch),
+  saveAssessItem: bindActionCreators(saveAssessItem, dispatch),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(TraineeAssessPage);

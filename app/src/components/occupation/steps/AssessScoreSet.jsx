@@ -17,6 +17,7 @@ class AssessScoreSet extends Component {
   componentWillMount() {
     if (this.props.occupation) {
       const { necessaryAbility, secondaryAbility } = this.props.occupation;
+      console.dir(this.props.occupation);
       this.setState({
         necessaryAbility: necessaryAbility,
         secondaryAbility: secondaryAbility,
@@ -30,17 +31,23 @@ class AssessScoreSet extends Component {
     this.props.setGetFieldValuesFunc(() => this.state);
   }
   changeScore = (id, score) => {
-    let obj = _.find(this.state.necessaryAbility, { abilityId: id });
-    if (!obj) {
-      obj = _.find(this.state.secondaryAbility, { abilityId: id });
+    let idx = _.findIndex(this.state.necessaryAbility, { abilityId: id });
+    if (idx !== -1) {
+      const ary = [...this.state.necessaryAbility];
+      ary[idx]['criterionScore'] = score;
+      this.setState({
+        necessaryAbility: ary,
+      });
+    } else {
+      idx = _.findIndex(this.state.secondaryAbility, { abilityId: id });
+      if (idx !== -1) {
+        const ary = [...this.state.secondaryAbility];
+        ary[idx]['criterionScore'] = score;
+        this.setState({
+          secondaryAbility: ary,
+        });
+      }
     }
-    if (obj) {
-      obj['criterionScore'] = score;
-    }
-    this.setState({
-      necessaryAbility: this.state.necessaryAbility,
-      secondaryAbility: this.state.secondaryAbility,
-    });
   };
   render() {
     const columns = [

@@ -27,11 +27,7 @@ const TraineeList = ({
     <div className="content-inner">
       <Row type="flex" justify="space-between" style={{ marginBottom: '10px' }}>
         <Col>
-          <SearchBar
-            {...searchCond}
-            onSearch={onSearch}
-            onChangeSearchTxt={onChangeSearchTxt}
-          />
+          <SearchBar {...searchCond} onSearch={onSearch} onChangeSearchTxt={onChangeSearchTxt} />
         </Col>
         <Col>
           <Button type="primary" icon="plus" onClick={tiggerCreateAction}>
@@ -84,12 +80,13 @@ const configColumns = onActionTrigger => {
       title: '姓名',
       dataIndex: 'name',
       key: 'name',
-      render: (text, record) =>
+      render: (text, record) => (
         <span>
           <a href="#" onClick={() => onActionTrigger('VIEW', record)}>
             {text}
           </a>
-        </span>,
+        </span>
+      ),
     },
     {
       title: '性别',
@@ -116,12 +113,12 @@ const configColumns = onActionTrigger => {
       title: '住址',
       dataIndex: 'address',
       key: 'address',
-    },,
+    },
     {
       title: '操作',
       width: 100,
       key: 'action',
-      render: (text, record) =>
+      render: (text, record) => (
         <DropOption
           onMenuClick={e => handleAction(record, e)}
           menuOptions={[
@@ -130,7 +127,8 @@ const configColumns = onActionTrigger => {
             { key: 'DELETE', name: '删除' },
             { key: 'SHOW_RECOMMEND', name: '推荐列表' },
           ]}
-        />,
+        />
+      ),
     },
   ];
 };

@@ -8,7 +8,7 @@ import createHistory from 'history/createBrowserHistory';
 import configureStore from './store/configureStore';
 import Root from './containers/Root';
 
-//import 'api/mock';
+import 'api/mock';
 
 const store = configureStore();
 const history = createHistory();

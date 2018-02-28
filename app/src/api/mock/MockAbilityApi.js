@@ -11,9 +11,8 @@ import _ from 'lodash';
 Mock.mock(/\/api\/abilities\/options$/, {
   success: true,
   data: function() {
-    return _.sampleSize(
-      AbilityList, 10
-    );
+    // return _.sampleSize(AbilityList, 10);
+    return AbilityList;
   },
 });
 
@@ -161,3 +160,9 @@ Mock.mock(/\/api\/abilities$/, {
   ],
 });
 
+Mock.mock(/\/api\/abilities\/\w+$/, {
+  success: true,
+  data: function() {
+    return _.sampleSize(AbilityList, 10)[0];
+  },
+});

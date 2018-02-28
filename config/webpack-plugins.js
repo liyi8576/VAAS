@@ -11,8 +11,7 @@ const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
 // 使用 extract-text-webpack-plugin就可以把css从js中独立抽离出来
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 // 分析webpack bundle 图形化展示
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
-  .BundleAnalyzerPlugin;
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 // 显示友好的错误提示
 const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
 const ManifestPlugin = require('webpack-manifest-plugin');

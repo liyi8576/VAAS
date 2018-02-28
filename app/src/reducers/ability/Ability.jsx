@@ -5,47 +5,76 @@ import Constants from 'Constants';
 import { createActions, handleActions } from 'redux-actions';
 
 export const types = {
+  FETCH_ABILITIES_REQUEST: 'ABILITY/FETCH_ABILITIES_REQUEST',
   FETCH_ABILITIES_SUCCESS: 'ABILITY/FETCH_ABILITIES_SUCCESS',
   FETCH_ABILITIES_FAILURE: 'ABILITY/FETCH_ABILITIES_FAILURE',
   FETCH_ABILITIES_OPTIONS_REQUEST: 'ABILITY/FETCH_ABILITIES_OPTIONS_REQUEST',
   FETCH_ABILITIES_OPTIONS_SUCCESS: 'ABILITY/FETCH_ABILITIES_OPTIONS_SUCCESS',
   FETCH_ABILITIES_OPTIONS_FAILURE: 'ABILITY/FETCH_ABILITIES_OPTIONS_FAILURE',
+  FETCH_ABILITY_DETAIL_REQUEST: 'ABILITY/FETCH_ABILITY_DETAIL_REQUEST',
+  FETCH_ABILITY_DETAIL_SUCCESS: 'ABILITY/FETCH_ABILITY_DETAIL_SUCCESS',
+  FETCH_ABILITY_DETAIL_FAILURE: 'ABILITY/FETCH_ABILITY_DETAIL_FAILURE',
 };
 export const initialState = {
   domain: {},
   abilities: {},
   error: '',
+  abilityDetail: {},
   options: {},
+  loading_abilities: true,
+  loading_abilityOptions: true,
+  loading_abilityDetail: true,
 };
 export default handleActions(
   {
+    [types.FETCH_ABILITIES_REQUEST]: (state, action) => ({
+      ...state,
+      loading_abilities: true,
+    }),
     [types.FETCH_ABILITIES_SUCCESS]: (state, action) => ({
       ...state,
       domain: action.payload.domain,
       abilities: action.payload.abilities,
+      loading_abilities: false,
     }),
     [types.FETCH_ABILITIES_FAILURE]: (state, action) => ({
       ...state,
       error: action.payload,
+      loading_abilities: false,
     }),
-    [types.FETCH_ABILITIES_OPTIONS_SUCCESS]: (state, action) => ({
+    [types.FETCH_ABILITIES_OPTIONS_REQUEST]: (state, action) => ({
       ...state,
-      fetch_options_loading: true,
+      loading_abilityOptions: true,
     }),
     [types.FETCH_ABILITIES_OPTIONS_SUCCESS]: (state, action) => ({
       ...state,
       options: action.payload,
-      fetch_options_loading: false,
+      loading_abilityOptions: false,
     }),
     [types.FETCH_ABILITIES_OPTIONS_FAILURE]: (state, action) => ({
       ...state,
       error: action.payload,
-      fetch_options_loading: false,
+      loading_abilityOptions: false,
+    }),
+    [types.FETCH_ABILITY_DETAIL_REQUEST]: (state, action) => ({
+      ...state,
+      loading_abilityDetail: true,
+    }),
+    [types.FETCH_ABILITY_DETAIL_SUCCESS]: (state, action) => ({
+      ...state,
+      abilityDetail: action.payload,
+      loading_abilityDetail: false,
+    }),
+    [types.FETCH_ABILITY_DETAIL_FAILURE]: (state, action) => ({
+      ...state,
+      error: action.payload,
+      loading_abilityDetail: false,
     }),
   },
-  initialState,
+  initialState
 );
 export const { ability: abilityActions } = createActions({
+  [types.FETCH_ABILITIES_REQUEST]: undefined,
   [types.FETCH_ABILITIES_SUCCESS]: (domain, abilities) => ({
     domain,
     abilities,
@@ -54,14 +83,22 @@ export const { ability: abilityActions } = createActions({
   [types.FETCH_ABILITIES_OPTIONS_REQUEST]: undefined,
   [types.FETCH_ABILITIES_OPTIONS_SUCCESS]: options => options,
   [types.FETCH_ABILITIES_OPTIONS_FAILURE]: error => error,
+  [types.FETCH_ABILITY_DETAIL_REQUEST]: undefined,
+  [types.FETCH_ABILITY_DETAIL_SUCCESS]: options => options,
+  [types.FETCH_ABILITY_DETAIL_FAILURE]: error => error,
 });
 
+/**
+ * 加载所有的检核能力项
+ * @return {function(*, *)}
+ */
 export const loadAbilities = () => (dispatch, getState) => {
   const state = getState();
   const { abilities } = state.ability || {};
   if (abilities && Object.keys(abilities).length > 0) {
     return;
   }
+  dispatch(abilityActions.fetchAbilitiesRequest());
   axios
     .get(getApiUrl(`abilities`))
     .then(response => {
@@ -77,7 +114,7 @@ export const loadAbilities = () => (dispatch, getState) => {
           };
           return obj;
         },
-        {},
+        {}
       );
       const abilities = (result.data || []).reduce((obj, ability) => {
         obj[ability.id] = ability;
@@ -90,10 +127,14 @@ export const loadAbilities = () => (dispatch, getState) => {
     });
 };
 
-export const loadAbilityOptions = (abilityId, offset, limit) => (
-  dispatch,
-  getState,
-) => {
+/**
+ * 加载所有的能力项包含检核选项
+ * @param abilityId
+ * @param offset
+ * @param limit
+ * @return {function(*, *)}
+ */
+export const loadAbilityOptions = (abilityId, offset, limit) => (dispatch, getState) => {
   dispatch(abilityActions.fetchAbilitiesOptionsRequest());
   axios
     .get(getApiUrl(`abilities/options`))
@@ -106,11 +147,29 @@ export const loadAbilityOptions = (abilityId, offset, limit) => (
           obj[key] = option[0];
           return obj;
         },
-        {},
+        {}
       );
       dispatch(abilityActions.fetchAbilitiesOptionsSuccess(abilityOption));
     })
     .catch(function(err) {
       dispatch(abilityActions.fetchAbilitiesOptionsFailure(err.message));
+    });
+};
+
+/**
+ * 根据能力项编码,获取能力项明细信息
+ * @param abilityId
+ * @return {function(*, *)}
+ */
+export const loadAbilityDetail = abilityId => (dispatch, getState) => {
+  dispatch(abilityActions.fetchAbilityDetailRequest());
+  axios
+    .get(getApiUrl(`abilities/${abilityId}`))
+    .then(response => {
+      const result = response.data;
+      dispatch(abilityActions.fetchAbilityDetailSuccess(result.data));
+    })
+    .catch(function(err) {
+      dispatch(abilityActions.fetchAbilityDetailFailure(err.message));
     });
 };

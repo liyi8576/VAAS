@@ -6,14 +6,8 @@ import { Modal, message } from 'antd';
 import OccupationList from 'components/occupation/OccupationList';
 import { OccupationInfoPage, OccupationEditPage } from './index';
 
-import {
-  occupationListActions,
-  loadOccupations,
-} from 'reducers/occupation/OccupationList';
-import {
-  occupationActions,
-  deleteOccupation,
-} from 'reducers/occupation/OccupationInfo';
+import { occupationListActions, loadOccupations } from 'reducers/occupation/OccupationList';
+import { occupationActions, deleteOccupation } from 'reducers/occupation/OccupationInfo';
 import { loadEnumDic } from 'reducers/EnumDic';
 import { loadAbilities } from 'reducers/ability/Ability';
 
@@ -63,7 +57,7 @@ class OccupationListPage extends Component {
       {
         searchCond: { ...this.state.searchCond, [field]: val },
       },
-      () => this.fetchOccupationList(),
+      () => this.fetchOccupationList()
     );
   };
   onChangeSearchTxt = (field, val) => {
@@ -80,7 +74,7 @@ class OccupationListPage extends Component {
           current: pagination.current,
         },
       },
-      () => this.fetchOccupationList(),
+      () => this.fetchOccupationList()
     );
   };
   onActionTrigger = (actionType, record) => {
@@ -104,7 +98,7 @@ class OccupationListPage extends Component {
       triggerAction: null,
     });
   };
-  buildModal = (modalTitle, contentComp) =>
+  buildModal = (modalTitle, contentComp) => (
     <Modal
       width={800}
       visible
@@ -114,7 +108,8 @@ class OccupationListPage extends Component {
       title={modalTitle}
     >
       {contentComp}
-    </Modal>;
+    </Modal>
+  );
   renderModal() {
     switch (this.state.triggerAction) {
       case 'CREATE':
@@ -124,7 +119,7 @@ class OccupationListPage extends Component {
             editType="CREATE"
             onCancel={this.closeModal}
             ability={this.props.ability}
-          />,
+          />
         );
       case 'MODIFY':
         return this.buildModal(
@@ -134,15 +129,12 @@ class OccupationListPage extends Component {
             occupationId={this.state.selectItem}
             onCancel={this.closeModal}
             ability={this.props.ability}
-          />,
+          />
         );
       case 'VIEW':
         return this.buildModal(
           '查看职业信息',
-          <OccupationInfoPage
-            occupationId={this.state.selectItem}
-            ability={this.props.ability}
-          />,
+          <OccupationInfoPage occupationId={this.state.selectItem} ability={this.props.ability} />
         );
       case 'SHOW_RECOMMEND':
         return this.buildModal('查看学生推荐列表', null);
@@ -151,11 +143,7 @@ class OccupationListPage extends Component {
     }
   }
   render() {
-    const {
-      occupationList,
-      occupationCount,
-      isLoading,
-    } = this.props.occupationList;
+    const { occupationList, occupationCount, isLoading } = this.props.occupationList;
     return (
       <div>
         <OccupationList
@@ -196,17 +184,8 @@ const mapDispatchToProps = dispatch => ({
   loadOccupations: bindActionCreators(loadOccupations, dispatch),
   loadAbilities: bindActionCreators(loadAbilities, dispatch),
   deleteOccupation: bindActionCreators(deleteOccupation, dispatch),
-  resetOccupationList: bindActionCreators(
-    occupationListActions.resetOccupationList,
-    dispatch,
-  ),
-  resetHandleStatus: bindActionCreators(
-    occupationActions.resetHandleStatus,
-    dispatch,
-  ),
-  resetOccupationState: bindActionCreators(
-    occupationActions.resetOccupationState,
-    dispatch,
-  ),
+  resetOccupationList: bindActionCreators(occupationListActions.resetOccupationList, dispatch),
+  resetHandleStatus: bindActionCreators(occupationActions.resetHandleStatus, dispatch),
+  resetOccupationState: bindActionCreators(occupationActions.resetOccupationState, dispatch),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(OccupationListPage);

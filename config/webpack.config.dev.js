@@ -1,7 +1,6 @@
-const {PATHS, SETTINGS, FILES} = require('./constants');
+const { PATHS, FILES } = require('./constants');
 const loaders = require('./webpack-loaders');
 const plugins = require('./webpack-plugins');
-const path =require('path');
 module.exports = {
   externals: {},
   entry: [
@@ -11,7 +10,7 @@ module.exports = {
     FILES.appIndexJs,
   ],
   target: 'web',
-  devtool: 'cheap-module-source-map',
+  devtool: '#inline-source-map',
   output: {
     path: PATHS.appPublic,
     pathinfo: true,
@@ -27,10 +26,10 @@ module.exports = {
       containers: `${PATHS.appSrc}/containers`,
       reducers: `${PATHS.appSrc}/reducers`,
       actions: `${PATHS.appSrc}/actions`,
-      style:`${PATHS.appSrc}/style`,
-      api:`${PATHS.appSrc}/api`,
-      Constants:`${PATHS.appSrc}/Constants`,
-    }
+      style: `${PATHS.appSrc}/style`,
+      api: `${PATHS.appSrc}/api`,
+      Constants: `${PATHS.appSrc}/Constants`,
+    },
   },
   module: {
     rules: [

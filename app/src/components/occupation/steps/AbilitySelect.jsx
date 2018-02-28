@@ -6,9 +6,6 @@ import CSSModules from 'react-css-modules';
 import styles from '../../../style/Occupation.scss';
 import { Card, Checkbox, Tooltip, Row, Col, Tabs, Icon } from 'antd';
 
-const CheckboxGroup = Checkbox.Group;
-const TabPane = Tabs.TabPane;
-
 class AbilitySelect extends Component {
   constructor(props) {
     super(props);
@@ -41,27 +38,25 @@ class AbilitySelect extends Component {
   }
 
   componentDidUpdate() {
-    this.selectedBox.scrollTop =
-      this.selectedBox.scrollHeight - this.selectedBox.clientHeight;
+    this.selectedBox.scrollTop = this.selectedBox.scrollHeight - this.selectedBox.clientHeight;
   }
   getSelectResult() {
     const { necessaryAbility, secondaryAbility } = this.props.occupation;
     return {
       necessaryAbility: this.state.necessary.map(id => {
-       	const obj= _.find(necessaryAbility, { abilityId: id }) ; 
-			return{
-        abilityId: id,
-        criterionScore:obj&&obj['criterionScore'],
-      }}),
-      secondaryAbility: _.without(
-        this.state.selected,
-        ...this.state.necessary,
-      ).map(id => {
-      const obj= _.find(necessaryAbility, { abilityId: id }) ;
-      return{
-        abilityId: id,
-        criterionScore:obj&&obj['criterionScore'],
-      }}),
+        const obj = _.find(necessaryAbility, { abilityId: id });
+        return {
+          abilityId: id,
+          criterionScore: obj && obj['criterionScore'],
+        };
+      }),
+      secondaryAbility: _.without(this.state.selected, ...this.state.necessary).map(id => {
+        const obj = _.find(secondaryAbility, { abilityId: id });
+        return {
+          abilityId: id,
+          criterionScore: obj && obj['criterionScore'],
+        };
+      }),
     };
   }
   selectAbility(id) {
@@ -80,45 +75,41 @@ class AbilitySelect extends Component {
 
   toggleNecessary(id, isNecessary) {
     this.setState({
-      necessary: isNecessary
-        ? [...this.state.necessary, id]
-        : _.without(this.state.necessary, id),
+      necessary: isNecessary ? [...this.state.necessary, id] : _.without(this.state.necessary, id),
     });
   }
 
   render_require() {
     const { abilities } = this.props.ability;
     return (
-      <CheckboxGroup style={{ float: 'left' }}>
-        {Constants.OCCUPATION_ABILITY_REQUIRE.map(require =>
+      <Checkbox.Group style={{ float: 'left' }}>
+        {Constants.OCCUPATION_ABILITY_REQUIRE.map(require => (
           <Tooltip
             placement="bottom"
             key={`tips-${require.id}`}
             title={
               <ul styleName="checkbox-tips">
                 <li>选择此项时，以下为必要能力:</li>
-                {require.necessaryAbility.map(id =>
-                  <li key={`tipli-${id}`}>
-                    {abilities[id] ? abilities[id].name : id}
-                  </li>,
-                )}
+                {require.necessaryAbility.map(id => (
+                  <li key={`tipli-${id}`}>{abilities[id] ? abilities[id].name : id}</li>
+                ))}
               </ul>
             }
           >
             <Checkbox value={require.id} key={require.id}>
               {require.name}
             </Checkbox>
-          </Tooltip>,
-        )}
-      </CheckboxGroup>
+          </Tooltip>
+        ))}
+      </Checkbox.Group>
     );
   }
   render_ability_tab() {
     const { domain, abilities } = this.props.ability;
     return (
       <Tabs size="small">
-        {Object.values(domain).map(_domain =>
-          <TabPane
+        {Object.values(domain).map(_domain => (
+          <Tabs.TabPane
             tab={
               <span>
                 {_domain.name}
@@ -128,18 +119,18 @@ class AbilitySelect extends Component {
             key={`domain.${_domain.id}`}
           >
             <ul styleName="options-items">
-              {_domain.abilities.map(id =>
+              {_domain.abilities.map(id => (
                 <li
                   key={'option.' + id}
                   title={abilities[id].name}
                   onClick={this.selectAbility.bind(this, id)}
                 >
                   {abilities[id].name}
-                </li>,
-              )}
+                </li>
+              ))}
             </ul>
-          </TabPane>,
-        )}
+          </Tabs.TabPane>
+        ))}
       </Tabs>
     );
   }
@@ -158,44 +149,33 @@ class AbilitySelect extends Component {
         bordered={false}
         noHovering="false"
       >
-        {this.state.validateWarn
-          ? <p style={{ color: 'red' }}>请选择职业能力!</p>
-          : <ul
-              styleName="selected-items"
-              ref={ref => (this.selectedBox = ref)}
-            >
-              {this.state.selected.map(id => {
-                const ability = abilities[id];
-                const isNessary = _.indexOf(this.state.necessary, id) !== -1;
-                const itDomain = domain[ability && ability.domain] || {};
-                return (
-                  ability &&
+        {this.state.validateWarn ? (
+          <p style={{ color: 'red' }}>请选择职业能力!</p>
+        ) : (
+          <ul styleName="selected-items" ref={ref => (this.selectedBox = ref)}>
+            {this.state.selected.map(id => {
+              const ability = abilities[id];
+              const isNessary = _.indexOf(this.state.necessary, id) !== -1;
+              const itDomain = domain[ability && ability.domain] || {};
+              return (
+                ability && (
                   <li
                     title={ability.name}
                     key={`sel.${ability.id}`}
                     styleName={isNessary ? 'necessary' : 'secondary'}
                   >
-                    <div
-                      onClick={this.toggleNecessary.bind(
-                        this,
-                        ability.id,
-                        !isNessary,
-                      )}
-                    >
-                      <span>
-                        {isNessary ? '必要' : '次要'}
-                      </span>
+                    <div onClick={this.toggleNecessary.bind(this, ability.id, !isNessary)}>
+                      <span>{isNessary ? '必要' : '次要'}</span>
                       {ability.name}
                       <Icon type={itDomain.icon} />
                     </div>
-                    <Icon
-                      type="close"
-                      onClick={this.unselectAbility.bind(this, ability.id)}
-                    />
+                    <Icon type="close" onClick={this.unselectAbility.bind(this, ability.id)} />
                   </li>
-                );
-              })}
-            </ul>}
+                )
+              );
+            })}
+          </ul>
+        )}
       </Card>
     );
   }

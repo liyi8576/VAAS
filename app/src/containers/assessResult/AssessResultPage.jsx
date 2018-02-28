@@ -3,11 +3,7 @@ import AssessResult from 'components/assessResult/AssessResult';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
-import {
-  loadAssessResult,
-  calcLifeIndi,
-  converAssessResult,
-} from 'reducers/AssessResult';
+import { loadAssessResult, calcLifeIndi, converAssessResult } from 'reducers/AssessResult';
 
 class AssessResultPage extends Component {
   constructor(props) {
@@ -16,6 +12,9 @@ class AssessResultPage extends Component {
   componentDidMount() {
     const traineeId = this.props.match.params.traineeId;
     this.props.loadAssessResult(traineeId);
+  }
+  shouldComponentUpdate(nextProps, nextState) {
+    return nextProps.loading !== this.props.loading;
   }
   render() {
     return (
@@ -31,7 +30,9 @@ class AssessResultPage extends Component {
 AssessResultPage.PropTypes = {
   traineeId: PropTypes.string.required,
 };
-AssessResultPage.defaultProps = {};
+AssessResultPage.defaultProps = {
+  loading: true,
+};
 const mapStateToProps = state => {
   const { isLoading } = state.assessResult || {};
   return {

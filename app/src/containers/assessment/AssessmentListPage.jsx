@@ -3,10 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import AssessmentList from 'components/assessment/AssessmentList';
-import {
-  loadAssessments,
-  dealAssessmentList,
-} from 'reducers/assessment/AssessmentList';
+import { loadAssessments, dealAssessmentList } from 'reducers/assessment/AssessmentList';
 import { loadAbilities } from 'reducers/ability/Ability';
 
 class AssessmentListPage extends Component {
@@ -41,8 +38,14 @@ class AssessmentListPage extends Component {
           current: pagination.current,
         },
       },
-      () => this.fetchTraineeList(),
+      () => this.fetchAssessments()
     );
+  };
+  onChangeTab = active => {
+    const ary = active.split('TAB#');
+    if (ary.length > 1) {
+      this.setState({ searchCond: { assessStatus: ary[1] } }, () => this.fetchAssessments());
+    }
   };
   onActionTrigger = (actionType, record) => {};
   render() {
@@ -56,6 +59,7 @@ class AssessmentListPage extends Component {
           }}
           loading={this.props.loading}
           onChangeTable={this.onChangeTable}
+          onChangeTab={this.onChangeTab}
           onActionTrigger={this.onActionTrigger}
         />
       </div>

@@ -1,4 +1,3 @@
-import _ from 'lodash';
 export default {
   DOMAIN_INDEPENDENT_LIFE: '103', //独立生活技能ID
   DOMAIN_CONFIG: {

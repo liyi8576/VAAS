@@ -6,10 +6,6 @@ import createHistory from 'history/createBrowserHistory';
 
 const history = createHistory();
 const configureStore = preloadedState =>
-  createStore(
-    rootReducer,
-    preloadedState,
-    applyMiddleware(thunk, routerMiddleware(history)),
-  );
+  createStore(rootReducer, preloadedState, applyMiddleware(thunk, routerMiddleware(history)));
 
 export default configureStore;

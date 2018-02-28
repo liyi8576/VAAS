@@ -1,22 +1,18 @@
-const fs = require('fs');
-const path = require('path');
 const webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
 const chalk = require('chalk');
-const {
-  createCompiler,
-  prepareUrls,
-} = require('react-dev-utils/WebpackDevServerUtils');
+// const { createCompiler, prepareUrls } = require('react-dev-utils/WebpackDevServerUtils');
+const { prepareUrls } = require('react-dev-utils/WebpackDevServerUtils');
 
-const { PATHS, FILES, SETTINGS } = require('./constants');
+const { PATHS, SETTINGS } = require('./constants');
 const devConfig = require('./webpack.config.dev');
 const openBrowser = require('react-dev-utils/openBrowser');
 // react运行时异常时，可以在页面上展示一个覆盖层显示错误信息
 const errorOverlayMiddleware = require('react-error-overlay/middleware');
 const noopServiceWorkerMiddleware = require('react-dev-utils/noopServiceWorkerMiddleware');
-const clearConsole = require('react-dev-utils/clearConsole');
+// const clearConsole = require('react-dev-utils/clearConsole');
 const isInteractive = process.stdout.isTTY;
-const useYarn = fs.existsSync(FILES.yarnLockFile);
+// const useYarn = fs.existsSync(FILES.yarnLockFile);
 const protocol = process.env.HTTPS === 'true' ? 'https' : 'http';
 const urls = prepareUrls(protocol, SETTINGS.HOST, SETTINGS.PORT);
 const devServerConfig = {
@@ -56,27 +52,18 @@ const devServerConfig = {
   },
 };
 
-const compiler = createCompiler(
-  webpack,
-  devConfig,
-  require(FILES.packageJson).name,
-  urls,
-  useYarn,
+// const compiler = createCompiler(webpack, devConfig, require(FILES.packageJson).name, urls, useYarn);
+new WebpackDevServer(webpack(devConfig), devServerConfig).listen(
+  SETTINGS.PORT,
+  SETTINGS.HOST,
+  err => {
+    if (err) {
+      return console.log(err);
+    }
+    if (isInteractive) {
+      // clearConsole();
+    }
+    console.log(chalk.cyan(`Starting the development server, ${urls.localUrlForBrowser}...\n`));
+    openBrowser(urls.localUrlForBrowser);
+  }
 );
-new WebpackDevServer(
-  webpack(devConfig),
-  devServerConfig,
-).listen(SETTINGS.PORT, SETTINGS.HOST, err => {
-  if (err) {
-    return console.log(err);
-  }
-  if (isInteractive) {
-    // clearConsole();
-  }
-  console.log(
-    chalk.cyan(
-      `Starting the development server, ${urls.localUrlForBrowser}...\n`,
-    ),
-  );
-  openBrowser(urls.localUrlForBrowser);
-});

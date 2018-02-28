@@ -1,79 +1,89 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Form, Row, Select, Button, Alert } from 'antd';
+import _ from 'lodash';
+import { Form, Row, Select, Button, Alert, message } from 'antd';
 
 const Option = Select.Option;
-const FormItem = Form.Item;
 const ConstrastSearchBar = ({
-  traineeId,
-  occupationId,
   occupationDesc = '',
   traineeList = [],
   occupationList = [],
+  onQuery = _.noop,
+  onChange = _.noop,
   form: { getFieldDecorator, validateFields, getFieldsValue },
 }) => {
+  const query = () => {
+    const formVals = getFieldsValue();
+    if (!formVals.traineeId) {
+      message.error('请选择要检核对照的学员！');
+      return;
+    }
+    if (!formVals.occupationId) {
+      message.error('请选择要检核对照的职业！');
+      return;
+    }
+    onQuery(formVals.traineeId, formVals.occupationId);
+  };
+  const changeOccupation = val => {
+    onChange('OCCUPATION', val);
+  };
+  const changeTrainee = val => {
+    onChange('TRAINEE', val);
+  };
   return (
     <Row style={{ marginBottom: '10px' }}>
       <Form layout={'inline'}>
-        <FormItem label="职业">
-          {getFieldDecorator('occupationId', {
-            initialValue: occupationId,
-          })(
+        <Form.Item label="职业">
+          {getFieldDecorator('occupationId', {})(
             <Select
               placeholder={'请选择职业'}
               notFoundContent=""
               style={{ width: '200px' }}
               defaultActiveFirstOption={false}
               showSearch
+              onChange={changeOccupation}
               filterOption={false}
-              onChange={() => {}}
             >
-              {occupationList.map(item =>
+              {occupationList.map(item => (
                 <Option value={item.id} key={`opt-${item.id}`}>
-                  item.name
-                </Option>,
-              )}
-            </Select>,
+                  {item.name}
+                </Option>
+              ))}
+            </Select>
           )}
-        </FormItem>
-        <FormItem label="学生">
-          {getFieldDecorator('traineeId', {
-            initialValue: traineeId,
-          })(
+        </Form.Item>
+        <Form.Item label="学生">
+          {getFieldDecorator('traineeId', {})(
             <Select
               placeholder={'请选择学生'}
               notFoundContent=""
               style={{ width: '200px' }}
               defaultActiveFirstOption={false}
               showSearch
+              onChange={changeTrainee}
               filterOption={false}
-              onChange={() => {}}
             >
-              {traineeList.map(item =>
+              {traineeList.map(item => (
                 <Option value={item.id} key={`opt-${item.id}`}>
                   item.name
-                </Option>,
-              )}
-            </Select>,
+                </Option>
+              ))}
+            </Select>
           )}
-        </FormItem>
-        <FormItem>
-          <Button type="primary">查询</Button>
-        </FormItem>
+        </Form.Item>
+        <Form.Item>
+          <Button type="primary" onClick={query}>
+            查询
+          </Button>
+        </Form.Item>
       </Form>
-      {occupationDesc &&
-        occupationDesc !== '' &&
-        <Row style={{ marginTop: '10px' }}>
-          <Alert message="职业简介" type="warning" closable />
-        </Row>}
     </Row>
   );
 };
 ConstrastSearchBar.PropTypes = {
-  traineeId: PropTypes.string,
-  occupationId: PropTypes.string,
-  occupationDesc: PropTypes.string,
   occupationList: PropTypes.array,
   traineeList: PropTypes.array,
+  onQuery: PropTypes.func,
+  onChangeOccupation: PropTypes.func,
 };
 export default Form.create()(ConstrastSearchBar);
