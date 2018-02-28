@@ -15,8 +15,11 @@ import { getDicHelper } from 'reducers/EnumDic';
 import 'style/App.scss';
 
 class TraineeInfoPage extends Component {
+  constructor(props) {
+    super(props);
+  }
   componentDidMount() {
-    this.props.loadTrainee(this.props.traineeId);
+    this.props.loadTrainee(this.props.match.params.traineeId || this.props.traineeId);
   }
   componentWillUnmount() {}
   render_loading() {
@@ -28,10 +31,7 @@ class TraineeInfoPage extends Component {
   }
   render_content() {
     return (
-      <TraineeInfo
-        trainee={this.props.trainee}
-        dicHelper={getDicHelper(this.props.enumDics)}
-      />
+      <TraineeInfo trainee={this.props.trainee} dicHelper={getDicHelper(this.props.enumDics)} />
     );
   }
   render() {

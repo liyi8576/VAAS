@@ -25,11 +25,7 @@ const OccupationList = ({
     <div className="content-inner">
       <Row type="flex" justify="space-between" style={{ marginBottom: '10px' }}>
         <Col>
-          <SearchBar
-            {...searchCond}
-            onSearch={onSearch}
-            onChangeSearchTxt={onChangeSearchTxt}
-          />
+          <SearchBar {...searchCond} onSearch={onSearch} onChangeSearchTxt={onChangeSearchTxt} />
         </Col>
         <Col>
           <Button type="primary" icon="plus" onClick={tiggerCreateAction}>
@@ -88,12 +84,13 @@ const configColumns = (domain = {}, abilities = {}, onActionTrigger) => {
       dataIndex: 'name',
       key: 'occupationName',
       width: 120,
-      render: (text, record) =>
+      render: (text, record) => (
         <span>
           <a href="#" onClick={() => onActionTrigger('VIEW', record)}>
             {text}
           </a>
-        </span>,
+        </span>
+      ),
     },
     {
       title: '职业描述',
@@ -107,7 +104,7 @@ const configColumns = (domain = {}, abilities = {}, onActionTrigger) => {
       key: 'necessaryAbility',
       render: (text, record) => {
         return (record.necessaryAbility || [])
-          .map(abilityId => ((abilities[abilityId]&&abilities[abilityId].name)||abilityId))
+          .map(abilityId => (abilities[abilityId] && abilities[abilityId].name) || abilityId)
           .join(' , ');
       },
     },
@@ -117,7 +114,7 @@ const configColumns = (domain = {}, abilities = {}, onActionTrigger) => {
       key: 'secondaryAbility',
       render: (text, record) => {
         return (record.secondaryAbility || [])
-          .map(abilityId => ((abilities[abilityId]&&abilities[abilityId].name)||abilityId))
+          .map(abilityId => (abilities[abilityId] && abilities[abilityId].name) || abilityId)
           .join(' , ');
       },
     },
@@ -125,7 +122,7 @@ const configColumns = (domain = {}, abilities = {}, onActionTrigger) => {
       title: '操作',
       key: 'action',
       width: 80,
-      render: (text, record) =>
+      render: (text, record) => (
         <DropOption
           onMenuClick={e => handleAction(record, e)}
           menuOptions={[
@@ -134,7 +131,8 @@ const configColumns = (domain = {}, abilities = {}, onActionTrigger) => {
             { key: 'DELETE', name: '删除' },
             { key: 'SHOW_RECOMMEND', name: '推荐列表' },
           ]}
-        />,
+        />
+      ),
     },
   ];
 };

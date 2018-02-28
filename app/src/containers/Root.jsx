@@ -9,7 +9,7 @@ import {
   OccupationListPage,
   OccupationInfoPage,
   OccupationEditPage,
-  OccupationAnalyzePage,
+  OccupationRecommandPage,
 } from 'containers/occupation';
 import { AssessmentListPage, TraineeAssessPage } from 'containers/assessment';
 import { AssessResultPage, AssessConstrastPage, AssessReportPage } from 'containers/assessResult';
@@ -51,8 +51,8 @@ const Root = ({ store, history }) => (
               {/**职业详细信息查看**/}
               <Route exact path="/occupations/:id/detail" component={OccupationInfoPage} />
               {/**职业分析**/}
-              <Route exact path="/occupationAnalyze" component={OccupationAnalyzePage} />
-              <Route exact path="/occupations/:id/analyze" component={OccupationAnalyzePage} />
+              <Route exact path="/occupationAnalyze" component={OccupationRecommandPage} />
+              <Route exact path="/occupations/:id/analyze" component={OccupationRecommandPage} />
             </Switch>
           </App>
         )}

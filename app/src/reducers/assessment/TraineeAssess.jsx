@@ -97,7 +97,7 @@ export const loadTraineeAssess = traineeId => (dispatch, getState) => {
 export const saveAssessItem = (traineeId, abilityId, option, callback) => (dispatch, getState) => {
   dispatch(traineeAssessAction.savingTraineeAssess());
   axios
-    .put(getApiUrl(`trainees/${traineeId}`), abilityId, option)
+    .put(getApiUrl(`trainees/${traineeId}/access`), { abilityId: abilityId, option: option })
     .then(response => {
       const result = response.data;
       dispatch(traineeAssessAction.saveTraineeAssessSuccess(result.data));

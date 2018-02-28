@@ -18,6 +18,20 @@ Mock.mock(/\/api\/occupations\/\w+$/, {
     'secondaryAbility': [{'abilityId':'C1','criterionScore|1':['A','B','C']}], // 次要能力ID数组
   },
 });
+Mock.mock(/\/api\/occupations\/\w+\/recommand(\?\S*)*$/, {
+  success: true,
+  data: {
+    'list|10': [
+      {
+        id: '@id',
+        name: '@cname',
+        count: '@integer(22, 60)',
+        abilityName: '能力1，能力2，能力3，能力4，能力1，能力2，能力3，能力4，能力1，能力2，能力3，能力4，能力1，能力2，能力3，能力4', //必要能力ID逗号分隔
+      },
+    ],
+    total: 20,
+  },
+});
 
 /**
  * 获取职业列表

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import AssessConstrast from 'components/assessResult/AssessConstrast';
 import {
@@ -10,7 +9,6 @@ import {
 } from 'reducers/AssessResult';
 import { loadAbilities } from 'reducers/ability/Ability';
 import { loadOccupations } from 'reducers/occupation/OccupationList';
-import { occupationListActions } from '../../reducers/occupation/OccupationList';
 
 class AssessConstrastPage extends Component {
   constructor(props) {

@@ -1,11 +1,6 @@
 import OccupationListPage from './OccupationListPage';
 import OccupationInfoPage from './OccupationInfoPage';
 import OccupationEditPage from './OccupationEditPage';
-import OccupationAnalyzePage from './OccupationAnalyzePage';
+import OccupationRecommandPage from './OccupationRecommandPage';
 
-export {
-  OccupationListPage,
-  OccupationInfoPage,
-  OccupationEditPage,
-  OccupationAnalyzePage,
-};
+export { OccupationListPage, OccupationInfoPage, OccupationEditPage, OccupationRecommandPage };

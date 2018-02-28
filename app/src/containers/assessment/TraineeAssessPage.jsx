@@ -17,22 +17,30 @@ class TraineeAssessPage extends Component {
   }
   componentDidMount() {
     // 获取学员检核统计结果
-    this.props.loadTraineeAssess(this.props.traineeId);
+    this.props.loadTraineeAssess(this.props.match.params.traineeId || this.props.traineeId);
     //获取所有的能力项
     this.props.loadAbilities();
   }
   saveAssessItem = (abilityId, assessOption, callback) => {
-    this.props.saveAssessItem(this.props.traineeId, abilityId, assessOption, callback);
+    this.props.saveAssessItem(
+      this.props.match.params.traineeId || this.props.traineeId,
+      abilityId,
+      assessOption,
+      callback
+    );
   };
   render() {
     return (
       <div className={'assessment'}>
-        <AssessHead assessData={this.props.assessData} traineeId={this.props.traineeId} />
+        <AssessHead
+          assessData={this.props.assessData}
+          traineeId={this.props.match.params.traineeId || this.props.traineeId}
+        />
         {this.props.isLoading ? (
           <AssessBody isLoading />
         ) : (
           <AssessBody
-            traineeId={this.props.traineeId}
+            traineeId={this.props.match.params.traineeId || this.props.traineeId}
             abilities={this.props.abilities}
             domain={this.props.domain}
             assessResult={this.props.assessData.assessResult}

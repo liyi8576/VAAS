@@ -30,12 +30,7 @@ const BasicInfo = ({
   });
   return (
     <Form layout="horizontal" styleName="form-card">
-      <FormItem
-        label="姓  名"
-        hasFeedback
-        labelCol={{ span: 6 }}
-        wrapperCol={{ span: 4 }}
-      >
+      <FormItem label="姓  名" hasFeedback labelCol={{ span: 6 }} wrapperCol={{ span: 4 }}>
         {getFieldDecorator('name', {
           initialValue: trainee.name,
           rules: [{ required: true, message: '请输入学生姓名' }],
@@ -49,15 +44,10 @@ const BasicInfo = ({
           <Radio.Group>
             <Radio value="M">男</Radio>
             <Radio value="F">女</Radio>
-          </Radio.Group>,
+          </Radio.Group>
         )}
       </FormItem>
-      <FormItem
-        label="身份证号"
-        labelCol={{ span: 6 }}
-        wrapperCol={{ span: 9 }}
-        hasFeedback
-      >
+      <FormItem label="身份证号" labelCol={{ span: 6 }} wrapperCol={{ span: 9 }} hasFeedback>
         {getFieldDecorator('idCard', {
           initialValue: trainee.idCard,
           rules: [
@@ -82,12 +72,7 @@ const BasicInfo = ({
       </FormItem>
       <Row>
         <Col span={6} offset={4}>
-          <FormItem
-            label="监护人"
-            hasFeedback
-            labelCol={{ span: 8 }}
-            wrapperCol={{ span: 16 }}
-          >
+          <FormItem label="监护人" hasFeedback labelCol={{ span: 8 }} wrapperCol={{ span: 16 }}>
             {getFieldDecorator('guardian', {
               initialValue: trainee.guardian,
               rules: [{ required: true, message: '请输入监护人' }],
@@ -101,42 +86,27 @@ const BasicInfo = ({
               rules: [{ required: true, message: '请选择与本人关系' }],
             })(
               <Select placeholder="请选择与本人关系" style={{ marginLeft: '5px' }}>
-                {getDicsByGroup('RELATION_SHIP').map(dic =>
+                {getDicsByGroup('RELATION_SHIP').map(dic => (
                   <Option value={dic.value} key={`rsd-${dic.value}`}>
                     {dic.name}
-                  </Option>,
-                )}
-              </Select>,
+                  </Option>
+                ))}
+              </Select>
             )}
           </FormItem>
         </Col>
       </Row>
-      <FormItem
-        label="联系方式"
-        hasFeedback
-        labelCol={{ span: 6 }}
-        wrapperCol={{ span: 9 }}
-      >
+      <FormItem label="联系方式" hasFeedback labelCol={{ span: 6 }} wrapperCol={{ span: 9 }}>
         {getFieldDecorator('phone', {
           initialValue: trainee.phone,
           rules: [{ required: true, message: '请输入联系方式' }],
         })(<Input placeholder="请选择联系电话" />)}
       </FormItem>
-      <FormItem
-        label="住  址"
-        hasFeedback
-        labelCol={{ span: 6 }}
-        wrapperCol={{ span: 12 }}
-      >
+      <FormItem label="住  址" hasFeedback labelCol={{ span: 6 }} wrapperCol={{ span: 12 }}>
         {getFieldDecorator('address', {
           initialValue: trainee.address,
           rules: [{ required: true, message: '请输入家庭地址' }],
-        })(
-          <TextArea
-            autosize={{ minRows: 2, maxRows: 2 }}
-            placeholder="请填写家庭地址"
-          />,
-        )}
+        })(<TextArea autosize={{ minRows: 2, maxRows: 2 }} placeholder="请填写家庭地址" />)}
       </FormItem>
     </Form>
   );
