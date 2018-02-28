@@ -12,7 +12,14 @@ class OccupationRecommandPage extends Component {
   componentDidMount() {
     this.props.loadOccupations();
   }
-
+  getOccupationId() {
+    let occupationId = this.props.occupationId;
+    if (!occupationId) {
+      occupationId =
+        this.props.match && this.props.match.params && this.props.match.params.occupationId;
+    }
+    return occupationId;
+  }
   queryRecommandResult = (occupationId, offset, pageSize) => {
     if (occupationId) {
       this.props.loadRecommandList(occupationId, {
@@ -26,7 +33,7 @@ class OccupationRecommandPage extends Component {
       <OccupationRecommand
         recommandList={this.props.loading ? {} : this.props.recommandList}
         loading={this.props.loading}
-        occupationId={this.props.occupationId}
+        occupationId={this.getOccupationId()}
         occupationList={this.props.occupationList}
         onQuery={this.queryRecommandResult}
       />

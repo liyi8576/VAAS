@@ -19,9 +19,16 @@ class TraineeInfoPage extends Component {
     super(props);
   }
   componentDidMount() {
-    this.props.loadTrainee(this.props.match.params.traineeId || this.props.traineeId);
+    this.props.loadTrainee(this.getTraineeId());
   }
   componentWillUnmount() {}
+  getTraineeId() {
+    let traineeId = this.props.traineeId;
+    if (!traineeId) {
+      traineeId = this.props.match && this.props.match.params && this.props.match.params.traineeId;
+    }
+    return traineeId;
+  }
   render_loading() {
     return (
       <div className="vas-loading-box">
