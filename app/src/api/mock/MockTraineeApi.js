@@ -5,7 +5,7 @@ import Mock from 'mockjs';
  * URL: /api/trainees/{traineeId}
  * METHOD:GET
  */
-Mock.mock(/\/api\/trainees\/(?!\/.)*$/, {
+Mock.mock(/\/api\/trainees\/\S+$/, {
   success: true,
   data: {
     id: '@guid',

@@ -72,7 +72,6 @@ export const { assessment: traineeAssessAction } = createActions({
  */
 export const loadTraineeAssess = traineeId => (dispatch, getState) => {
   dispatch(traineeAssessAction.fetchTraineeAssessRequest());
-  console.log(getApiUrl(`trainees/${traineeId}/assess`));
   axios
     .get(getApiUrl(`trainees/${traineeId}/assess`), {
       params: { traineeId: traineeId },
