@@ -10,7 +10,15 @@ import 'style/App.scss';
 
 class OccupationInfoPage extends Component {
   componentDidMount() {
-    this.props.loadOccupation(this.props.occupationId);
+    this.props.loadOccupation(this.getOccupationId());
+  }
+  getOccupationId() {
+    let occupationId = this.props.occupationId;
+    if (!occupationId) {
+      occupationId =
+        this.props.match && this.props.match.params && this.props.match.params.occupationId;
+    }
+    return occupationId;
   }
   render_loading() {
     return (
@@ -20,12 +28,7 @@ class OccupationInfoPage extends Component {
     );
   }
   render_content() {
-    return (
-      <OccupationInfo
-        ability={this.props.ability}
-        occupation={this.props.occupation}
-      />
-    );
+    return <OccupationInfo ability={this.props.ability} occupation={this.props.occupation} />;
   }
   render() {
     return this.props.loading ? this.render_loading() : this.render_content();
@@ -39,7 +42,7 @@ OccupationInfoPage.defaultProps = {};
 const mapStateToProps = state => {
   const { occupationInfo, isLoading } = state.occupation.occupationInfo || {};
   return {
-    ability: state.ability||{},
+    ability: state.ability || {},
     occupation: occupationInfo || {},
     loading: isLoading === true,
   };

@@ -17,30 +17,29 @@ class TraineeAssessPage extends Component {
   }
   componentDidMount() {
     // 获取学员检核统计结果
-    this.props.loadTraineeAssess(this.props.match.params.traineeId || this.props.traineeId);
+    this.props.loadTraineeAssess(this.getTraineeId());
     //获取所有的能力项
     this.props.loadAbilities();
   }
   saveAssessItem = (abilityId, assessOption, callback) => {
-    this.props.saveAssessItem(
-      this.props.match.params.traineeId || this.props.traineeId,
-      abilityId,
-      assessOption,
-      callback
-    );
+    this.props.saveAssessItem(this.getTraineeId(), abilityId, assessOption, callback);
   };
+  getTraineeId() {
+    let traineeId = this.props.traineeId;
+    if (!traineeId) {
+      traineeId = this.props.match && this.props.match.params && this.props.match.params.traineeId;
+    }
+    return traineeId;
+  }
   render() {
     return (
       <div className={'assessment'}>
-        <AssessHead
-          assessData={this.props.assessData}
-          traineeId={this.props.match.params.traineeId || this.props.traineeId}
-        />
+        <AssessHead assessData={this.props.assessData} traineeId={this.getTraineeId()} />
         {this.props.isLoading ? (
           <AssessBody isLoading />
         ) : (
           <AssessBody
-            traineeId={this.props.match.params.traineeId || this.props.traineeId}
+            traineeId={this.getTraineeId()}
             abilities={this.props.abilities}
             domain={this.props.domain}
             assessResult={this.props.assessData.assessResult}

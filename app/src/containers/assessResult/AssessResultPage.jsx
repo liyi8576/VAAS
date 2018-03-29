@@ -10,11 +10,17 @@ class AssessResultPage extends Component {
     super();
   }
   componentDidMount() {
-    const traineeId = this.props.match.params.traineeId;
-    this.props.loadAssessResult(traineeId);
+    this.props.loadAssessResult(this.getTraineeId());
   }
   shouldComponentUpdate(nextProps, nextState) {
     return nextProps.loading !== this.props.loading;
+  }
+  getTraineeId() {
+    let traineeId = this.props.traineeId;
+    if (!traineeId) {
+      traineeId = this.props.match && this.props.match.params && this.props.match.params.traineeId;
+    }
+    return traineeId;
   }
   render() {
     return (
