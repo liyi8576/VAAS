@@ -64,9 +64,7 @@ const ConstrastSearchBar = ({
               filterOption={false}
             >
               {traineeList.map(item => (
-                <Option value={item.id} key={`opt-${item.id}`}>
-                  item.name
-                </Option>
+                <Option value={item.id} key={`opt-${item.id}`}>{item.name}</Option>
               ))}
             </Select>
           )}
@@ -85,5 +83,6 @@ ConstrastSearchBar.PropTypes = {
   traineeList: PropTypes.array,
   onQuery: PropTypes.func,
   onChangeOccupation: PropTypes.func,
+  onChangeTrainee: PropTypes.func,
 };
 export default Form.create()(ConstrastSearchBar);
