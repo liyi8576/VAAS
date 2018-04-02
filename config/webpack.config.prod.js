@@ -7,27 +7,10 @@ const webpack = require('webpack');
 module.exports = {
   externals: {},
   entry: {
-    verdor: [
-      'antd',
-      'axios',
-      'lodash',
-      'moment',
-      'prop-types',
-      'react',
-      'react-dom',
-      'react-redux',
-      'react-router',
-      'react-router-dom',
-      'react-router-redux',
-      'redux',
-      'redux-actions',
-      'redux-thunk',
-      'screenfull',
-    ],
     app: [FILES.appIndexJs],
   },
   target: 'web',
-  devtool: 'cheap-module-source-map',
+  devtool: 'source-map',
   output: {
     path: PATHS.appBuild,
     pathinfo: true,

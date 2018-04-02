@@ -34,6 +34,9 @@ exports.commonPlugins = [
 
 //开发时使用插件
 exports.devPlugins = [
+  new webpack.DefinePlugin({
+    'process.env.NODE_ENV': JSON.stringify('development'),
+  }),
   new HtmlWebpackPlugin({
     inject: true, //js引入放在body底部
     title: SETTINGS.appTitle,
@@ -68,11 +71,14 @@ exports.devPlugins = [
 
 //生产环境下使用插件
 exports.prodPlugins = [
+  new webpack.DefinePlugin({
+    'process.env.NODE_ENV': JSON.stringify('production'),
+  }),
   new HtmlWebpackPlugin({
     inject: true, //js引入放在body底部
     title: SETTINGS.appTitle,
     filename: 'index.html',
-    template: FILES.appIndexTpl,
+    template: FILES.appIndexProdTpl,
     minify: {
       removeComments: true,
       collapseWhitespace: true,
@@ -89,9 +95,12 @@ exports.prodPlugins = [
   // 将全部 node_modules 中的代码移入
   new webpack.optimize.CommonsChunkPlugin({
     name: 'vendor',
-    filename: 'vendor.bundle.js',
-    minChunks: ({ resource }) =>
-      resource && resource.indexOf('node_modules') >= 0 && resource.match(/\.(js|less|scss)$/),
+    filename: 'js/vendor.bundle.js',
+    minChunks: ({ resource }) => {
+      return (
+        resource && resource.indexOf('node_modules') >= 0 && resource.match(/\.(js|less|scss)$/)
+      );
+    },
   }),
   //提取Loader定义到同一地方
   new webpack.LoaderOptionsPlugin({
@@ -110,6 +119,7 @@ exports.prodPlugins = [
   new webpack.optimize.UglifyJsPlugin({
     compress: {
       warnings: false,
+      drop_console: true,
       comparisons: false,
     },
     output: {

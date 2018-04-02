@@ -43,6 +43,7 @@ export const FILES = {
   packageJson: resolvePath('package.json'),
   vendorManifest: resolvePath('app/public/dll/vendor_manifest.json'),
   appIndexTpl: resolvePath('app/src/index.html'),
+  appIndexProdTpl: resolvePath('app/src/index.prod.html'),
   appHtml: resolvePath('app/public/index.html'),
   appIndexJs: resolvePath('app/src/index.js'),
   favicon: resolvePath('app/src/style/images/favicon.ico'),
