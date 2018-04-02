@@ -32,7 +32,7 @@ exports.jsx = {
     babelrc: false,
     presets: [require.resolve('babel-preset-react-app')],
     compact: true,
-    plugins: [['import', {libraryName: 'antd', style: true}]],
+    plugins: [['import', { libraryName: 'antd', style: true }]],
     cacheDirectory: true,
   },
 };
@@ -69,14 +69,14 @@ const postCSSLoader = {
 };
 
 const lessLoader = {
-  loader: require.resolve('less-loader')
+  loader: require.resolve('less-loader'),
 };
 
 const sassLoader = {
   loader: require.resolve('sass-loader'),
   options: {
-    sourceMap: false
-  }
+    sourceMap: false,
+  },
 };
 
 // css样式loader配置
@@ -88,8 +88,7 @@ exports.dev_styles = {
   scss: {
     test: /\.(scss|sass)$/,
 
-    use: ['style-loader', moduleCSSLoader, postCSSLoader,  sassLoader],
-
+    use: ['style-loader', moduleCSSLoader, postCSSLoader, sassLoader],
   },
   less: {
     test: /\.(less)$/,

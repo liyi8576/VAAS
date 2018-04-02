@@ -2,16 +2,17 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import { Form, Row, Select, Button, Alert, message } from 'antd';
+import TraineeSelector from 'containers/trainee/TraineeSelector';
 
 const Option = Select.Option;
 const ConstrastSearchBar = ({
-  occupationDesc = '',
-  traineeList = [],
-  occupationList = [],
-  onQuery = _.noop,
-  onChange = _.noop,
-  form: { getFieldDecorator, validateFields, getFieldsValue },
-}) => {
+                              occupationDesc = '',
+                              traineeList = [],
+                              occupationList = [],
+                              onQuery = _.noop,
+                              onChange = _.noop,
+                              form: { getFieldDecorator, validateFields, getFieldsValue },
+                            }) => {
   const query = () => {
     const formVals = getFieldsValue();
     if (!formVals.traineeId) {
@@ -40,7 +41,6 @@ const ConstrastSearchBar = ({
               notFoundContent=""
               style={{ width: '200px' }}
               defaultActiveFirstOption={false}
-              showSearch
               onChange={changeOccupation}
               filterOption={false}
             >
@@ -53,23 +53,7 @@ const ConstrastSearchBar = ({
           )}
         </Form.Item>
         <Form.Item label="学生">
-          {getFieldDecorator('traineeId', {})(
-            <Select
-              placeholder={'请选择学生'}
-              notFoundContent=""
-              style={{ width: '200px' }}
-              defaultActiveFirstOption={false}
-              showSearch
-              onChange={changeTrainee}
-              filterOption={false}
-            >
-              {traineeList.map(item => (
-                <Option value={item.id} key={`opt-${item.id}`}>
-                  item.name
-                </Option>
-              ))}
-            </Select>
-          )}
+          {getFieldDecorator('traineeId', {})(<TraineeSelector onChange={changeTrainee} />)}
         </Form.Item>
         <Form.Item>
           <Button type="primary" onClick={query}>

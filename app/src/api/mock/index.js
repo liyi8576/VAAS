@@ -7,5 +7,5 @@ import './MockAssessmentApi';
 import './MockAssessResult';
 
 Mock.setup({
-  timeout: '300-800',
+  timeout: '1-50',
 });

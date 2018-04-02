@@ -3,6 +3,7 @@ import { Layout } from 'antd';
 import PropTypes from 'prop-types';
 import NavSider from './components/layout/NavSider';
 import HeaderBanner from './components/layout/Header';
+
 import 'style/App.scss';
 
 const { Content, Footer } = Layout;

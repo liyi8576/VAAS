@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import AssessResult from 'components/assessResult/AssessResult';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
+import AssessResult from 'components/assessResult/AssessResult';
 import { loadAssessResult, calcLifeIndi, converAssessResult } from 'reducers/AssessResult';
 
 class AssessResultPage extends Component {
@@ -10,11 +10,14 @@ class AssessResultPage extends Component {
     super();
   }
   componentDidMount() {
-    this.props.loadAssessResult(this.getTraineeId());
+    this.fetchAssessResult();
   }
   shouldComponentUpdate(nextProps, nextState) {
     return nextProps.loading !== this.props.loading;
   }
+  fetchAssessResult = traineeId => {
+    this.props.loadAssessResult(traineeId || this.getTraineeId());
+  };
   getTraineeId() {
     let traineeId = this.props.traineeId;
     if (!traineeId) {
@@ -24,11 +27,14 @@ class AssessResultPage extends Component {
   }
   render() {
     return (
-      <AssessResult
-        assessResult={this.props.assessResult}
-        lifeIndi={this.props.lifeIndi}
-        loading={this.props.loading}
-      />
+      <div>
+        <AssessResult
+          assessResult={this.props.assessResult}
+          lifeIndi={this.props.lifeIndi}
+          loading={this.props.loading}
+          onChangeTrainee={this.fetchAssessResult}
+        />
+      </div>
     );
   }
 }
