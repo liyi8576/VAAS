@@ -34,7 +34,7 @@ module.exports = {
     filename: 'js/[name].[chunkhash:8].js',
     sourceMapFilename: 'js/[name].[chunkhash:8].map',
     chunkFilename: 'js/[name].[chunkhash:8].chunk.js',
-    publicPath: PATHS.servedPath,
+    publicPath: '/vaas',
   },
   resolve: {
     extensions: ['.js', '.jsx', '.css', '.scss'],
