@@ -3,6 +3,7 @@ import { Select, Spin } from 'antd';
 import axios from 'axios';
 import { getApiUrl } from 'api';
 import debounce from 'lodash/debounce';
+import _ from 'lodash';
 const Option = Select.Option;
 
 class TraineeSelector extends Component {
@@ -12,7 +13,7 @@ class TraineeSelector extends Component {
       data: [],
       fetching: false,
     };
-    this.searchTrainee = debounce(this.searchTrainee, 800);
+    this.searchTrainee = debounce(this.searchTrainee, 500);
   }
   searchTrainee = value => {
     this.setState({ fetching: true });
@@ -30,7 +31,7 @@ class TraineeSelector extends Component {
       });
   };
   handleChange = value => {
-    this.searchTrainee(value);
+    !_.isEmpty(value) && this.searchTrainee(value);
   };
   handleSelect = (value, option) => {
     this.props.onChange(value);

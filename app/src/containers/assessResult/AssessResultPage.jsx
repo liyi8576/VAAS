@@ -16,7 +16,8 @@ class AssessResultPage extends Component {
     return nextProps.loading !== this.props.loading;
   }
   fetchAssessResult = traineeId => {
-    this.props.loadAssessResult(traineeId || this.getTraineeId());
+    const _traineeId = traineeId || this.getTraineeId();
+    _traineeId && this.props.loadAssessResult(_traineeId);
   };
   getTraineeId() {
     let traineeId = this.props.traineeId;

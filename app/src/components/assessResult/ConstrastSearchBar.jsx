@@ -1,18 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
-import { Form, Row, Select, Button, Alert, message } from 'antd';
+import { Form, Row, Select, Button, message } from 'antd';
 import TraineeSelector from 'containers/trainee/TraineeSelector';
 
 const Option = Select.Option;
 const ConstrastSearchBar = ({
-                              occupationDesc = '',
-                              traineeList = [],
-                              occupationList = [],
-                              onQuery = _.noop,
-                              onChange = _.noop,
-                              form: { getFieldDecorator, validateFields, getFieldsValue },
-                            }) => {
+  occupationDesc = '',
+  traineeList = [],
+  occupationList = [],
+  onQuery = _.noop,
+  onChange = _.noop,
+  form: { getFieldDecorator, validateFields, getFieldsValue },
+}) => {
   const query = () => {
     const formVals = getFieldsValue();
     if (!formVals.traineeId) {
@@ -69,5 +69,6 @@ ConstrastSearchBar.PropTypes = {
   traineeList: PropTypes.array,
   onQuery: PropTypes.func,
   onChangeOccupation: PropTypes.func,
+  onChangeTrainee: PropTypes.func,
 };
 export default Form.create()(ConstrastSearchBar);

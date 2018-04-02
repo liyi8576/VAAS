@@ -13,12 +13,18 @@ class AssessConstrast extends Component {
     super();
     this.state = {
       occupationId: null,
+      traineeId: null,
     };
   }
-  changeQuery = (type, occupationId) => {
+  changeQuery = (type, val) => {
     if (type === 'OCCUPATION') {
       this.setState({
-        occupationId: occupationId,
+        occupationId: val,
+      });
+    }
+    if (type === 'TRAINEE') {
+      this.setState({
+        traineeId: val,
       });
     }
     this.props.onQuery();
@@ -114,7 +120,7 @@ class AssessConstrast extends Component {
           onQuery={this.props.onQuery}
           onChange={this.changeQuery}
           occupationList={this.props.occupationList}
-          traineeList={[]}
+          traineeList={this.props.traineeList}
         />
         {this.state.occupationId && (
           <Row style={{ margin: '10px 0' }}>
@@ -142,6 +148,7 @@ class AssessConstrast extends Component {
 AssessConstrast.PropTypes = {
   loading: PropTypes.bool,
   occupationList: PropTypes.array,
+  traineeList: PropTypes.array,
   constrastResult: PropTypes.array,
   onQuery: PropTypes.func,
 };

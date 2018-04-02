@@ -1,5 +1,5 @@
 import React from 'react';
-import { Row, Input, Table } from 'antd';
+import { Row, Table } from 'antd';
 import _ from 'lodash';
 import Constants from 'Constants';
 import styles from 'style/AssessResult.scss';
