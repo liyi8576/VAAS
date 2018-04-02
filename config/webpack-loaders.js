@@ -32,7 +32,7 @@ exports.jsx = {
     babelrc: false,
     presets: [require.resolve('babel-preset-react-app')],
     compact: true,
-    plugins: [['import', { libraryName: 'antd', style: true }]],
+    plugins: [['import', { libraryName: 'antd' }]],
     cacheDirectory: true,
   },
 };
@@ -75,7 +75,7 @@ const lessLoader = {
 const sassLoader = {
   loader: require.resolve('sass-loader'),
   options: {
-    sourceMap: false,
+    sourceMap: true,
   },
 };
 
@@ -83,7 +83,7 @@ const sassLoader = {
 exports.dev_styles = {
   css: {
     test: /\.css$/,
-    use: ['style-loader', moduleCSSLoader, postCSSLoader],
+    use: ['style-loader', 'css-loader', postCSSLoader],
   },
   scss: {
     test: /\.(scss|sass)$/,
@@ -100,18 +100,21 @@ exports.prod_styles = {
   css: {
     test: /\.css$/,
     use: ExtractTextPlugin.extract({
-      use: [moduleCSSLoader, postCSSLoader],
+      use: ['css-loader', postCSSLoader],
+      fallback: 'style-loader',
     }),
   },
   scss: {
     test: /\.(scss|sass)$/,
     use: ExtractTextPlugin.extract({
-      use: ['css-loader', postCSSLoader, sassLoader],
+      fallback: 'style-loader',
+      use: ['css-loader', moduleCSSLoader, postCSSLoader, sassLoader],
     }),
   },
   less: {
     test: /\.(less)$/,
     use: ExtractTextPlugin.extract({
+      fallback: 'style-loader',
       use: ['css-loader', postCSSLoader, lessLoader],
     }),
   },

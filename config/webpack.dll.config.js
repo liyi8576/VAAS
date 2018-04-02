@@ -1,4 +1,4 @@
-const {PATHS, FILES, SETTINGS} = require('./constants');
+const { PATHS, FILES, SETTINGS } = require('./constants');
 const webpack = require('webpack');
 
 module.exports = {

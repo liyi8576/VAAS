@@ -86,7 +86,6 @@
   "dependencies": {
     "antd": "2.13",
     "axios": "^0.16.2",
-    "fetch-jsonp": "^1.1.3",
     "immutable": "^3.8.1",
     "isomorphic-fetch": "latest",
     "lodash": "^4.17.4",

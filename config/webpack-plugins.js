@@ -23,9 +23,7 @@ exports.commonPlugins = [
   //定义环境变量,将 Node 中使用的变量也传入到 Web 环境中，以方便使用
   new webpack.DefinePlugin({
     'process.env': {
-      'process.env.NODE_ENV': JSON.stringify(
-        process.env.NODE_ENV || 'development',
-      ),
+      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
     },
     SETTINGS: JSON.stringify(SETTINGS),
     //判断当前是否处于开发状态
@@ -91,11 +89,9 @@ exports.prodPlugins = [
   // 将全部 node_modules 中的代码移入
   new webpack.optimize.CommonsChunkPlugin({
     name: 'vendor',
-    filename: 'js/vendor.bundle.js',
+    filename: 'vendor.bundle.js',
     minChunks: ({ resource }) =>
-      resource &&
-      resource.indexOf('node_modules') >= 0 &&
-      resource.match(/\.(js|less|scss)$/),
+      resource && resource.indexOf('node_modules') >= 0 && resource.match(/\.(js|less|scss)$/),
   }),
   //提取Loader定义到同一地方
   new webpack.LoaderOptionsPlugin({

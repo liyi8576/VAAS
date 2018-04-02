@@ -6,9 +6,28 @@ const webpack = require('webpack');
 
 module.exports = {
   externals: {},
-  entry: [FILES.appIndexJs],
+  entry: {
+    verdor: [
+      'antd',
+      'axios',
+      'lodash',
+      'moment',
+      'prop-types',
+      'react',
+      'react-dom',
+      'react-redux',
+      'react-router',
+      'react-router-dom',
+      'react-router-redux',
+      'redux',
+      'redux-actions',
+      'redux-thunk',
+      'screenfull',
+    ],
+    app: [FILES.appIndexJs],
+  },
   target: 'web',
-  devtool: 'source-map',
+  devtool: 'cheap-module-source-map',
   output: {
     path: PATHS.appBuild,
     pathinfo: true,
@@ -24,15 +43,15 @@ module.exports = {
       containers: `${PATHS.appSrc}/containers`,
       reducers: `${PATHS.appSrc}/reducers`,
       actions: `${PATHS.appSrc}/actions`,
-      style:`${PATHS.appSrc}/style`,
-      api:`${PATHS.appSrc}/api`,
-      Constants:`${PATHS.appSrc}/Constants`,
-    }
+      style: `${PATHS.appSrc}/style`,
+      api: `${PATHS.appSrc}/api`,
+      Constants: `${PATHS.appSrc}/Constants`,
+    },
   },
   module: {
     rules: [
       loaders.jsx,
-      loaders.dev_styles.css,
+      loaders.dev_styles.less,
       loaders.dev_styles.less,
       loaders.dev_styles.scss,
       loaders.assets,
