@@ -110,7 +110,7 @@ export const converAssessResult = state => {
   for (let i = 0; i < sortData.length; i++) {
     const item = sortData[i];
     if (domain !== null && domain !== item.domain) {
-      resultAry.push(Object.assign({}, obj));
+      _.keys(obj).length > 0 && resultAry.push(Object.assign({}, obj));
       obj = {};
       index = 1;
     }
@@ -122,7 +122,7 @@ export const converAssessResult = state => {
       [`assessOption_${index}`]: item.assessOption,
     });
     if (index % 4 === 0) {
-      resultAry.push(Object.assign({}, obj));
+      _.keys(obj).length > 0 && resultAry.push(Object.assign({}, obj));
       index = 0;
       obj = {};
     }

@@ -46,6 +46,12 @@ const devServerConfig = {
     verbose: true,
     disableDotRule: true, //当路径中使用点,需要使用 disableDotRule：
   },
+  proxy: {
+    '/vaas/api/**': {
+      target: 'http://192.168.100.64:3389/',
+      changeOrigin: true,
+    },
+  },
   setup(app) {
     app.use(errorOverlayMiddleware());
     app.use(noopServiceWorkerMiddleware());

@@ -86,7 +86,7 @@ const AssessResult = ({
               curDomain = value;
             }
             return {
-              children: Constants.DOMAIN_CONFIG[value].name,
+              children: Constants.DOMAIN_CONFIG[value] && Constants.DOMAIN_CONFIG[value].name,
               props: { rowSpan: rowspan },
             };
           }}
