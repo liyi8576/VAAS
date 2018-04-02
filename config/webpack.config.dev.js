@@ -17,7 +17,7 @@ module.exports = {
     filename: '[name].bundle.js',
     sourceMapFilename: '[name].bundle.map',
     chunkFilename: '[name].[chunkhash].chunk.js',
-    publicPath: '/',
+    publicPath: '/vaas',
   },
   resolve: {
     extensions: ['.js', '.jsx', '.css', '.scss'],
