@@ -51,7 +51,7 @@ class NavSider extends Component {
         style={{ overflowY: 'auto' }}
       >
         <div styleName={'logo'}>
-          <img alt={'智障障碍者职业适应能力检核系统'} src={'/images/logo.png'} />
+          <img alt={'智障障碍者职业适应能力检核系统'} src={'/vaas/images/logo.png'} />
           <span>{'障碍者职业能力检核'}</span>
         </div>
         <Menu

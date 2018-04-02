@@ -100,19 +100,22 @@ exports.prod_styles = {
   css: {
     test: /\.css$/,
     use: ExtractTextPlugin.extract({
-      use: ['style-loader', 'css-loader'],
+      fallback: 'style-loader',
+      use: ['css-loader'],
     }),
   },
   scss: {
     test: /\.(scss|sass)$/,
     use: ExtractTextPlugin.extract({
-      use: ['style-loader', moduleCSSLoader, postCSSLoader, 'sass-loader'],
+      fallback: 'style-loader',
+      use: [moduleCSSLoader, postCSSLoader, 'sass-loader'],
     }),
   },
   less: {
     test: /\.(less)$/,
     use: ExtractTextPlugin.extract({
-      use: ['style-loader', 'css-loader', 'less-loader'],
+      fallback: 'style-loader',
+      use: ['css-loader', 'less-loader'],
     }),
   },
 };

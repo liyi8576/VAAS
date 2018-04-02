@@ -51,9 +51,9 @@ module.exports = {
   module: {
     rules: [
       loaders.jsx,
-      loaders.dev_styles.css,
-      loaders.dev_styles.less,
-      loaders.dev_styles.scss,
+      loaders.prod_styles.css,
+      loaders.prod_styles.less,
+      loaders.prod_styles.scss,
       loaders.assets,
       loaders.json,
     ],
