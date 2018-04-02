@@ -32,7 +32,7 @@ exports.jsx = {
     babelrc: false,
     presets: [require.resolve('babel-preset-react-app')],
     compact: true,
-    plugins: [['import', { libraryName: 'antd' }]],
+    plugins: [['import', { libraryName: 'antd', libraryDirectory: 'es', style: 'css' }]],
     cacheDirectory: true,
   },
 };
@@ -100,22 +100,19 @@ exports.prod_styles = {
   css: {
     test: /\.css$/,
     use: ExtractTextPlugin.extract({
-      use: ['css-loader', postCSSLoader],
-      fallback: 'style-loader',
+      use: ['style-loader', 'css-loader'],
     }),
   },
   scss: {
     test: /\.(scss|sass)$/,
     use: ExtractTextPlugin.extract({
-      fallback: 'style-loader',
-      use: ['css-loader', moduleCSSLoader, postCSSLoader, sassLoader],
+      use: ['style-loader', moduleCSSLoader, postCSSLoader, 'sass-loader'],
     }),
   },
   less: {
     test: /\.(less)$/,
     use: ExtractTextPlugin.extract({
-      fallback: 'style-loader',
-      use: ['css-loader', postCSSLoader, lessLoader],
+      use: ['style-loader', 'css-loader', 'less-loader'],
     }),
   },
 };
