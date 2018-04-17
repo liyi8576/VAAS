@@ -6,7 +6,7 @@ import Mock from 'mockjs';
  * METHOD： GET
  * RETURN： {success:true, data:{traineeId,traineeName,assessor,assessDate,assessCount,currentAbility,assessResult:[]}}
  */
-Mock.mock(/\/api\/trainees\/\w+\/assess$/, {
+Mock.mock(/\/api\/trainees\/\w+\/assess?\w+$/, {
   success: true,
   data: {
     traineeId: '@guid',

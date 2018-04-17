@@ -6,6 +6,7 @@ export const types = {
   FETCH_RECOMMAND_LIST_REQUEST: 'OCCUPATION/FETCH_RECOMMAND_REQUEST',
   FETCH_RECOMMAND_LIST_SUCCESS: 'OCCUPATION/FETCH_RECOMMAND_SUCCESS',
   FETCH_RECOMMAND_LIST_FAILURE: 'OCCUPATION/FETCH_RECOMMAND_FAILURE',
+  RESET_RECOMMAND_LIST: 'OCCUPATION/RESET_RECOMMAND_LIST',
 };
 
 export const initialState = {
@@ -34,6 +35,11 @@ export default handleActions(
       isLoading: false,
       error: action.payload.error,
     }),
+    [types.RESET_RECOMMAND_LIST]: (state, action) => ({
+      ...state,
+      list: [],
+      count: 0,
+    }),
   },
   initialState
 );
@@ -47,6 +53,7 @@ export const { occupation: recommandListActions } = createActions({
   [types.FETCH_RECOMMAND_LIST_FAILURE]: message => ({
     message,
   }),
+  [types.RESET_RECOMMAND_LIST]: undefined,
 });
 
 export const loadRecommandList = (occupationId, queryParam) => dispatch => {

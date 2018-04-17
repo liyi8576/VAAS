@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import OccupationRecommand from 'components/occupation/OccupationRecommand';
 import { loadOccupations } from 'reducers/occupation/OccupationList';
-import { loadRecommandList } from 'reducers/occupation/RecommandList';
+import { loadRecommandList, recommandListActions } from 'reducers/occupation/RecommandList';
 
 class OccupationRecommandPage extends Component {
   constructor(props) {
@@ -11,6 +11,9 @@ class OccupationRecommandPage extends Component {
   }
   componentDidMount() {
     this.props.loadOccupations();
+  }
+  componentWillUnmount() {
+    this.props.resetRecommandList();
   }
   getOccupationId() {
     let occupationId = this.props.occupationId;
@@ -54,5 +57,6 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => ({
   loadOccupations: bindActionCreators(loadOccupations, dispatch),
   loadRecommandList: bindActionCreators(loadRecommandList, dispatch),
+  resetRecommandList: bindActionCreators(recommandListActions.resetRecommandList, dispatch),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(OccupationRecommandPage);

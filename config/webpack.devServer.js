@@ -48,7 +48,7 @@ const devServerConfig = {
   },
   proxy: {
     '/vaas/api/**': {
-      target: 'http://192.168.100.64:3389/',
+      target: 'http://47.104.174.74:3389/',
       changeOrigin: true,
     },
   },

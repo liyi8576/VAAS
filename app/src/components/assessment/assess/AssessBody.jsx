@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import CSSModules from 'react-css-modules';
-import { Card, message } from 'antd';
+import { Card, message, notification, Icon } from 'antd';
 import _ from 'lodash';
 import AssessFooter from 'components/assessment/assess/AssessFooter';
 import AssessSelector from 'components/assessment/selector/AssessSelector';
@@ -28,9 +28,16 @@ class AssessBody extends Component {
           Object.keys(nextProps.abilities),
           Object.keys(nextProps.assessResult)
         );
+        if (unAssessItems && unAssessItems.length === 0) {
+          notification.open({
+            message: '检核结果',
+            description: '已完成所有能力项的检核',
+            icon: <Icon type="smile-circle" style={{ color: '#108ee9' }} />,
+          });
+        }
         this.setState({
           assessResult: nextProps.assessResult || {},
-          assessItem: unAssessItems[0] || null,
+          assessItem: unAssessItems[0] || Object.keys(nextProps.abilities)[0],
         });
       }
     }
@@ -65,7 +72,7 @@ class AssessBody extends Component {
     const index = _.indexOf(assessAry, this.state.assessItem);
     return {
       prev: index === 0 ? null : assessAry[index - 1],
-      next: assessAry.length === index + 1 ? null : assessAry[index + 1],
+      next: assessAry.length === index + 1 ? 'LAST' : assessAry[index + 1],
     };
   };
   setSwitch = (type, val) => {
@@ -82,7 +89,15 @@ class AssessBody extends Component {
         this.getSaveCallback(itemId)
       );
     } else {
-      this.setState({ assessItem: itemId });
+      if (itemId === 'LAST') {
+        notification.open({
+          message: '检核结果',
+          description: '已到最后一个检核项',
+          icon: <Icon type="smile-circle" style={{ color: '#108ee9' }} />,
+        });
+      } else {
+        this.setState({ assessItem: itemId });
+      }
     }
   };
   assessCheck = (abilityId, option) => {
@@ -94,7 +109,15 @@ class AssessBody extends Component {
     const self = this;
     return function(flag, errorMsg) {
       if (flag === true) {
-        self.setState({ assessItem: itemId });
+        if (itemId === 'LAST') {
+          notification.open({
+            message: '检核结果',
+            description: '已完成所有检核项的评定！',
+            icon: <Icon type="smile-circle" style={{ color: '#108ee9' }} />,
+          });
+        } else {
+          self.setState({ assessItem: itemId });
+        }
       } else {
         message.error('保存评定结果出错! 错误信息：' + errorMsg);
       }

@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { Layout, Menu, Icon } from 'antd';
 import { Link } from 'react-router-dom';
 import styles from 'style/NavSider.scss';
+import logoImg from 'style/images/logo.png';
 
 const { Sider } = Layout;
 
@@ -51,7 +52,7 @@ class NavSider extends Component {
         style={{ overflowY: 'auto' }}
       >
         <div styleName={'logo'}>
-          <img alt={'智障障碍者职业适应能力检核系统'} src={'/vaas/images/logo.png'} />
+          <img alt={'智障障碍者职业适应能力检核系统'} src={logoImg} />
           <span>{'障碍者职业能力检核'}</span>
         </div>
         <Menu

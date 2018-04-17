@@ -3,7 +3,12 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import AssessResult from 'components/assessResult/AssessResult';
-import { loadAssessResult, calcLifeIndi, converAssessResult } from 'reducers/AssessResult';
+import {
+  assessResultAction,
+  loadAssessResult,
+  calcLifeIndi,
+  converAssessResult,
+} from 'reducers/AssessResult';
 
 class AssessResultPage extends Component {
   constructor(props) {
@@ -14,6 +19,9 @@ class AssessResultPage extends Component {
   }
   shouldComponentUpdate(nextProps, nextState) {
     return nextProps.loading !== this.props.loading;
+  }
+  componentWillUnmount() {
+    this.props.resetAssessResult();
   }
   fetchAssessResult = traineeId => {
     const _traineeId = traineeId || this.getTraineeId();
@@ -56,5 +64,6 @@ const mapStateToProps = state => {
 };
 const mapDispatchToProps = dispatch => ({
   loadAssessResult: bindActionCreators(loadAssessResult, dispatch),
+  resetAssessResult: bindActionCreators(assessResultAction.resetAssessResult, dispatch),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(AssessResultPage);

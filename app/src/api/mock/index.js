@@ -1,9 +1,9 @@
 import Mock from 'mockjs';
 import './MockDicApi';
 import './MockAbilityApi';
-import './MockTraineeApi';
 import './MockOccupationApi';
 import './MockAssessmentApi';
+import './MockTraineeApi';
 import './MockAssessResult';
 
 Mock.setup({

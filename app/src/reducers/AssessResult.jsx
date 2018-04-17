@@ -3,12 +3,12 @@ import { getApiUrl } from 'api';
 import _ from 'lodash';
 import Constants from 'Constants';
 import { createActions, handleActions } from 'redux-actions';
-import { occupationListActions } from './occupation/OccupationList';
 
 export const types = {
   FETCH_ASSESS_RESULT: 'ASSESS_RESULT/FETCH_ASSESS_RESULT',
   FETCH_CONSTRAST_RESULT: 'ASSESS_RESULT/FETCH_CONSTRAST_RESULT',
   RESET_CONSTRAST_RESULT: 'ASSESS_RESULT/RESET_CONSTRAST_RESULT',
+  RESET_ASSESS_RESULT: 'ASSESS_RESULT/RESET_ASSESS_RESULT',
 };
 export const initialState = {
   isLoading: false,
@@ -35,6 +35,10 @@ export default handleActions(
       ...state,
       constrastResult: [],
     }),
+    [types.RESET_ASSESS_RESULT]: (state, action) => ({
+      ...state,
+      assessResult: [],
+    }),
   },
   initialState
 );
@@ -52,6 +56,7 @@ export const { assessResult: assessResultAction } = createActions({
     error,
   }),
   [types.RESET_CONSTRAST_RESULT]: undefined,
+  [types.RESET_ASSESS_RESULT]: undefined,
 });
 
 //************** Action *********************
@@ -155,8 +160,8 @@ export const converConstrastResult = state => {
   for (let i = 0; i < maxAry; i++) {
     const row = {};
     _.each(domains, domainId => {
-      row[`necessary_${domainId}`] = domainMap[`N_${domainId}`][i];
-      row[`secondary_${domainId}`] = domainMap[`S_${domainId}`][i];
+      row[`necessary_${domainId}`] = domainMap[`N_${domainId}`] && domainMap[`N_${domainId}`][i];
+      row[`secondary_${domainId}`] = domainMap[`N_${domainId}`] && domainMap[`S_${domainId}`][i];
     });
     resultAry.push(row);
   }

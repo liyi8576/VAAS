@@ -20,7 +20,9 @@ class AssessConstrastPage extends Component {
     this.props.loadOccupations();
     this.props.loadTrainees();
   }
-
+  componentWillUnmount() {
+    this.props.resetConstrastResult();
+  }
   queryConstrastResult = (traineeId, occupationId) => {
     if (!traineeId || !occupationId) {
       this.props.resetConstrastResult();
