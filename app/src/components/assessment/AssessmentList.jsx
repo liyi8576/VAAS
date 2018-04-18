@@ -2,18 +2,28 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import CSSModules from 'react-css-modules';
 import styles from 'style/Assessment.scss';
-import { Table } from 'antd';
+import _ from 'lodash';
+import { Table, Tabs } from 'antd';
 import { Link } from 'react-router-dom';
 
 const AssessmentList = ({
   assessmentList = [], // 查询返回结果列表
   pagination = { pageSize: 10 },
   loading = false,
-  onActionTrigger = () => {},
-  onChangeTable = () => {},
+  onActionTrigger = _.noop,
+  onChangeTable = _.noop,
+  onChangeTab = _.noop,
 }) => {
+  const TabPane = Tabs.TabPane;
   return (
     <div className="content-inner">
+      <Tabs size="small" onChange={onChangeTab}>
+        <TabPane tab="全部" key="TAB" />
+        <TabPane tab="未检核" key="TAB#-1" />
+        <TabPane tab="检核中" key="TAB#1" />
+        <TabPane tab="已检核" key="TAB#2" />
+        <TabPane tab="评估完成" key="TAB#3" />
+      </Tabs>
       <Table
         bordered
         simple
@@ -38,15 +48,17 @@ AssessmentList.propTypes = {
   }),
   loading: PropTypes.bool,
   onActionTrigger: PropTypes.func,
+  onChangeTab: PropTypes.func,
+  onChangeTable: PropTypes.func,
 };
 export default CSSModules(AssessmentList, styles);
 
 const configColumns = onActionTrigger => {
   const statusMap = {
-    '-1': '未开始检核',
+    '-1': '未检核',
     '1': '检核中',
-    '2': '检核完成',
-    '3': '已生成检核报告',
+    '2': '已检核',
+    '3': '评估完成',
   };
   return [
     {
@@ -64,10 +76,21 @@ const configColumns = onActionTrigger => {
       title: '已检核数量',
       dataIndex: 'assessCount',
       key: 'assessCount',
+      className: 'table-col-center',
+    },
+    {
+      title: '检核进度',
+      key: 'assessPercent',
+      dataIndex: 'assessPercent',
+      className: 'table-col-center',
+      render: (text, record) => {
+        return record.assessPercent + '%';
+      },
     },
     {
       title: '检核状态',
       dataIndex: 'assessStatus',
+      className: 'table-col-center',
       key: 'assessStatus',
       render: (text, record) => {
         return statusMap[record.assessStatus];
@@ -76,19 +99,43 @@ const configColumns = onActionTrigger => {
     {
       title: '检核开始日期',
       dataIndex: 'assessBeginDate',
+      className: 'table-col-center',
       key: 'assessBeginDate',
     },
     {
       title: '检核结束日期',
       dataIndex: 'assessEndDate',
+      className: 'table-col-center',
       key: 'assessEndDate',
     },
     {
       title: '操作',
-      width: 100,
+      width: 200,
       key: 'action',
-      render: (text, record) =>
-        <Link to={`/trainees/${record.traineeId}/assess`}>开始检核</Link>,
+      render: (text, record) => {
+        const status = record.assessStatus + '';
+        if (status === '-1') {
+          return <Link to={`/trainees/${record.traineeId}/assess`}>开始检核</Link>;
+        }
+        if (status === '1') {
+          return <Link to={`/trainees/${record.traineeId}/assess`}>继续检核</Link>;
+        }
+        if (status === '2') {
+          return (
+            <span>
+              <Link to={`/trainees/${record.traineeId}/assess`} style={{ marginRight: '5px' }}>
+                继续检核
+              </Link>|
+              <Link to={`/trainees/${record.traineeId}/assess`} style={{ marginLeft: '5px' }}>
+                生成评估报告
+              </Link>
+            </span>
+          );
+        }
+        if (status === '3') {
+          return <Link to={`/trainees/${record.traineeId}/assess`}>查看评估报告</Link>;
+        }
+      },
     },
   ];
 };

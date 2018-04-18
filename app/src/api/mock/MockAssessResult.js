@@ -2,6 +2,12 @@ import Mock from 'mockjs';
 import _ from 'lodash';
 import { AbilityList } from './AbilityData';
 
+/**
+ * 查询学生检核结果
+ * URL：/api/trainees/{traineeId}/assessResult
+ * METHOD： GET
+ * RETURN： {success:true, data:[{id:'',name:'',domain:'',assessOption:''}]}
+ */
 Mock.mock(/\/api\/trainees\/\w+\/assessResult/, {
   success: true,
   data: function() {
@@ -17,6 +23,13 @@ Mock.mock(/\/api\/trainees\/\w+\/assessResult/, {
   },
 });
 
+
+/**
+ * 查询学生职业检核比对结果
+ * URL：/api/trainees/{trainneeId}/occupations\{occupationsId}/constrast/
+ * METHOD： GET
+ * RETURN： {success:true, data:[{domain:'',abilityId:'',criterionScore:'',necessaryLevel:'',assessOption:''}]}
+ */
 Mock.mock(/\/api\/trainees\/\w+\/occupations\/\w+\/constrast/, {
   success: true,
   'data|40': [

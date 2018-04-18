@@ -62,7 +62,7 @@ class TraineeListPage extends Component {
       {
         searchCond: { ...this.state.searchCond, [field]: val },
       },
-      () => this.fetchTraineeList(),
+      () => this.fetchTraineeList()
     );
   };
   onChangeSearchTxt = (field, val) => {
@@ -79,7 +79,7 @@ class TraineeListPage extends Component {
           current: pagination.current,
         },
       },
-      () => this.fetchTraineeList(),
+      () => this.fetchTraineeList()
     );
   };
   onActionTrigger = (actionType, record) => {
@@ -103,7 +103,7 @@ class TraineeListPage extends Component {
       triggerAction: null,
     });
   };
-  buildModal = (modalTitle, contentComp, maskClosable = false) =>
+  buildModal = (modalTitle, contentComp, maskClosable = false) => (
     <Modal
       width={800}
       visible
@@ -113,14 +113,15 @@ class TraineeListPage extends Component {
       title={modalTitle}
     >
       {contentComp}
-    </Modal>;
+    </Modal>
+  );
 
   renderModal() {
     switch (this.state.triggerAction) {
       case 'CREATE':
         return this.buildModal(
           '新增学生信息',
-          <TraineeEditPage editType="CREATE" onCancel={this.closeModal} />,
+          <TraineeEditPage editType="CREATE" onCancel={this.closeModal} />
         );
       case 'MODIFY':
         return this.buildModal(
@@ -129,13 +130,13 @@ class TraineeListPage extends Component {
             editType="MODIFY"
             traineeId={this.state.selectItem}
             onCancel={this.closeModal}
-          />,
+          />
         );
       case 'VIEW':
         return this.buildModal(
           '查看学生信息',
           <TraineeInfoPage traineeId={this.state.selectItem} />,
-          true,
+          true
         );
       case 'SHOW_RECOMMEND':
         return this.buildModal('查看学生职业推荐列表', null);
@@ -185,18 +186,9 @@ const mapDispatchToProps = dispatch => ({
   loadEnumDic: bindActionCreators(loadEnumDic, dispatch),
   loadTrainees: bindActionCreators(loadTrainees, dispatch),
   deleteTrainee: bindActionCreators(deleteTrainee, dispatch),
-  resetTraineeList: bindActionCreators(
-    traineeListActions.resetTraineeList,
-    dispatch,
-  ),
-  resetHandleStatus: bindActionCreators(
-    traineeActions.resetHandleStatus,
-    dispatch,
-  ),
-  resetTraineeState: bindActionCreators(
-    traineeActions.resetTraineeState,
-    dispatch,
-  ),
+  resetTraineeList: bindActionCreators(traineeListActions.resetTraineeList, dispatch),
+  resetHandleStatus: bindActionCreators(traineeActions.resetHandleStatus, dispatch),
+  resetTraineeState: bindActionCreators(traineeActions.resetTraineeState, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(TraineeListPage);

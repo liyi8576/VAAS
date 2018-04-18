@@ -52,8 +52,8 @@ class TraineeEditPage extends Component {
   }
   saveTrainee = trainee => {
     this.props.editType === 'MODIFY'
-      ? this.props.createTrainee(trainee)
-      : this.props.modifyTrainee(trainee.id, trainee);
+      ? this.props.modifyTrainee(trainee.id, trainee)
+      : this.props.createTrainee(trainee);
   };
   render_loading() {
     return (

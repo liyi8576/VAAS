@@ -32,7 +32,7 @@ exports.jsx = {
     babelrc: false,
     presets: [require.resolve('babel-preset-react-app')],
     compact: true,
-    plugins: [['import', {libraryName: 'antd', style: true}]],
+    plugins: [['import', { libraryName: 'antd', libraryDirectory: 'es', style: 'css' }]],
     cacheDirectory: true,
   },
 };
@@ -69,27 +69,26 @@ const postCSSLoader = {
 };
 
 const lessLoader = {
-  loader: require.resolve('less-loader')
+  loader: require.resolve('less-loader'),
 };
 
 const sassLoader = {
   loader: require.resolve('sass-loader'),
   options: {
-    sourceMap: false
-  }
+    sourceMap: true,
+  },
 };
 
 // css样式loader配置
 exports.dev_styles = {
   css: {
     test: /\.css$/,
-    use: ['style-loader', moduleCSSLoader, postCSSLoader],
+    use: ['style-loader', 'css-loader', postCSSLoader],
   },
   scss: {
     test: /\.(scss|sass)$/,
 
-    use: ['style-loader', moduleCSSLoader, postCSSLoader,  sassLoader],
-
+    use: ['style-loader', moduleCSSLoader, postCSSLoader, sassLoader],
   },
   less: {
     test: /\.(less)$/,
@@ -101,19 +100,22 @@ exports.prod_styles = {
   css: {
     test: /\.css$/,
     use: ExtractTextPlugin.extract({
-      use: [moduleCSSLoader, postCSSLoader],
+      fallback: 'style-loader',
+      use: ['css-loader'],
     }),
   },
   scss: {
     test: /\.(scss|sass)$/,
     use: ExtractTextPlugin.extract({
-      use: ['css-loader', postCSSLoader, sassLoader],
+      fallback: 'style-loader',
+      use: [moduleCSSLoader, postCSSLoader, 'sass-loader'],
     }),
   },
   less: {
     test: /\.(less)$/,
     use: ExtractTextPlugin.extract({
-      use: ['css-loader', postCSSLoader, lessLoader],
+      fallback: 'style-loader',
+      use: ['css-loader', 'less-loader'],
     }),
   },
 };

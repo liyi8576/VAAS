@@ -65,3 +65,19 @@ export const loadAssessments = queryParam => (dispatch, getState) => {
       dispatch(assessmentListAction.fetchAssessmentsFailure(err.message));
     });
 };
+
+export const dealAssessmentList = state => {
+  let { abilities } = state.ability || {};
+  const count = Object.keys(abilities).length;
+  const { assessmentList } = state.assessment || {};
+  const resultList = assessmentList && assessmentList.assessmentList;
+  if (count > 0) {
+    return (resultList || []).map(item => {
+      return {
+        ...item,
+        assessPercent: (item.assessCount / count * 100).toFixed(2),
+      };
+    });
+  }
+  return resultList || [];
+};

@@ -21,7 +21,7 @@ export default handleActions(
       error: action.payload,
     }),
   },
-  initialState,
+  initialState
 );
 export const { enumDic: enumDicActions } = createActions({
   [types.FETCH_DIC_LIST_SUCCESS]: enumDics => enumDics,
@@ -33,7 +33,7 @@ export const loadEnumDic = () => dispatch => {
     .get(getApiUrl(`dics`))
     .then(response => {
       const result = response.data;
-      let dicData = _.groupBy(result.data, 'group');
+      let dicData = _.groupBy(result.data, 'groups');
       dicData = _.reduce(
         dicData,
         (result, dics, key) => {
@@ -43,7 +43,7 @@ export const loadEnumDic = () => dispatch => {
           }, {});
           return result;
         },
-        {},
+        {}
       );
       dispatch(enumDicActions.fetchDicListSuccess(dicData));
     })
@@ -56,7 +56,7 @@ export const getDicHelper = enumDicObj => {
   return {
     getDicName: (group, key) => {
       const dicGroup = enumDicObj[group] || [];
-      return dicGroup[key]||'N/A';
+      return dicGroup[key] || 'N/A';
     },
     getDicsByGroup: group => {
       const dicGroup = enumDicObj[group] || [];
@@ -66,7 +66,7 @@ export const getDicHelper = enumDicObj => {
           dicAry.push({ name: name, value: key });
           return dicAry;
         },
-        [],
+        []
       );
     },
   };

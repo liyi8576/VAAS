@@ -73,12 +73,7 @@ class OccupationEditStep extends Component {
   }
 
   renderStepContent(step) {
-    const stepComps = [
-      BasicInfo,
-      AbilitySelect,
-      AssessScoreSet,
-      OccupationInfo,
-    ];
+    const stepComps = [BasicInfo, AbilitySelect, AssessScoreSet, OccupationInfo];
     const Comp = stepComps[step];
     return (
       <div styleName="steps-content">
@@ -86,8 +81,7 @@ class OccupationEditStep extends Component {
           occupation={this.state.occupation}
           ability={this.props.ability}
           setValidateFunc={validateFunc => (this.validateStep = validateFunc)}
-          setGetFieldValuesFunc={getFieldValuesFunc =>
-            (this.getFieldValues = getFieldValuesFunc)}
+          setGetFieldValuesFunc={getFieldValuesFunc => (this.getFieldValues = getFieldValuesFunc)}
         />
       </div>
     );
@@ -99,15 +93,17 @@ class OccupationEditStep extends Component {
         <Button key="cancel" onClick={this.props.onCancel}>
           取消
         </Button>
-        {this.state.curStep > 0 &&
+        {this.state.curStep > 0 && (
           <Button key="prev" onClick={this.prevStep}>
             上一步
-          </Button>}
-        {this.state.curStep < 3 &&
+          </Button>
+        )}
+        {this.state.curStep < 3 && (
           <Button key="next" type="primary" onClick={this.nextStep}>
             下一步
-          </Button>}
-        {this.state.curStep === 3 &&
+          </Button>
+        )}
+        {this.state.curStep === 3 && (
           <Button
             key="confirm"
             type="primary"
@@ -115,7 +111,8 @@ class OccupationEditStep extends Component {
             loading={this.state.saveLoading}
           >
             确认保存
-          </Button>}
+          </Button>
+        )}
       </div>
     );
   }

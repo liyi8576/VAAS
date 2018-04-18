@@ -47,8 +47,8 @@ class OccupationEditPage extends Component {
   }
   saveOccupation = occupation => {
     this.props.editType === 'MODIFY'
-      ? this.props.createOccupation(occupation)
-      : this.props.modifyOccupation(occupation.id, occupation);
+      ? this.props.modifyOccupation(occupation.id, occupation)
+      : this.props.createOccupation(occupation) ;
   };
   render_loading() {
     return (

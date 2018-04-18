@@ -6,7 +6,9 @@ const webpack = require('webpack');
 
 module.exports = {
   externals: {},
-  entry: [FILES.appIndexJs],
+  entry: {
+    app: [FILES.appIndexJs],
+  },
   target: 'web',
   devtool: 'source-map',
   output: {
@@ -15,7 +17,7 @@ module.exports = {
     filename: 'js/[name].[chunkhash:8].js',
     sourceMapFilename: 'js/[name].[chunkhash:8].map',
     chunkFilename: 'js/[name].[chunkhash:8].chunk.js',
-    publicPath: PATHS.servedPath,
+    publicPath: '/vaas',
   },
   resolve: {
     extensions: ['.js', '.jsx', '.css', '.scss'],
@@ -24,17 +26,17 @@ module.exports = {
       containers: `${PATHS.appSrc}/containers`,
       reducers: `${PATHS.appSrc}/reducers`,
       actions: `${PATHS.appSrc}/actions`,
-      style:`${PATHS.appSrc}/style`,
-      api:`${PATHS.appSrc}/api`,
-      Constants:`${PATHS.appSrc}/Constants`,
-    }
+      style: `${PATHS.appSrc}/style`,
+      api: `${PATHS.appSrc}/api`,
+      Constants: `${PATHS.appSrc}/Constants`,
+    },
   },
   module: {
     rules: [
       loaders.jsx,
-      loaders.dev_styles.css,
-      loaders.dev_styles.less,
-      loaders.dev_styles.scss,
+      loaders.prod_styles.css,
+      loaders.prod_styles.less,
+      loaders.prod_styles.scss,
       loaders.assets,
       loaders.json,
     ],

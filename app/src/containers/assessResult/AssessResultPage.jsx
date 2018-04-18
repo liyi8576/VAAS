@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import AssessResult from 'components/assessResult/AssessResult';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
+import AssessResult from 'components/assessResult/AssessResult';
 import {
+  assessResultAction,
   loadAssessResult,
   calcLifeIndi,
   converAssessResult,
@@ -14,16 +15,35 @@ class AssessResultPage extends Component {
     super();
   }
   componentDidMount() {
-    const traineeId = this.props.match.params.traineeId;
-    this.props.loadAssessResult(traineeId);
+    this.fetchAssessResult();
+  }
+  shouldComponentUpdate(nextProps, nextState) {
+    return nextProps.loading !== this.props.loading;
+  }
+  componentWillUnmount() {
+    this.props.resetAssessResult();
+  }
+  fetchAssessResult = traineeId => {
+    const _traineeId = traineeId || this.getTraineeId();
+    _traineeId && this.props.loadAssessResult(_traineeId);
+  };
+  getTraineeId() {
+    let traineeId = this.props.traineeId;
+    if (!traineeId) {
+      traineeId = this.props.match && this.props.match.params && this.props.match.params.traineeId;
+    }
+    return traineeId;
   }
   render() {
     return (
-      <AssessResult
-        assessResult={this.props.assessResult}
-        lifeIndi={this.props.lifeIndi}
-        loading={this.props.loading}
-      />
+      <div>
+        <AssessResult
+          assessResult={this.props.assessResult}
+          lifeIndi={this.props.lifeIndi}
+          loading={this.props.loading}
+          onChangeTrainee={this.fetchAssessResult}
+        />
+      </div>
     );
   }
 }
@@ -31,7 +51,9 @@ class AssessResultPage extends Component {
 AssessResultPage.PropTypes = {
   traineeId: PropTypes.string.required,
 };
-AssessResultPage.defaultProps = {};
+AssessResultPage.defaultProps = {
+  loading: true,
+};
 const mapStateToProps = state => {
   const { isLoading } = state.assessResult || {};
   return {
@@ -42,5 +64,6 @@ const mapStateToProps = state => {
 };
 const mapDispatchToProps = dispatch => ({
   loadAssessResult: bindActionCreators(loadAssessResult, dispatch),
+  resetAssessResult: bindActionCreators(assessResultAction.resetAssessResult, dispatch),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(AssessResultPage);

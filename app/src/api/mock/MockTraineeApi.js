@@ -5,20 +5,20 @@ import Mock from 'mockjs';
  * URL: /api/trainees/{traineeId}
  * METHOD:GET
  */
-Mock.mock(/\/api\/trainees\/\S+$/, {
+Mock.mock(/\/api\/trainees\/(?!\/.)*$/, {
   success: true,
   data: {
     id: '@guid',
     name: '@cname',
     'sex|1': ['M', 'F'],
-    'age|20-50':1,
+    'age|20-50': 1,
     birthday: '@date',
     idCard: '@id',
     guardian: '@name',
     'relationship|1': ['1', '2'],
     address: '@county',
     'phone|1': ['13531544954', '13632250649', '15820292420', '15999905612'],
-    'mail':'@email',
+    mail: '@email',
     'disabledType|1': ['1', '2', '3'],
     'disabledLevel|1': ['1', '2', '3'],
     disabledReason: '@cparagraph',
@@ -47,6 +47,7 @@ Mock.mock(/\/api\/trainees\/\S+$/, {
 /**
  * 获取学员列表
  * URL: /api/trainees
+ * PARAMS: offset,pageSize、traineeName
  * METHOD:GET
  */
 Mock.mock(/\/api\/trainees(\?\S*)*$/, {

@@ -40,7 +40,7 @@ export default handleActions(
       traineeList: [],
     }),
   },
-  initialState,
+  initialState
 );
 
 export const { trainee: traineeListActions } = createActions({
@@ -63,12 +63,7 @@ export const loadTrainees = queryParam => dispatch => {
     })
     .then(response => {
       const result = response.data;
-      dispatch(
-        traineeListActions.fetchTraineeListSuccess(
-          result.data.list,
-          result.data.total,
-        ),
-      );
+      dispatch(traineeListActions.fetchTraineeListSuccess(result.data.list, result.data.total));
     })
     .catch(function(err) {
       dispatch(traineeListActions.fetchTraineeListFailure(err.message));

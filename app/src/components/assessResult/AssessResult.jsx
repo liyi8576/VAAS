@@ -1,25 +1,22 @@
 import React from 'react';
-import { Row, Input, Table } from 'antd';
+import { Row, Table } from 'antd';
 import _ from 'lodash';
 import Constants from 'Constants';
 import styles from 'style/AssessResult.scss';
 import CSSModules from 'react-css-modules';
+import TraineeSelector from 'containers/trainee/TraineeSelector';
 
 const { Column } = Table;
 
 const AssessResult = ({
-  onChangeSearchTxt,
-  onSearch,
+  onChangeTrainee,
   traineeName = '',
   assessResult = [],
   lifeIndi = null,
   loading = false,
 }) => {
-  const tiggerSearchTxt = val => {
-    onSearch('traineeName', val);
-  };
-  const changeSearchText = e => {
-    onChangeSearchTxt('traineeName', e.target.value);
+  const changeTrainee = val => {
+    onChangeTrainee(val);
   };
   const render_columns = index => [
     <Column
@@ -51,14 +48,7 @@ const AssessResult = ({
   return (
     <div className="content-inner">
       <Row style={{ marginBottom: '10px' }}>
-        <Input.Search
-          placeholder="请输入学生姓名:"
-          id="traineeNameSearch"
-          style={{ width: 200 }}
-          onChange={changeSearchText}
-          onSearch={tiggerSearchTxt}
-          defaultValue={traineeName}
-        />
+        <TraineeSelector onChange={changeTrainee} />
       </Row>
       <Table
         styleName={'assessTable'}
@@ -96,7 +86,7 @@ const AssessResult = ({
               curDomain = value;
             }
             return {
-              children: Constants.DOMAIN_CONFIG[value].name,
+              children: Constants.DOMAIN_CONFIG[value] && Constants.DOMAIN_CONFIG[value].name,
               props: { rowSpan: rowspan },
             };
           }}

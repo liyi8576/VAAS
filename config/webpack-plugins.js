@@ -11,8 +11,7 @@ const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
 // 使用 extract-text-webpack-plugin就可以把css从js中独立抽离出来
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 // 分析webpack bundle 图形化展示
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
-  .BundleAnalyzerPlugin;
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 // 显示友好的错误提示
 const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
 const ManifestPlugin = require('webpack-manifest-plugin');
@@ -24,9 +23,7 @@ exports.commonPlugins = [
   //定义环境变量,将 Node 中使用的变量也传入到 Web 环境中，以方便使用
   new webpack.DefinePlugin({
     'process.env': {
-      'process.env.NODE_ENV': JSON.stringify(
-        process.env.NODE_ENV || 'development',
-      ),
+      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
     },
     SETTINGS: JSON.stringify(SETTINGS),
     //判断当前是否处于开发状态
@@ -37,6 +34,9 @@ exports.commonPlugins = [
 
 //开发时使用插件
 exports.devPlugins = [
+  new webpack.DefinePlugin({
+    'process.env.NODE_ENV': JSON.stringify('development'),
+  }),
   new HtmlWebpackPlugin({
     inject: true, //js引入放在body底部
     title: SETTINGS.appTitle,
@@ -71,11 +71,14 @@ exports.devPlugins = [
 
 //生产环境下使用插件
 exports.prodPlugins = [
+  new webpack.DefinePlugin({
+    'process.env.NODE_ENV': JSON.stringify('production'),
+  }),
   new HtmlWebpackPlugin({
     inject: true, //js引入放在body底部
     title: SETTINGS.appTitle,
     filename: 'index.html',
-    template: FILES.appIndexTpl,
+    template: FILES.appIndexProdTpl,
     minify: {
       removeComments: true,
       collapseWhitespace: true,
@@ -93,10 +96,11 @@ exports.prodPlugins = [
   new webpack.optimize.CommonsChunkPlugin({
     name: 'vendor',
     filename: 'js/vendor.bundle.js',
-    minChunks: ({ resource }) =>
-      resource &&
-      resource.indexOf('node_modules') >= 0 &&
-      resource.match(/\.(js|less|scss)$/),
+    minChunks: ({ resource }) => {
+      return (
+        resource && resource.indexOf('node_modules') >= 0 && resource.match(/\.(js|less|scss)$/)
+      );
+    },
   }),
   //提取Loader定义到同一地方
   new webpack.LoaderOptionsPlugin({
@@ -115,6 +119,7 @@ exports.prodPlugins = [
   new webpack.optimize.UglifyJsPlugin({
     compress: {
       warnings: false,
+      drop_console: true,
       comparisons: false,
     },
     output: {

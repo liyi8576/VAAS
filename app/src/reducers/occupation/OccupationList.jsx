@@ -40,7 +40,7 @@ export default handleActions(
       occupationList: [],
     }),
   },
-  initialState,
+  initialState
 );
 
 export const { occupation: occupationListActions } = createActions({
@@ -64,10 +64,7 @@ export const loadOccupations = queryParam => dispatch => {
     .then(response => {
       const result = response.data;
       dispatch(
-        occupationListActions.fetchOccupationListSuccess(
-          result.data.list,
-          result.data.total,
-        ),
+        occupationListActions.fetchOccupationListSuccess(result.data.list, result.data.total)
       );
     })
     .catch(function(err) {

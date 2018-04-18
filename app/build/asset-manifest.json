@@ -1,6 +1,7 @@
 {
-  "main.20fe7c23.map": "js/main.20fe7c23.map",
-  "main.js": "js/main.20fe7c23.js",
-  "vendor.282b28a8.map": "js/vendor.282b28a8.map",
+  "app.1e0ec16a.map": "js/app.1e0ec16a.map",
+  "app.css": "css/app.404966bf.css",
+  "app.js": "js/app.1e0ec16a.js",
+  "vendor.f1b20f92.map": "js/vendor.f1b20f92.map",
   "vendor.js": "js/vendor.bundle.js"
 }

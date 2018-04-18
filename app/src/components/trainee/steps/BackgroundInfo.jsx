@@ -38,15 +38,15 @@ class BackgroundInfo extends Component {
         },
       );
       const { haveTrained, isWorked } = fieldVals;
-      haveTrained && (fieldVals.haveTrained = haveTrained ? 1 : -1);
-      isWorked && (fieldVals.isWorked = isWorked ? 1 : -1);
+      fieldVals.haveTrained = haveTrained ? 1 : -1;
+      fieldVals.isWorked = isWorked ? 1 : -1;
       return fieldVals;
     });
     this.props.setGetFieldValuesFunc(() => {
       const fieldVals = this.props.form.getFieldsValue();
       const { haveTrained, isWorked } = fieldVals;
-      haveTrained && (fieldVals.haveTrained = haveTrained ? 1 : -1);
-      isWorked && (fieldVals.isWorked = isWorked ? 1 : -1);
+      fieldVals.haveTrained = haveTrained ? 1 : -1;
+      fieldVals.isWorked = isWorked ? 1 : -1;
       return fieldVals;
     });
   }

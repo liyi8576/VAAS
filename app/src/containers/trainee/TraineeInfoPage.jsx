@@ -15,10 +15,20 @@ import { getDicHelper } from 'reducers/EnumDic';
 import 'style/App.scss';
 
 class TraineeInfoPage extends Component {
+  constructor(props) {
+    super(props);
+  }
   componentDidMount() {
-    this.props.loadTrainee(this.props.traineeId);
+    this.props.loadTrainee(this.getTraineeId());
   }
   componentWillUnmount() {}
+  getTraineeId() {
+    let traineeId = this.props.traineeId;
+    if (!traineeId) {
+      traineeId = this.props.match && this.props.match.params && this.props.match.params.traineeId;
+    }
+    return traineeId;
+  }
   render_loading() {
     return (
       <div className="vas-loading-box">
@@ -28,10 +38,7 @@ class TraineeInfoPage extends Component {
   }
   render_content() {
     return (
-      <TraineeInfo
-        trainee={this.props.trainee}
-        dicHelper={getDicHelper(this.props.enumDics)}
-      />
+      <TraineeInfo trainee={this.props.trainee} dicHelper={getDicHelper(this.props.enumDics)} />
     );
   }
   render() {

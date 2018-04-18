@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import AssessmentList from 'components/assessment/AssessmentList';
-import { loadAssessments } from 'reducers/assessment/AssessmentList';
+import { loadAssessments, dealAssessmentList } from 'reducers/assessment/AssessmentList';
+import { loadAbilities } from 'reducers/ability/Ability';
 
 class AssessmentListPage extends Component {
   constructor(props) {
@@ -16,6 +17,7 @@ class AssessmentListPage extends Component {
     };
   }
   componentDidMount() {
+    this.props.loadAbilities();
     this.fetchAssessments();
   }
   componentWillUnmount() {}
@@ -36,26 +38,28 @@ class AssessmentListPage extends Component {
           current: pagination.current,
         },
       },
-      () => this.fetchTraineeList(),
+      () => this.fetchAssessments()
     );
+  };
+  onChangeTab = active => {
+    const ary = active.split('TAB#');
+    if (ary.length > 1) {
+      this.setState({ searchCond: { assessStatus: ary[1] } }, () => this.fetchAssessments());
+    }
   };
   onActionTrigger = (actionType, record) => {};
   render() {
-    const {
-      assessmentList,
-      assessmentCount,
-      isLoading,
-    } = this.props.assessmentList;
     return (
       <div>
         <AssessmentList
-          assessmentList={assessmentList}
+          assessmentList={this.props.assessmentList}
           pagination={{
             current: this.state.pagination.current,
-            total: assessmentCount,
+            total: this.props.assessmentCount,
           }}
-          loading={isLoading}
+          loading={this.props.loading}
           onChangeTable={this.onChangeTable}
+          onChangeTab={this.onChangeTab}
           onActionTrigger={this.onActionTrigger}
         />
       </div>
@@ -68,13 +72,17 @@ AssessmentListPage.PropTypes = {
 };
 AssessmentListPage.defaultProps = {};
 const mapStateToProps = state => {
-  const { assessmentList } = state.assessment || {};
+  let { assessmentList } = state.assessment || {};
+  assessmentList = assessmentList || {};
   return {
-    assessmentList: assessmentList || [],
+    assessmentList: dealAssessmentList(state),
+    assessmentCount: assessmentList.assessmentCount,
+    loading: assessmentList.isLoading,
   };
 };
 const mapDispatchToProps = dispatch => ({
-  loadAssessments:bindActionCreators(loadAssessments,dispatch)
+  loadAssessments: bindActionCreators(loadAssessments, dispatch),
+  loadAbilities: bindActionCreators(loadAbilities, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AssessmentListPage);

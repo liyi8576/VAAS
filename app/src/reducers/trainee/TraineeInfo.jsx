@@ -57,7 +57,7 @@ export default handleActions(
       operate: {},
     }),
   },
-  initialState,
+  initialState
 );
 
 export const { trainee: traineeActions } = createActions({
@@ -93,49 +93,25 @@ export const loadTrainee = traineeId => dispatch => {
 
 export const createTrainee = trainee => dispatch => {
   axios
-    .post(getApiUrl(`trainees`), { trainee })
+    .post(getApiUrl(`trainees`), trainee)
     .then(response => {
       const result = response.data;
-      dispatch(
-        traineeActions.handleTraineeSuccess(
-          'CREATE',
-          trainee.name,
-          result.data,
-        ),
-      );
+      dispatch(traineeActions.handleTraineeSuccess('CREATE', trainee.name, result.data));
     })
     .catch(function(err) {
-      dispatch(
-        traineeActions.handleTraineeFailure(
-          'CREATE',
-          trainee.name,
-          err.message,
-        ),
-      );
+      dispatch(traineeActions.handleTraineeFailure('CREATE', trainee.name, err.message));
     });
 };
 
 export const modifyTrainee = (traineeId, trainee) => dispatch => {
   axios
-    .put(getApiUrl(`trainees/${traineeId}`), { trainee })
+    .put(getApiUrl(`trainees/${traineeId}`), trainee)
     .then(response => {
       const result = response.data;
-      dispatch(
-        traineeActions.handleTraineeSuccess(
-          'MODIFY',
-          trainee.name,
-          result.data,
-        ),
-      );
+      dispatch(traineeActions.handleTraineeSuccess('MODIFY', trainee.name, result.data));
     })
     .catch(function(err) {
-      dispatch(
-        traineeActions.handleTraineeFailure(
-          'MODIFY',
-          trainee.name,
-          err.message,
-        ),
-      );
+      dispatch(traineeActions.handleTraineeFailure('MODIFY', trainee.name, err.message));
     });
 };
 
@@ -144,9 +120,7 @@ export const deleteTrainee = (traineeId, traineeName) => dispatch => {
     .delete(getApiUrl(`trainees/${traineeId}`))
     .then(response => {
       const result = response.data;
-      dispatch(
-        traineeActions.handleTraineeSuccess('DELETE', traineeName, result.data),
-      );
+      dispatch(traineeActions.handleTraineeSuccess('DELETE', traineeName, result.data));
     })
     .catch(function(err) {
       dispatch(traineeActions.handleTraineeFailure('DELETE', err.message));
