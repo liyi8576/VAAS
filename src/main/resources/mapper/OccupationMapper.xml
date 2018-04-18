@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="tk.mybatis.springboot.mapper.OccupationMapper">
+	<select id="selectByKey" parameterType="Integer" resultType="tk.mybatis.springboot.bean.OccupationBean">
+		select o.id,o.name,o.description as `desc` from occupation o 
+		where o.id = #{id} 
+	</select>
+	
+	<select id="selectOccupationList" parameterType="map" resultType="tk.mybatis.springboot.bean.OccupationListBean">
+		select  
+			o.id as id,
+		 	o.name as name,
+		 	o.description as `desc` 
+		from occupation o 
+		where 1 = 1  
+		<if test="name != null and name != ''">
+			and o.name like CONCAT('%',#{name},'%') 
+		</if>
+	</select>
+</mapper>

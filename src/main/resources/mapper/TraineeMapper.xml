@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="tk.mybatis.springboot.mapper.TraineeMapper">
+	<select id="selectTraineeList" parameterType="map" resultType="tk.mybatis.springboot.entity.TraineeEntity">
+		select  
+			t.id as id,
+		 	t.name as name,
+		 	t.sex as sex,
+		 	t.birthday as birthday,
+		 	t.guardian as guardian,
+		 	t.address as address,
+		 	t.phone as phone 
+		from trainee t 
+		where 1 = 1  
+		<if test="name != null and name != ''">
+			and t.name like CONCAT('%',#{name},'%') 
+		</if>
+	</select>
+	
+	<select id="selectAllAssessResult" parameterType="map" resultType="tk.mybatis.springboot.bean.AssessResultBean">
+		SELECT
+    	*
+		FROM
+    	(
+        SELECT
+            t.id                 AS traineeId,
+            t.name               AS traineeName,
+            COUNT(ar.ability_id) AS assessCount,
+           	0                    AS assessStatus
+        FROM
+            trainee t
+        LEFT JOIN
+            assessment_result ar
+        ON
+            t.id = ar.trainee_id
+        GROUP BY
+            t.id,
+            t.name) temp
+		WHERE 1 = 1
+		and temp.assessCount &gt;= 0 and temp.assessCount &lt;= 132
+	</select>
+	
+	<select id="selectAssessResult" parameterType="map" resultType="tk.mybatis.springboot.bean.AssessResultBean">
+		SELECT
+    	*
+		FROM
+    	(
+        SELECT
+            t.id                 AS traineeId,
+            t.name               AS traineeName,
+            COUNT(ar.ability_id) AS assessCount,
+            CASE 
+            	WHEN COUNT(ar.ability_id) = 0 THEN -1
+            	WHEN COUNT(ar.ability_id) &gt; 0 AND COUNT(ar.ability_id) &lt; 132  THEN 1
+             	WHEN COUNT(ar.ability_id) = 132  THEN 2
+        	END AS assessStatus
+        FROM
+            trainee t
+        LEFT JOIN
+            assessment_result ar
+        ON
+            t.id = ar.trainee_id
+        GROUP BY
+            t.id,
+            t.name) temp
+		WHERE 1 = 1
+		<if test="assessStatus == -1">
+			and temp.assessCount = 0
+		</if>
+		<if test="assessStatus == 1">
+			and temp.assessCount &gt; 0 and temp.assessCount &lt; 132
+		</if>
+		<if test="assessStatus == 2">
+			and temp.assessCount = 132
+		</if>
+		<if test="assessStatus == 3">
+			and temp.assessCount = 132
+		</if>
+	</select>
+	
+	<select id="selectAssessRecord" parameterType="Integer" resultType="tk.mybatis.springboot.bean.AssessmentRecordBean">
+		select	ar.ability_id as abilityId,
+			ar.assess_option as assessOption 
+			from assessment_result ar 
+		where ar.trainee_id = #{traineeId} 
+		order by ar.ability_id
+	</select>
+	
+	<select id="selectAssess" parameterType="Integer" resultType="tk.mybatis.springboot.bean.AssessmentResultBean">
+		select	ar.assess_option as assessOption,
+			a.id as id,
+			a.name as name,
+			a.domain as domain
+			from trainee t 
+			left join assessment_result ar 
+			on t.id = ar.trainee_id 
+			left join ability a 
+			on ar.ability_id = a.id 
+		where t.id = #{traineeId} 
+	</select>
+	
+	<select id="selectAssessmentRecord" parameterType="Integer" resultType="tk.mybatis.springboot.bean.AbilityBean">
+		select a.id,a.name,a.domain,a.assess_method,a.description,a.option_a,a.option_b,a.option_c,a.option_d,ar.assess_option from trainee t 
+			left join assessment_result ar on t.id = ar.trainee_id 
+			left join ability a on ar.ability_id = a.id 
+		where t.id = #{id} 
+	</select>
+	
+	<select id="constrastInfo" parameterType="map" resultType="tk.mybatis.springboot.bean.ConstrastBean">
+		select b.domain as domain,
+			oa.ability_id as abilityId,
+			oa.criterion_score as criterionScore,
+			oa.necessary_level as necessaryLevel,
+			ar.assess_option as assessOption
+			from occupation o 
+			left join occupation_ability oa 
+			on oa.occupation_id = o.id 
+			left join assessment_result ar 
+			on ar.ability_id = oa.ability_id 
+			left join trainee t 
+			on t.id = ar.trainee_id 
+			left join ability b 
+			on oa.ability_id = b.id
+		where o.id = #{occupationsId} and t.id = #{trainneeId}
+		order by b.domain,oa.ability_id
+	</select>
+	
+	<select id="sortTrainee" parameterType="Integer" resultType="tk.mybatis.springboot.bean.SortTraineeBean">
+		select t.id,
+			t.name,
+			count(*) as count,
+          	group_concat(b.name order by b.name desc separator ',') as abilityName
+			from occupation o 
+			left join occupation_ability oa 
+			on oa.occupation_id = o.id 
+			left join assessment_result ar 
+			on ar.ability_id = oa.ability_id 
+			left join trainee t 
+			on t.id = ar.trainee_id 
+			left join ability b 
+			on oa.ability_id = b.id
+		where o.id = #{occupationId} 
+		and oa.criterion_score &lt; ar.assess_option = 1 
+		group by t.id 
+		order by count 
+	</select>
+</mapper>

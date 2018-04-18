@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="tk.mybatis.springboot.mapper.AbilityMapper">
+	<select id="selectAbilityInfo" resultType="tk.mybatis.springboot.bean.AbilityBean">
+		select a.id as id,
+			a.name as name,
+			a.domain as domain,
+			a.description as description,
+			a.assess_method as assessMethod,
+			a.option_a as optionA,
+			a.option_b as optionB,
+			a.option_c as optionC,
+			a.option_d as optionD
+			from ability a 
+		where 1 = 1 
+	</select>
+</mapper>

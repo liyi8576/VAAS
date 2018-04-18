@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="tk.mybatis.springboot.mapper.AssessmentReportMapper">
+	<select id="selectAssessmentReportById" parameterType="Integer" resultType="tk.mybatis.springboot.bean.AssessmentReportBean">
+		select ar.trainee_id,ar.occupation_id,tsr.assessor,tsr.assess_date,ar.potential,ar.limit,ar.work_context,ar.personal_will, 
+			ar.parent_will,ar.other,ar.place_advice,ar.track_date,ar.tracker,ar.track_result,ar.designer,ar.designer_title, 
+			ar.institution,ar.institution_phone,ar.executor,ar.executor_title,ar.institution_address,ar.generator from assessment_report ar 
+			left join trainee_sysuser_relationship tsr on tsr.student = ar.trainee_id 
+		where ar.assess_report_id = #{id} 
+	</select>
+	
+	<select id="selectAssessmentReportList" parameterType="map" resultType="tk.mybatis.springboot.bean.AssessmentReportBean">
+		select  
+			ar.trainee_id as trainee_id,
+		 	t.trainee_name as trainee_name,
+		 	ar.occupation_id as occupation_id,
+		 	o.occupation_name as occupation_name,
+		 	tsr.assessor as assessor,
+		 	s.assessor_name as assessor_name,
+		 	tsr.assess_date as assess_date 
+		from assessment_report ar 
+		left join trainee t on t.id = ar.trainee_id 
+		left join occupation o on o.id = ar.occupation_id 
+		left join trainee_sysuser_relationship tsr on tsr.student = ar.trainee_id 
+		left join sysuser s on s.id = tsr.assessor 
+		where 1 = 1  
+		<if test="trainee_name != null and trainee_name != ''">
+			and t.trainee_name like CONCAT('%',#{trainee_name},'%') 
+		</if>
+		<if test="occupation_name != null and occupation_name != ''">
+			and o.occupation_name like CONCAT('%',#{occupation_name},'%') 
+		</if>
+		<if test="assessor_name != null and assessor_name != ''">
+			and s.assessor_name like CONCAT('%',#{assessor_name},'%') 
+		</if>
+		<if test="startDate != null and startDate != ''">
+			<![CDATA[and ar.generate_time >= #{startDate}]]>
+		</if>
+		<if test="endDate != null and endDate != ''">
+			<![CDATA[and ar.generate_time <= #{endDate}]]>
+		</if>
+	</select>
+</mapper>

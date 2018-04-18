@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="tk.mybatis.springboot.mapper.EnumMapper">
+	<select id="selectEnum" parameterType="String" resultType="tk.mybatis.springboot.entity.EnumEntity">
+		select ed.groups,ed.name,ed.value from enum_dic ed 
+		where 1 = 1 
+		order by ed.sort_index 
+	</select>
+</mapper>
